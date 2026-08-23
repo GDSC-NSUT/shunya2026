@@ -1157,6 +1157,68 @@
   100% { transform: translateX(5px); }
 }
 
+.event-card__details-btn:hover {
+  transform: translateY(-3px) scale(1.03);
+  background: var(--glass-surface-hover);
+  border-color: var(--btn-accent, #ffffff);
+  box-shadow: 0 0 35px var(--btn-accent, rgba(245, 247, 255, 0.4)), 0 14px 36px rgba(0, 0, 0, 0.7);
+}
+
+.event-card__btn-arrow {
+  display: inline-block;
+  font-size: 1.1rem;
+  transition: transform 0.3s var(--ease-premium);
+}
+
+.event-card__details-btn:hover .event-card__btn-arrow {
+  transform: translateX(5px);
+}
+
+/* ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ Visual Animations ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬Â Ã¢â€šÂ¬ */
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse-glow {
+  0%   { transform: scale(0.95); opacity: 0.75; animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1); }
+  50%  { transform: scale(1.05); opacity: 1;    animation-timing-function: cubic-bezier(0.37, 0, 0.63, 1); }
+  100% { transform: scale(0.95); opacity: 0.75; }
+}
+
+@keyframes shockwave-pulse {
+  0% { transform: scale(0.6); opacity: 0.9; }
+  100% { transform: scale(1.3); opacity: 0; }
+}
+
+@keyframes star-breathe {
+  0% { transform: scale(0.98); }
+  100% { transform: scale(1.02); }
+}
+
+@keyframes float-node {
+  0%   { transform: translate(0, 0);        animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1); }
+  50%  { transform: translate(10px, -10px); animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1); }
+  100% { transform: translate(0, 0); }
+}
+
+@keyframes aurora-shift {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.1); border-radius: 60% 40% 30% 70% / 50% 60% 40% 50%; }
+  100% { transform: rotate(360deg) scale(1); }
+}
+
+@keyframes celestial-float {
+  0%   { transform: translateY(0)     rotate(0deg);    animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1); }
+  50%  { transform: translateY(-10px) rotate(0.8deg);  animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1); }
+  100% { transform: translateY(0)     rotate(0deg); }
+}
+
+@keyframes gas-band-drift {
+  0% { transform: translateX(-5px); }
+  100% { transform: translateX(5px); }
+}
+
 @keyframes ring-wobble {
   0% { transform: rotate(-30deg) scaleY(0.35); }
   50% { transform: rotate(-25deg) scaleY(0.38); }
@@ -1465,216 +1527,62 @@
   .hud-data-callout {
     display: none;
   }
-  .details-view__meta-grid {
-    grid-template-columns: 1fr 1fr;
+  /* Make modal full screen on mobile so top close button is never clipped by centering */
+  .details-view {
+    align-items: stretch;
   }
   .details-view__container {
-    padding: 32px 24px;
+    padding: 32px 20px 100px 20px; /* 100px bottom for the SCHEDULE pill */
+    border-radius: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .details-view__header {
+    margin-bottom: 24px;
+  }
+  .details-view__hero {
+    margin-bottom: 24px;
+  }
+  .details-view__title {
+    font-size: 2.2rem;
+    margin-bottom: 12px;
+  }
+  .details-view__desc {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    /* Limit lines on very small screens */
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .details-view__meta-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: auto; /* Push footer to the bottom */
+  }
+  .details-view__meta-card {
+    padding: 14px 16px;
+  }
+  .details-view__meta-value {
+    font-size: 0.85rem;
+    white-space: normal;
+    word-break: break-word;
   }
   .details-view__footer {
+    padding-top: 16px;
     flex-direction: column;
-    gap: 16px;
-    align-items: flex-start;
+    align-items: stretch;
+    gap: 12px;
+  }
+  .details-view__register-btn {
+    width: 100%;
+    justify-content: center;
   }
 }
-
-/* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ Liquid Glass-Metal Dynamic Island ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Days Only ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */
-#dynamic-island-root {
-  position: fixed;
-  bottom: 32px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 180;
-  pointer-events: auto;
-}
-
-.dynamic-island {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  border-radius: 999px;
-  background: rgba(8, 11, 24, 0.72);
-  backdrop-filter: blur(32px) saturate(210%);
-  -webkit-backdrop-filter: blur(32px) saturate(210%);
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  box-shadow:
-    inset 0 1.5px 2px rgba(255, 255, 255, 0.7),
-    inset 0 -1px 2px rgba(0, 0, 0, 0.65),
-    inset 0 0 22px rgba(255, 255, 255, 0.04),
-    0 20px 55px rgba(0, 0, 0, 0.8),
-    0 0 36px var(--island-glow, rgba(0, 240, 255, 0.28));
-  overflow: hidden;
-  padding: 7px;
-  transition:
-    border-color 0.4s ease,
-    box-shadow 0.4s ease,
-    transform 0.3s var(--ease-premium);
-}
-
-.dynamic-island.is-hovered {
-  transform: translateY(-3px);
-  border-color: rgba(255, 255, 255, 0.38);
-  box-shadow:
-    inset 0 1.5px 2px rgba(255, 255, 255, 0.85),
-    inset 0 -1px 2px rgba(0, 0, 0, 0.65),
-    0 26px 65px rgba(0, 0, 0, 0.85),
-    0 0 45px var(--island-glow, rgba(0, 240, 255, 0.4));
-}
-
-/* Specular top-gloss streak */
-.dynamic-island__gloss {
-  position: absolute;
-  top: 0;
-  left: 8%;
-  right: 8%;
-  height: 46%;
-  border-radius: 999px 999px 60% 60%;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.28) 0%,
-    rgba(255, 255, 255, 0.04) 65%,
-    transparent 100%
-  );
-  pointer-events: none;
-  z-index: 5;
-}
-
-/* Light-sweep shimmer on day change */
-.dynamic-island__shimmer {
-  position: absolute;
-  inset: 0;
-  border-radius: 999px;
-  background: linear-gradient(
-    108deg,
-    transparent 18%,
-    rgba(255, 255, 255, 0.38) 44%,
-    rgba(255, 255, 255, 0.62) 50%,
-    rgba(255, 255, 255, 0.38) 56%,
-    transparent 82%
-  );
-  transform: translateX(-160%);
-  pointer-events: none;
-  z-index: 6;
-}
-
-.dynamic-island.is-liquid-morph .dynamic-island__shimmer {
-  animation: island-shimmer 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes island-shimmer {
-  0%   { transform: translateX(-180%); opacity: 0;   }
-  15%  { opacity: 1; }
-  85%  { opacity: 1; }
-  100% { transform: translateX(180%);  opacity: 0;   }
-}
-
-/* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ Liquid mercury glider (slides behind active day) ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */
-.dynamic-island__glider {
-  position: absolute;
-  top: 7px;
-  bottom: 7px;
-  left: 0;
-  width: 100px; /* GSAP overrides x and width */
-  border-radius: 999px;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.28) 0%,
-    rgba(255, 255, 255, 0.08) 100%
-  );
-  will-change: transform, width;
-  border: 1px solid rgba(255, 255, 255, 0.38);
-  box-shadow:
-    inset 0 1.5px 1.5px rgba(255, 255, 255, 0.75),
-    0 4px 20px rgba(0, 0, 0, 0.45),
-    0 0 28px var(--island-glow, rgba(0, 240, 255, 0.3));
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  transition:
-    transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
-    width   0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
-    box-shadow 0.4s ease;
-  z-index: 1;
-  pointer-events: none;
-}
-
-/* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ Day buttons ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */
-.dynamic-island__days {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  position: relative;
-  z-index: 2;
-}
-
-.dynamic-island__day-btn {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  padding: 14px 28px;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  font-family: var(--font-ui);
-  font-size: 0.85rem;
-  font-weight: 700;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  color: rgba(245, 247, 255, 0.38);
-  transition:
-    color 0.3s ease,
-    text-shadow 0.3s ease,
-    transform 0.2s var(--ease-premium);
-  white-space: nowrap;
-}
-
-.dynamic-island__day-btn:hover {
-  color: rgba(245, 247, 255, 0.75);
-  transform: scale(1.04);
-}
-
-.dynamic-island__day-btn.is-active {
-  color: rgba(245, 247, 255, 1);
-  text-shadow:
-    0 0 14px var(--day-accent),
-    0 0 32px rgba(255, 255, 255, 0.4);
-}
-
-/* Coloured accent dot beside each day label */
-.dynamic-island__day-dot {
-  display: block;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--day-accent);
-  box-shadow: 0 0 10px var(--day-accent);
-  opacity: 0.4;
-  transition: opacity 0.3s var(--ease-smooth), box-shadow 0.3s ease, transform 0.3s ease;
-  flex-shrink: 0;
-}
-
-.dynamic-island__day-btn.is-active .dynamic-island__day-dot {
-  opacity: 1;
-  box-shadow: 0 0 18px var(--day-accent), 0 0 40px var(--day-accent);
-  animation: pulse-day-dot 2s infinite ease-in-out;
-}
-
-@keyframes pulse-day-dot {
-  0%   { transform: scale(0.82); opacity: 0.75; }
-  100% { transform: scale(1.28); opacity: 1;    }
-}
-
-.dynamic-island__day-label {
-  position: relative;
-  z-index: 1;
-}
-
-/* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ Mobile ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */
-
-
-
-
-
-
 
 /* ── Dynamic Island ── */
 /* ── Root ────────────────────────────────────────────────────── */
@@ -1795,20 +1703,6 @@
   text-shadow: 0 0 16px var(--day-accent, #00ffaa);
 }
 
-/* ── Active-day glider pill ──────────────────────────────────── */
-.dynamic-island__glider {
-  position: absolute;
-  /* top/bottom match btn-row padding so glider is fully inside */
-  top: 10px;
-  bottom: 10px;
-  left: 0;
-  width: 120px;                /* overridden by JS */
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.05); /* very subtle so background shows through */
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  pointer-events: none;
-  z-index: 0;                  /* behind labels */
-}
 
 /* ── Reduced motion ──────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
@@ -1834,50 +1728,184 @@
     font-size: 0.9rem;
     letter-spacing: 0.1em;
   }
+  
+  /* Center Block */
+  .event-card__center {
+    top: 42%;
+    width: 90vw;
+  }
+
+  /* Meta Bar */
+  .event-card__meta-bar {
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 16px !important;
+    margin-bottom: 32px !important;
+    width: 100% !important;
+  }
+
+  /* Title */
+  .event-card__full-title {
+    font-size: 0.85rem !important;
+    letter-spacing: 0.3em !important;
+    margin-bottom: 0px !important;
+    text-align: center !important;
+    opacity: 0.9 !important;
+  }
+
+  /* Counter Badge */
+  .event-card__counter {
+    font-size: 0.6rem !important;
+    padding: 6px 14px !important;
+    letter-spacing: 0.3em !important;
+    margin-bottom: 0px !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    border-radius: 4px !important;
+    clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 50%, calc(100% - 6px) 100%, 0 100%) !important;
+  }
+
+  /* Tags */
   .event-card__tags {
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 8px;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    margin-bottom: 0 !important;
   }
   .event-card__tag {
-    padding: 4px 12px;
-    font-size: 0.6rem;
-    white-space: nowrap;
+    font-size: 0.55rem !important;
+    padding: 6px 12px !important;
+    letter-spacing: 0.2em !important;
+    clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 50%, calc(100% - 6px) 100%, 0 100%) !important;
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
   }
   .tag-separator {
-    font-size: 0.65rem;
+    display: none !important;
+  }
+
+  /* Headline Marquee */
+  .event-headline {
+    font-size: clamp(5rem, 20vw, 7rem) !important; /* Massively increased size */
+    transform: scaleY(1.2); /* Stretches the text vertically to make it 'high-wise' */
+    line-height: 0.85 !important;
+    letter-spacing: 0.02em !important;
+    margin-bottom: 40px !important;
+    text-shadow: 0 4px 32px rgba(0,0,0,0.6) !important;
+  }
+
+  /* Details Button */
+  .event-card__actions {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
   }
   .event-card__details-btn {
-    padding: 10px 24px 10px 20px;
-    font-size: 0.75rem;
-    letter-spacing: 0.15em;
+    width: 100% !important;
+    max-width: 280px !important;
+    justify-content: space-between !important;
+    padding: 16px 24px !important;
+    font-size: 0.85rem !important;
+    letter-spacing: 0.2em !important;
+    clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 50%, calc(100% - 14px) 100%, 0 100%) !important;
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
   }
-  .event-card__counter {
-    font-size: 0.55rem !important;
-    padding: 4px 10px !important;
-    margin-bottom: 12px !important;
-  }
-  .event-card__full-title {
-    font-size: 0.75rem !important;
-    margin-bottom: 6px !important;
-  }
+
+  /* Dynamic Island Tweaks for mobile */
   .dynamic-island {
     bottom: 24px;
+    border-radius: 99px !important;
   }
   .dynamic-island__day-btn {
-    padding: 6px 12px;
+    padding: 10px 16px; /* Much thicker target area */
     font-size: 0.75rem;
-    letter-spacing: 0.12em;
-    gap: 4px;
+    letter-spacing: 0.15em;
+    gap: 6px;
   }
   .dynamic-island__day-dot {
-    width: 5px;
-    height: 5px;
+    width: 6px;
+    height: 6px;
   }
   .dynamic-island__btn-row {
-    padding: 4px 6px;
+    padding: 4px 6px; /* Still maintains the outer margin for the glider */
+  }
+
+  /* Details View - Single Screen Layout (No Scroll) */
+  .details-view__container {
+    padding: 85px 16px 20px 16px !important;
+    height: 100dvh !important; /* 100dvh fixes iOS Safari bottom bar issues */
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    overflow: hidden !important; /* Strictly no scroll */
+  }
+
+  .details-view__header {
+    margin-bottom: 8px !important;
+  }
+  .details-view__badge, .details-view__tag {
+    font-size: 0.55rem !important;
+    padding: 4px 8px !important;
+  }
+  .details-view__close {
+    padding: 6px 12px !important;
+    font-size: 0.6rem !important;
+  }
+  
+  .details-view__hero {
+    margin-bottom: 8px !important;
+  }
+  .details-view__title {
+    font-size: 1.6rem !important; /* Make title much smaller to save vertical space */
+    line-height: 1.1 !important;
+    margin-bottom: 8px !important;
+  }
+  .details-view__desc {
+    font-size: 0.75rem !important;
+    line-height: 1.3 !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 3 !important; /* Truncate description to 3 lines max */
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+    margin-bottom: 0 !important;
+  }
+
+  .details-view__meta-grid {
+    grid-template-columns: 1fr 1fr !important; /* Force 2 columns again */
+    gap: 8px !important;
+    margin-bottom: 12px !important;
+  }
+  .details-view__meta-card {
+    padding: 10px !important;
+    gap: 4px !important;
+  }
+  .details-view__meta-label {
+    font-size: 0.5rem !important;
+  }
+  .details-view__meta-value {
+    font-size: 0.75rem !important;
+    line-height: 1.1 !important;
+    word-break: break-word !important; /* Prevents long words from breaking horizontal layout */
+    overflow-wrap: break-word !important;
+  }
+
+  .details-view__footer {
+    flex-direction: column !important;
+    gap: 8px !important;
+    align-items: stretch !important;
+  }
+  .details-view__footer-note {
+    font-size: 0.55rem !important;
+    text-align: center !important;
+    margin-bottom: 0 !important;
+  }
+  .details-view__register-btn {
+    padding: 12px !important;
+    font-size: 0.75rem !important;
+    justify-content: center !important;
+    gap: 8px !important;
   }
 }
 
@@ -1896,4 +1924,34 @@
   .marquee-inner {
     animation: none;
   }
+}
+
+
+/* --- GLIDER RESTORED --- */
+.dynamic-island__glider {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 0;
+  width: 100px; /* GSAP overrides x and width */
+  border-radius: 999px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.28) 0%,
+    rgba(255, 255, 255, 0.08) 100%
+  );
+  will-change: transform, width;
+  border: 1px solid rgba(255, 255, 255, 0.38);
+  box-shadow:
+    inset 0 1.5px 1.5px rgba(255, 255, 255, 0.75),
+    0 4px 20px rgba(0, 0, 0, 0.45),
+    0 0 28px var(--island-glow, rgba(0, 240, 255, 0.3));
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  transition:
+    transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+    width   0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.4s ease;
+  z-index: 0;
+  pointer-events: none;
 }

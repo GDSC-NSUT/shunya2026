@@ -1,7 +1,7 @@
 import { init as initStarfield } from './background/starfield.js?v=4';
 import { init as initScroll } from './scroll/scroll-controller.js?v=5';
 import { init as initTransition } from './transition/details-transition.js?v=4';
-import { init as initDynamicIsland } from './scroll/dynamic-island.js?v=4';
+import { init as initDynamicIsland } from './scroll/dynamic-island.js?v=5';
 
 // Top-level orchestration
 function bootstrap() {

@@ -56,6 +56,7 @@ export function init() {
   const dayBtns   = Array.from(island.querySelectorAll('.dynamic-island__day-btn'));
 
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const hasHover = window.matchMedia('(hover: hover)').matches;
 
   // ── STATE ──────────────────────────────────────────────────────────────────
   let state         = 'COMPACT';
@@ -184,7 +185,7 @@ export function init() {
 
     if (reason === 'scroll') {
       autoCloseTimer = setTimeout(() => {
-        if (!hoverActive) close();
+        if (!hasHover || !hoverActive) close();
       }, T.autoCloseDelay);
     }
   }
@@ -262,7 +263,7 @@ export function init() {
       positionGlider(dayNum);
       clearTimeout(autoCloseTimer);
       autoCloseTimer = setTimeout(() => {
-        if (!hoverActive) close();
+        if (!hasHover || !hoverActive) close();
       }, T.autoCloseDelay);
     }
   }
@@ -299,7 +300,7 @@ export function init() {
 
       clearTimeout(autoCloseTimer);
       autoCloseTimer = setTimeout(() => {
-        if (!hoverActive) close();
+        if (!hasHover || !hoverActive) close();
       }, 500);
     });
   });
