@@ -192,36 +192,77 @@ export default function SceneController() {
         cardEl.style.right = "";
         cardEl.style.background = "";
         
-        // Re-calculate and forcefully apply its correct 3D position in the timeline
-        // so GSAP Flip knows exactly where to animate it back to.
-        const delta = getDelta(e.activeCardIndex, e.progress);
-        const state = getSpatialState(
-          delta,
-          e.W,
-          e.H,
-          e.xOrigin,
-          e.yOrigin,
-          e.amplitude,
-          e.progress
-        );
-        cardEl.style.transform = `translate3d(${state.x}px, ${state.y}px, 0) scale(${state.scale}) rotateY(${state.rotateY}deg) perspective(1200px)`;
-        cardEl.style.zIndex = state.z;
+        // For mobile, skip GSAP Flip entirely to avoid layout thrashing.
+        // Perform a hardware-accelerated slide-down.
+        if (window.innerWidth < 768) {
+          gsap.to(cardEl, {
+            y: window.innerHeight, // slide completely off screen
+            duration: 0.4,
+            ease: "power3.in",
+            onComplete: () => {
+              cardEl.classList.remove("detail-expanded");
+              cardEl.style.position = "";
+              cardEl.style.zIndex = "";
+              cardEl.style.borderRadius = "";
+              cardEl.style.padding = "";
+              cardEl.style.width = "";
+              cardEl.style.height = "";
+              cardEl.style.top = "";
+              cardEl.style.bottom = "";
+              cardEl.style.left = "";
+              cardEl.style.right = "";
+              cardEl.style.background = "";
+              
+              const delta = getDelta(e.activeCardIndex, e.progress);
+              const state = getSpatialState(
+                delta, e.W, e.H, e.xOrigin, e.yOrigin, e.amplitude, e.progress
+              );
+              cardEl.style.transform = `translate3d(${state.x}px, ${state.y}px, 0) scale(${state.scale}) rotateY(${state.rotateY}deg) perspective(1200px)`;
+              cardEl.style.zIndex = state.z;
 
-        Flip.from(e.flipState, {
-          duration: 0.85,
-          ease: "expo.inOut",
-          onComplete: () => {
-            e.isFrozen = false;
-            e.activeCardIndex = -1;
-            e.flipState = null;
-            setActiveDetail(null);
+              e.isFrozen = false;
+              e.activeCardIndex = -1;
+              e.flipState = null;
+              setActiveDetail(null);
 
-            if (injectDeltaY !== 0) {
-              const clamped = injectDeltaY > V_MAX ? V_MAX : injectDeltaY < -V_MAX ? -V_MAX : injectDeltaY;
-              e.velocity += clamped * INPUT_SCALE;
+              if (injectDeltaY !== 0) {
+                const clamped = injectDeltaY > V_MAX ? V_MAX : injectDeltaY < -V_MAX ? -V_MAX : injectDeltaY;
+                e.velocity += clamped * INPUT_SCALE;
+              }
             }
-          },
-        });
+          });
+        } else {
+          // Re-calculate and forcefully apply its correct 3D position in the timeline
+          // so GSAP Flip knows exactly where to animate it back to.
+          const delta = getDelta(e.activeCardIndex, e.progress);
+          const state = getSpatialState(
+            delta,
+            e.W,
+            e.H,
+            e.xOrigin,
+            e.yOrigin,
+            e.amplitude,
+            e.progress
+          );
+          cardEl.style.transform = `translate3d(${state.x}px, ${state.y}px, 0) scale(${state.scale}) rotateY(${state.rotateY}deg) perspective(1200px)`;
+          cardEl.style.zIndex = state.z;
+
+          Flip.from(e.flipState, {
+            duration: 0.85,
+            ease: "expo.inOut",
+            onComplete: () => {
+              e.isFrozen = false;
+              e.activeCardIndex = -1;
+              e.flipState = null;
+              setActiveDetail(null);
+
+              if (injectDeltaY !== 0) {
+                const clamped = injectDeltaY > V_MAX ? V_MAX : injectDeltaY < -V_MAX ? -V_MAX : injectDeltaY;
+                e.velocity += clamped * INPUT_SCALE;
+              }
+            },
+          });
+        }
       } else {
         e.isFrozen = false;
         e.activeCardIndex = -1;
@@ -272,21 +313,36 @@ export default function SceneController() {
         cardEl.style.left = "0";
         cardEl.style.right = "0";
         cardEl.style.transform = "none";
+
+        // Mobile: Skip GSAP Flip entirely to avoid layout thrashing on width/height.
+        // Pure GPU transform slide up from bottom.
+        gsap.fromTo(cardEl, 
+          { y: window.innerHeight },
+          { 
+            y: 0, 
+            duration: 0.5, 
+            ease: "power3.out",
+            onComplete: () => {
+              const event = EVENTS[nodeIndex % DATA_SIZE];
+              setActiveDetail({ ...event, nodeIndex });
+            }
+          }
+        );
       } else {
         cardEl.style.top = "10vh";
         cardEl.style.left = "auto";
         cardEl.style.right = "5%";
         cardEl.style.transform = "none";
+        
+        Flip.from(e.flipState, {
+          duration: 0.85,
+          ease: "expo.inOut",
+          onComplete: () => {
+            const event = EVENTS[nodeIndex % DATA_SIZE];
+            setActiveDetail({ ...event, nodeIndex });
+          },
+        });
       }
-
-      Flip.from(e.flipState, {
-        duration: 0.85,
-        ease: "expo.inOut",
-        onComplete: () => {
-          const event = EVENTS[nodeIndex % DATA_SIZE];
-          setActiveDetail({ ...event, nodeIndex });
-        },
-      });
     },
     [activeDetail]
   );
