@@ -85,26 +85,21 @@ export function getScale(delta) {
   return denom <= 0.1 ? 10 : 1 / denom;
 }
 
-/**
- * X position: converges toward vanishing point
- */
 export function getX(delta, W, xOrigin) {
   const isMobile = W < 768;
   const S = getScale(delta);
-  const Vx = W * VANISHING_POINT_X_PCT;
-  const spacingX = isMobile ? 0.8 : 1.0;
+  // Slight angle adjustment for mobile, not too extreme
+  const Vx = W * (isMobile ? 1.25 : VANISHING_POINT_X_PCT);
+  const spacingX = isMobile ? 1.0 : 1.0; 
   return xOrigin + (Vx - xOrigin) * (1 - S) * spacingX;
 }
 
-/**
- * Y base position: converges toward vanishing point (no wave applied yet)
- */
 export function getYBase(delta, H, yOrigin, W) {
   const isMobile = W < 768;
   const S = getScale(delta);
-  const Vy = H * VANISHING_POINT_Y_PCT;
-  // Decrease spacingY to pack cards closer vertically on mobile, fitting 6 cards
-  const spacingY = isMobile ? 0.6 : 1.0;
+  const Vy = H * (isMobile ? -1.40 : VANISHING_POINT_Y_PCT);
+  // Tuned to exactly 0.85 so approximately 5 cards fit on screen at once
+  const spacingY = isMobile ? 0.85 : 1.0;
   return yOrigin + (Vy - yOrigin) * (1 - S) * spacingY;
 }
 
@@ -127,6 +122,11 @@ export function isFocal(delta) {
  * The wave is baked in: moving the card towards top-left (-X, -Y)
  */
 export function getSpatialState(delta, W, H, xOrigin, yOrigin, amplitude, progress) {
+  const isMobile = W < 768;
+  // Restore a deep visual limit; the new massive spacing ensures they naturally go off-screen
+  // before hitting this limit, preventing artificial clipping/disappearing.
+  const maxVisibleDelta = isMobile ? 10 : 16; 
+  const minVisibleDelta = isMobile ? -2 : -4;
   const S = getScale(delta);
   const absDelta = Math.abs(delta);
   
@@ -134,10 +134,10 @@ export function getSpatialState(delta, W, H, xOrigin, yOrigin, amplitude, progre
     x: getX(delta, W, xOrigin),
     y: getYBase(delta, H, yOrigin, W) - getWaveY(delta, amplitude, progress),
     scale: S,
-    rotateY: (W < 768) ? -8 : CARD_ROTATE_Y_DEG,
+    rotateY: isMobile ? -8 : CARD_ROTATE_Y_DEG,
     z: (100 - delta * 10) | 0,
-    opacity: delta < -4 ? 0 : delta > 16 ? 0 : 1,
-    visibility: delta < -4 || delta > 16 ? "hidden" : "visible",
+    opacity: delta < minVisibleDelta ? 0 : delta > maxVisibleDelta ? 0 : 1,
+    visibility: delta < minVisibleDelta || delta > maxVisibleDelta ? "hidden" : "visible",
     focusFactor: Math.max(0.6, 1 - absDelta * 0.15),
     focal: absDelta < 0.5,
   };

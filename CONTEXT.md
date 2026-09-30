@@ -58,10 +58,10 @@ Do not add extra planets, rings, comets, or decorative clutter unless explicitly
 ## Performance goals
 The experience must stay fast and smooth:
 - prefer a small number of strong layers
-- avoid heavy runtime rendering
-- keep file sizes sensible
+- avoid heavy runtime rendering (on mobile: DPR capped at 1, CSS animations disabled for full-screen elements)
+- keep file sizes sensible (always use WebP/AVIF instead of PNG)
 - avoid dense particles and excessive blur
-- preserve browser compositing performance
+- preserve browser compositing performance (avoid will-change on mobile)
 
 ## Current defaults
 These are the current working defaults unless the user changes them:

@@ -578,23 +578,29 @@ nextjs-portal {
 }
 
 @media (max-width: 768px) {
+  /* Performance: Kill full-screen animated blur */
+  .timeline-root::before {
+    display: none;
+  }
+
   .glass-card {
     width: 220px;
     height: 320px;
     padding: 20px;
     border-radius: 14px;
-    /* Performance: Remove blur, simplify shadows */
+    /* Performance: Remove blur, drastically simplify shadows for mobile GPU */
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
-    background: color-mix(in srgb, var(--card-accent) 15%, rgba(0, 15, 10, 0.9));
-    border: 1px solid color-mix(in srgb, var(--card-accent) 60%, transparent);
+    background: color-mix(in srgb, var(--card-accent) 15%, rgba(0, 15, 10, 0.95));
+    border: 1px solid color-mix(in srgb, var(--card-accent) 90%, transparent);
     box-shadow: 
-      1px 1px 0px 0px color-mix(in srgb, var(--card-accent) 40%, transparent),
+      /* Bright Outer Edge Glow (Small radius, GPU friendly) */
+      0 0 12px color-mix(in srgb, var(--card-accent) 45%, transparent),
+      /* Sharp Bevel Extrusion */
+      1px 1px 0px 0px color-mix(in srgb, var(--card-accent) 60%, transparent),
       2px 2px 0px 0px rgba(0, 10, 5, 1),
-      3px 3px 0px 0px rgba(0, 10, 5, 1),
-      4px 4px 0px 0px color-mix(in srgb, var(--card-accent) 30%, transparent),
-      inset 0 0 15px color-mix(in srgb, var(--card-accent) 50%, transparent),
-      5px 5px 15px color-mix(in srgb, var(--card-accent) 40%, transparent);
+      /* Bright Inner Glow */
+      inset 0 0 12px color-mix(in srgb, var(--card-accent) 45%, transparent);
   }
 
   .glass-card::before {
