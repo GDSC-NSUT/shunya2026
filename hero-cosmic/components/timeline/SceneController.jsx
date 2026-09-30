@@ -338,17 +338,19 @@ export default function SceneController() {
             clearTimeout(inputTimeout);
             inputTimeout = setTimeout(() => { e.isInputActive = false; }, 150);
 
-            // Normalize large scroll deltas.
-            // Touch multiplier: 1.8 (was 2.5). The old value combined with
-            // INPUT_SCALE meant a short swipe immediately saturated V_MAX,
-            // creating a hard friction wall and the "snap-back" jerk feeling.
             let raw = self.deltaY;
-            if (self.event && self.event.type.includes("touch")) {
-              raw *= 1.8;
+            const isTouch = self.event && self.event.type.includes("touch");
+            
+            if (isTouch) {
+              raw *= 4.5; // Massive boost for mobile swipe feel
             }
-            // Tighter cap: 30 (was 40). Prevents large burst inputs from
-            // overwhelming the physics spring on a single frame.
-            const capped = raw > 30 ? 30 : raw < -30 ? -30 : raw;
+            
+            // Cap to prevent physics breaking.
+            // Desktop wheel is capped lower (30) so scroll-wheels don't jerk.
+            // Mobile touch is capped higher (90) to allow fast "throw" swipes.
+            const capLimit = isTouch ? 90 : 30;
+            const capped = raw > capLimit ? capLimit : raw < -capLimit ? -capLimit : raw;
+            
             e.velocity += capped * INPUT_SCALE;
           },
         });

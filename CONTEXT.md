@@ -60,7 +60,7 @@ The experience must stay fast and smooth:
 - prefer a small number of strong layers
 - avoid heavy runtime rendering (on mobile: DPR capped at 1, CSS animations disabled for full-screen elements)
 - keep file sizes sensible (always use WebP/AVIF instead of PNG)
-- avoid dense particles and excessive blur
+- avoid dense particles and excessive blur (limit overlapping box-shadow and backdrop-filter on mobile glass cards)
 - preserve browser compositing performance (avoid will-change on mobile)
 
 ## Current defaults
