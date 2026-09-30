@@ -10,6 +10,17 @@ function easeInOutCubic(t: number): number {
   return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 }
 
+/**
+ * useScrollEarth — drives Earth and HUD opacity on scroll via a continuous rAF loop.
+ *
+ * Performance contract:
+ * - The rAF loop runs continuously but is cheap: dead-zone guards prevent DOM writes
+ *   on frames where values haven't meaningfully changed.
+ * - We intentionally do NOT exit the rAF loop on convergence. Doing so creates a
+ *   1-frame gap on the next scroll event (loop exit → scroll fires → startLoop() →
+ *   requestAnimationFrame → tick runs) which shows as a visible jerk on 120 Hz screens.
+ * - LERPF raised to 0.18 for a more liquid, immediate-feeling response.
+ */
 export function useScrollEarth() {
   const earthRef = useRef<HTMLDivElement>(null);
   const hudRef   = useRef<HTMLDivElement>(null);
@@ -22,56 +33,49 @@ export function useScrollEarth() {
     if (hudRef.current) hudRef.current.style.opacity = '1';
 
     let rafId: number;
-    const LERPF = 0.12;
+    // Raised from 0.14 → 0.18: more liquid, faster convergence, less "sticky" feel
+    const LERPF = 0.18;
 
     let curY = 0;
     let curX = 0;
     let curScale = 1;
     let curHud = 1;
+    let curBlur = 0;
 
-    // We start off-screen to prevent flash, then snap on first tick.
+    // Track last written values to skip redundant DOM writes (dead-zone)
+    let lastWrittenY = -9999;
+    let lastWrittenX = -9999;
+    let lastWrittenScale = -9999;
+    let lastWrittenHud = -9999;
+    let lastWrittenBlur = -9999;
+
     let firstTick = true;
 
     const tick = () => {
       const scrollY  = window.scrollY;
       const curVh    = window.innerHeight;
-      const isMobile = window.innerWidth < 768;
+      const isMobile = window.innerWidth < 1024;
 
       const raw    = clamp(scrollY / Math.max(curVh, 1), 0, 1);
       const t      = easeInOutCubic(raw);
       const tgtHud = 1 - clamp(raw / 0.45, 0, 1);
 
-      let tgtX, tgtY, tgtScale;
+      let tgtX: number, tgtY: number, tgtScale: number, tgtBlur: number;
 
       if (isMobile) {
-        // MOBILE LOGIC
-        const heroScale = 0.55; 
-        
-        // "make earth smaller for mobile view and shift it right , so that its centre is propperely alligned to the center line"
-        // Since we fixed the left-offset bug, heroX = 0 will make it perfectly symmetrical to the center line.
-        const heroY = curVh * 0.5;
-        const heroX = 0;
+        tgtScale = lerp(0.90, 0.90, t);
+        tgtX     = 0;
+        tgtY     = lerp(curVh * 0.38, 0, t); // Centers Earth at 50vh (behind the text) instead of shooting it to the top
+        tgtBlur  = lerp(0, 1.0, t);
 
-        // At t=1 (About): Earth shrinks and moves up.
-        const aboutScale = 0.45;
-        // Position it in the upper part of the About page
-        const aboutY = -curVh * 0.25;
-        const aboutX = 0; // Re-center in the About section
-
-        tgtScale = lerp(heroScale, aboutScale, t);
-        tgtX = lerp(heroX, aboutX, t);
-        tgtY = lerp(heroY, aboutY, t);
-
-        // Remove the extreme scroll subtraction so the Earth STAYS visible 
-        // at the top of the About page instead of flying off screen.
         if (scrollY > curVh) {
-          tgtY -= (scrollY - curVh) * 0.15; // Extremely slow parallax so it doesn't vanish
+          tgtY -= (scrollY - curVh);
         }
       } else {
-        // DESKTOP LOGIC
-        tgtX = lerp(0, -22, t); // Moves left in vw
-        tgtY = lerp(curVh * 0.6, -curVh * 0.04, t); // Moves from bottom-center to center-left
+        tgtX     = lerp(0, -22, t);
+        tgtY     = lerp(curVh * 0.6, -curVh * 0.04, t);
         tgtScale = lerp(1, 0.60, t);
+        tgtBlur  = lerp(0, 1.0, t);
 
         if (scrollY > curVh) {
           tgtY -= (scrollY - curVh);
@@ -83,36 +87,47 @@ export function useScrollEarth() {
         curY = tgtY;
         curScale = tgtScale;
         curHud = tgtHud;
+        curBlur = tgtBlur;
         firstTick = false;
       } else {
         curX     += (tgtX - curX) * LERPF;
         curY     += (tgtY - curY) * LERPF;
         curScale += (tgtScale - curScale) * LERPF;
         curHud   += (tgtHud - curHud) * LERPF;
+        curBlur  += (tgtBlur - curBlur) * LERPF;
       }
 
+      // ── DOM writes: only when value changed beyond dead-zone ──────
       if (earthRef.current) {
-        // Master positioning logic:
-        // Div is at left:50%, top:50%. 
-        // We use translate(-50%, -50%) to perfectly center it.
-        // Then we add our X (vw) and Y (px) offsets.
-        const xOffset = `${curX}vw`;
-        earthRef.current.style.transform = `translate(-50%, -50%) translate(${xOffset}, ${curY}px)`;
+        const xChanged = Math.abs(curX - lastWrittenX) > 0.15;
+        const yChanged = Math.abs(curY - lastWrittenY) > 0.15;
+        if (xChanged || yChanged) {
+          earthRef.current.style.transform =
+            `translate(-50%, -50%) translate3d(${curX}vw, ${curY.toFixed(2)}px, 0)`;
+          lastWrittenX = curX;
+          lastWrittenY = curY;
+        }
       }
 
-      if (inner) {
-        // Inner scales from the center without affecting layout
-        inner.style.transform = `translate(-50%, -50%) scale(${curScale})`;
+      if (inner && (Math.abs(curScale - lastWrittenScale) > 0.001 || Math.abs(curBlur - lastWrittenBlur) > 0.05)) {
+        inner.style.transform = `translate(-50%, -50%) translate3d(0,0,0) scale(${curScale.toFixed(4)})`;
+        inner.style.filter = curBlur > 0.05 ? `blur(${curBlur.toFixed(2)}px)` : 'none';
+        lastWrittenScale = curScale;
+        lastWrittenBlur = curBlur;
       }
 
-      if (hudRef.current) {
-        hudRef.current.style.opacity = `${clamp(curHud, 0, 1)}`;
+      if (hudRef.current && Math.abs(curHud - lastWrittenHud) > 0.002) {
+        hudRef.current.style.opacity = `${clamp(curHud, 0, 1).toFixed(3)}`;
+        lastWrittenHud = curHud;
       }
 
+      // Loop runs continuously — no convergence exit.
+      // Dead-zone guards above ensure no DOM work on settled frames.
       rafId = requestAnimationFrame(tick);
     };
 
     rafId = requestAnimationFrame(tick);
+
     return () => cancelAnimationFrame(rafId);
   }, []);
 

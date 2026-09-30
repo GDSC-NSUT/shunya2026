@@ -13,10 +13,10 @@ html {
   margin: 0;
   padding: 0;
   background: #000;
-  /* Scroll lives on the document (html/body) so window.scrollY works */
   overflow-x: hidden;
   overflow-y: auto;
-  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
@@ -24,6 +24,11 @@ body {
   padding: 0;
   background: #000;
   font-family: var(--font-corpta), sans-serif;
+  -webkit-tap-highlight-color: transparent;
+  overflow-x: hidden;
+  overscroll-behavior-x: none;
+  /* Hint to browser: only vertical panning on the main axis, no horizontal interference */
+  touch-action: pan-y;
 }
 
 @keyframes char-glow-in {
@@ -31,112 +36,27 @@ body {
   100% { color: rgba(220, 235, 255, 0.88); text-shadow: none; }
 }
 
-/* ─── Hero Background (DOM Layered Parallax) ───────────────────────── */
+/* ─── Hero Background helpers (legacy classes, kept for reference) ── */
 .hero-layer {
   position: absolute;
-  inset: -10%; /* Oversize to allow for parallax movement without clipping */
-  width: 120%;
-  height: 120%;
+  inset: -8%;
+  width: 116%;
+  height: 116%;
   pointer-events: none;
   will-change: transform;
 }
 
-.hero-layer--stars {
-  z-index: 1;
-  mix-blend-mode: screen;
-}
-
-.hero-layer--nebula {
-  z-index: 2;
-  mix-blend-mode: screen;
-  opacity: 0.6; /* Extremely subtle */
-}
-
-.hero-layer--earth {
-  z-index: 3;
-  mix-blend-mode: lighten;
-}
-
-.hero-bg__vignette {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at center bottom, transparent 30%, rgba(0, 0, 0, 0.9) 100%);
-  z-index: 4;
-}
-
-.hero-bg__vignette-top {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.9) 0%, transparent 20%);
-  z-index: 5;
-}
-
-/* ─── Ambient Drift Keyframes ────────────────────────────────────── */
-@keyframes drift {
-  0% { transform: translate(0, 0); }
-  50% { transform: translate(3px, -2px); }
-  100% { transform: translate(-2px, 3px); }
-}
-
-@keyframes drift-stars {
-  0% { transform: translate(0, 0); }
-  50% { transform: translate(-3px, 2px); }
-  100% { transform: translate(2px, -2px); }
-}
-
-@keyframes breathe-earth {
-  0% { transform: scale(1) translateY(0); }
-  50% { transform: scale(1.02) translateY(5px); }
-  100% { transform: scale(1) translateY(0); }
-}
-
-@keyframes spin-earth {
-  from { transform: scale(1.25) rotate(0deg); }
-  to { transform: scale(1.25) rotate(360deg); }
-}
-
-@keyframes breathe-stars {
-  0% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.02); opacity: 0.8; }
-  100% { transform: scale(1); opacity: 1; }
-}
-
-@keyframes breathe-nebula {
-  0% { transform: scale(1); opacity: 0.8; }
-  50% { transform: scale(1.03); opacity: 0.6; }
-  100% { transform: scale(1); opacity: 0.8; }
-}
-
-.hero-bg__breathe-earth {
-  animation: breathe-earth 45s ease-in-out infinite;
-  will-change: transform;
-}
-
-.animate-spin-earth {
-  animation: spin-earth 180s linear infinite;
-  will-change: transform;
-}
-
-.hero-bg__breathe-stars {
-  animation: breathe-stars 30s ease-in-out infinite;
-  will-change: transform, opacity;
-}
-
-.hero-bg__breathe-nebula {
-  animation: breathe-nebula 40s ease-in-out infinite;
-  will-change: transform, opacity;
-}
-
 /* ─── HUD Mask Container ─────────────────────────────────────────── */
+/*
+  The mask-image uses CSS custom properties written by usePointerTracker.
+  will-change:transform is intentionally omitted here — adding it on top of
+  the mask would double-promote the layer and waste GPU memory.
+*/
 .hud-mask-container {
   position: absolute;
   inset: 0;
   z-index: 10;
 
-  /* The radial gradient mask: circle at pointer position.
-     Using a fixed-size radial gradient mask positioned via mask-position
-     would be ideal, but for dynamic positioning we use the full gradient
-     with CSS custom properties for the center point. */
   -webkit-mask-image: radial-gradient(
     circle 130px at var(--mx, 50%) var(--my, 50%),
     rgba(0,0,0,1) 50%,
@@ -150,12 +70,10 @@ body {
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
 
-  /* Start invisible */
   opacity: 0;
   transform: scale(0.85);
   pointer-events: auto;
 
-  /* Transition for enter/exit fade */
   transition: opacity 180ms ease-out, transform 180ms ease-out;
 }
 
@@ -175,12 +93,33 @@ body {
 
 /* ─── Reduced Motion ─────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
-  .hero-bg__nebula,
-  .hero-bg__stars {
-    animation: none !important;
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 
   .hud-mask-container {
     transition: none !important;
   }
+}
+
+/* ─── Mobile Responsiveness ──────────────────────────────────────── */
+@media (max-width: 767px) {
+  /* Larger HUD touch mask for finger interaction */
+  .hud-mask-container {
+    -webkit-mask-image: radial-gradient(
+      circle 180px at var(--mx, 50%) var(--my, 50%),
+      rgba(0,0,0,1) 50%,
+      rgba(0,0,0,0) 100%
+    );
+    mask-image: radial-gradient(
+      circle 180px at var(--mx, 50%) var(--my, 50%),
+      rgba(0,0,0,1) 50%,
+      rgba(0,0,0,0) 100%
+    );
+  }
+
 }

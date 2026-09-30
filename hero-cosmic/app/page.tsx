@@ -45,7 +45,7 @@ export default function Home() {
     });
 
   return (
-    <main className="relative w-full overflow-hidden bg-black">
+    <main className="relative w-full overflow-x-hidden bg-black">
       {/* ── Fixed cosmic background (stars, nebula, HUD) ── */}
       <HeroBackground hudRef={hudRef} />
 
@@ -57,13 +57,13 @@ export default function Home() {
       */}
       <div
         ref={earthRef}
-        className="fixed z-30 pointer-events-none will-change-transform"
+        className="fixed z-[5] lg:z-30 pointer-events-none will-change-transform"
         style={{
-          width: '820px',
-          height: '820px',
+          width: 'clamp(350px, 100vw, 820px)',
+          height: 'clamp(350px, 100vw, 820px)',
           left: '50%',
           top: '50%',
-          transform: 'translate(-50%, -50%)', // Default desktop center
+          transform: 'translate(-50%, -50%) translate3d(0, 0, 0)', // Default desktop center
         }}
       >
         {/* Inner canvas that handles scaling */}
@@ -73,7 +73,7 @@ export default function Home() {
           style={{
             left: '50%',
             top: '50%',
-            transform: 'translate(-50%, -50%) scale(1)', // Hook drives this
+            transform: 'translate(-50%, -50%) translate3d(0,0,0) scale(1)', // Hook drives this
             transformOrigin: 'center center',
           }}
         >
@@ -84,8 +84,7 @@ export default function Home() {
               position: 'absolute',
               inset: '-18px',
               borderRadius: '50%',
-              background: 'radial-gradient(circle, rgba(40,100,255,0.20) 0%, rgba(20,60,200,0.08) 50%, transparent 75%)',
-              filter: 'blur(20px)',
+              background: 'radial-gradient(circle, rgba(40,100,255,0.20) 0%, rgba(20,60,200,0.12) 40%, transparent 70%)',
               zIndex: 0,
             }}
           />
@@ -96,7 +95,7 @@ export default function Home() {
       </div>
 
       {/* ── Hero viewport (100vh spacer) ── */}
-      <div className="relative w-full z-10" style={{ height: '100vh' }}>
+      <div className="relative w-full z-10" style={{ height: '100svh' }}>
         {/* Layer 2: HUD reveal mask container */}
         <div
           ref={containerRef}

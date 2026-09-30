@@ -18,7 +18,7 @@ const FONT = 'var(--font-corpta), sans-serif';
 
 const pillBase: React.CSSProperties = {
   position: 'fixed',
-  top: '18px',
+  top: 'max(18px, env(safe-area-inset-top, 18px))',
   left: '50%',
   transform: 'translateX(-50%)',
   zIndex: 9999,
@@ -55,6 +55,7 @@ const pillBase: React.CSSProperties = {
   overflow: 'hidden',
   whiteSpace: 'nowrap',
   width: 'max-content',
+  maxWidth: 'min(92vw, 540px)', // Cap on mobile (92vw≈359px at 390px); invisible on desktop (expanded pill ~480px < 540px)
   contain: 'layout paint', // Isolates layout recalculations from the rest of the DOM
   willChange: 'width, transform',
 
@@ -163,7 +164,7 @@ export default function LiquidGlassNav() {
     const onPointerChange = (e: MediaQueryListEvent) => setIsPointerFine(e.matches);
     mqPointer.addEventListener('change', onPointerChange);
 
-    const mqMobile = window.matchMedia('(max-width: 768px)');
+    const mqMobile = window.matchMedia('(max-width: 1024px)');
     setIsMobile(mqMobile.matches);
     const onMobileChange = (e: MediaQueryListEvent) => setIsMobile(e.matches);
     mqMobile.addEventListener('change', onMobileChange);
@@ -282,6 +283,9 @@ export default function LiquidGlassNav() {
     display: isEffectivelyExpanded ? 'flex' : 'none',
     flexDirection: isMobile ? 'column' : 'row',
     height: isMobile ? 'auto' : '72px',
+    maxHeight: isMobile ? '80vh' : 'none',
+    overflowY: isMobile ? 'auto' : 'visible',
+    overflowX: 'hidden',
     padding: isMobile ? '32px 24px' : '0',
     minWidth: isMobile ? '260px' : 'auto',
   };
@@ -358,9 +362,17 @@ export default function LiquidGlassNav() {
               </span>
             </span>
             <span>SHUNYA</span>
+            {isMobile && !expanded && (
+               <svg style={{ marginLeft: '8px' }} width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7"></path></svg>
+            )}
           </span>
         ) : (
-          <span style={dynamicActiveLabelStyle}>{activeLabelText}</span>
+          <span style={{ ...dynamicActiveLabelStyle, display: 'flex', alignItems: 'center' }}>
+            {activeLabelText}
+            {isMobile && !expanded && (
+               <svg style={{ marginLeft: '8px' }} width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7"></path></svg>
+            )}
+          </span>
         )}
       </div>
 

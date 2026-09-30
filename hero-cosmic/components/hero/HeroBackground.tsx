@@ -3,6 +3,7 @@
 import React from 'react';
 import { useParallax } from '@/hooks/useParallax';
 import Image from 'next/image';
+import ScrambledText from '../about/ScrambledText';
 
 interface HeroBackgroundProps {
   hudRef?: React.RefObject<HTMLDivElement | null>;
@@ -11,11 +12,12 @@ interface HeroBackgroundProps {
 /**
  * HeroBackground — Cinematic Layered Depth System.
  *
- * z-index stack:
- *   z-2   Stars
- *   z-3   Nebula
- *   z-6   SHUNYA logo + taglines  ← ABOVE earth
- *   z-11  Vignette
+ * Performance contract:
+ * - Stars: two parallax layers, CSS custom props, no CSS animation (parallax IS the motion)
+ * - Nebula: ONE CSS animation (drift 30s), NO filter on the animated element
+ *   The filter is moved to a static parent so the GPU rasterizes once and reuses the texture.
+ * - All layers: will-change:transform only on elements that actually transform
+ * - HUD text container: contain:layout paint style per subtree so text paints don't trigger parent recomposite
  */
 export default function HeroBackground({ hudRef }: HeroBackgroundProps) {
   useParallax();
@@ -23,67 +25,87 @@ export default function HeroBackground({ hudRef }: HeroBackgroundProps) {
   return (
     <div
       className="fixed inset-0 bg-black overflow-hidden pointer-events-none"
-      style={{ perspective: '1200px' }}
     >
       <style>{`
-        @keyframes drift {
-          0%   { transform: scale(1.1) translate3d(0, 0, 0) rotate(0deg); }
-          50%  { transform: scale(1.15) translate3d(14px, -14px, 0) rotate(0.8deg); }
-          100% { transform: scale(1.1) translate3d(0, 0, 0) rotate(0deg); }
+        @keyframes nebula-drift {
+          0%   { transform: scale(1.08) translate3d(0, 0, 0); }
+          50%  { transform: scale(1.13) translate3d(10px, -10px, 0); }
+          100% { transform: scale(1.08) translate3d(0, 0, 0); }
         }
-        @keyframes breathe {
-          0%, 100% { opacity: 0.6; }
-          50%       { opacity: 0.85; }
+        .nebula-drift { animation: nebula-drift 35s ease-in-out infinite; will-change: transform; }
+
+        @keyframes logo-pulse {
+          0%, 100% { 
+            opacity: 0.88;
+            transform: scale(1);
+          }
+          50% { 
+            opacity: 1;
+            transform: scale(1.03);
+          }
         }
-        .animate-drift   { animation: drift   30s ease-in-out infinite; }
-        .animate-breathe { animation: breathe 16s ease-in-out infinite; }
+        /* Mobile: fixed large size, no pulse. Desktop: animate pulse */
+        .animate-logo-pulse { transform: scale(1.45); opacity: 1; }
+        @media (min-width: 1024px) {
+          .animate-logo-pulse { animation: logo-pulse 6s ease-in-out infinite; will-change: transform; transform: scale(1); }
+        }
       `}</style>
 
       {/* ── 1. Star field (z-2) — Dual Parallax Layers ── */}
+      {/*
+        contain:layout paint isolates these large oversized layers from the rest of the paint tree.
+        No CSS animations — parallax motion comes purely from JS writing --mouse-x/--mouse-y.
+      */}
       <div className="absolute inset-0 z-[2] pointer-events-none" style={{ contain: 'layout paint' }}>
-        {/* Layer 1: Deep stars (slower parallax) */}
+        {/* Layer 1: Deep stars — slow parallax */}
         <div aria-hidden style={{
-          position: 'absolute', inset: '-10%', zIndex: 0,
-          transform: `translate3d(calc(var(--mouse-x, 0) * 12px), calc(var(--mouse-y, 0) * 12px), 0)`,
+          position: 'absolute', inset: '-8%',
+          transform: `translate3d(calc(var(--mouse-x, 0) * 10px), calc(var(--mouse-y, 0) * 10px), 0)`,
           willChange: 'transform',
           pointerEvents: 'none',
           backgroundImage: 'url(/cosmic/stars_deep.png)',
           backgroundSize: 'cover', backgroundRepeat: 'no-repeat',
           backgroundPosition: 'center',
-          opacity: 0.15,
+          opacity: 0.18,
         }} />
-        
-        {/* Layer 2: Near stars (faster parallax) */}
+
+        {/* Layer 2: Near stars — faster parallax */}
         <div aria-hidden style={{
-          position: 'absolute', inset: '-8%', zIndex: 0,
-          transform: `translate3d(calc(var(--mouse-x, 0) * 24px), calc(var(--mouse-y, 0) * 24px), 0)`,
+          position: 'absolute', inset: '-6%',
+          transform: `translate3d(calc(var(--mouse-x, 0) * 20px), calc(var(--mouse-y, 0) * 20px), 0)`,
           willChange: 'transform',
           pointerEvents: 'none',
           backgroundImage: 'url(/cosmic/stars_cinematic.png)',
           backgroundSize: 'cover', backgroundRepeat: 'no-repeat',
           backgroundPosition: 'center',
           opacity: 0.12,
-          mixBlendMode: 'screen',
         }} />
       </div>
 
       {/* ── 2. Nebula (z-3) ── */}
+      {/*
+        PERF KEY: The filter (contrast/saturate/brightness) is on the STATIC outer div.
+        The GPU rasterizes + filters once and caches the result as a texture.
+        Only the inner div animates (nebula-drift), which the GPU can composite cheaply.
+        Previously the filter was on an animated element — forcing re-rasterization every frame.
+      */}
       <div
-        className="absolute inset-0 z-[3] mix-blend-screen"
-        style={{ 
-          transform: `translate3d(calc(var(--mouse-x, 0) * -50px), calc(var(--mouse-y, 0) * -50px), 0)`,
+        className="absolute inset-0 z-[3]"
+        style={{
+          transform: `translate3d(calc(var(--mouse-x, 0) * -40px), calc(var(--mouse-y, 0) * -40px), 0)`,
           willChange: 'transform',
-          contain: 'layout paint'
+          contain: 'layout paint',
         }}
       >
-        {/* The static filter wrapper prevents the GPU from re-rasterizing the filter on every frame of the drift animation */}
-        <div className="absolute inset-0" style={{ filter: 'contrast(1.5) saturate(1.2) brightness(0.8)' }}>
-          <div className="absolute inset-0 animate-drift" style={{ willChange: 'transform' }}>
+        {/* Static filter wrapper — GPU rasterizes once */}
+        <div className="absolute inset-0" style={{ filter: 'contrast(1.4) saturate(1.15) brightness(0.82)', contain: 'strict' }}>
+          {/* Only this inner div animates — GPU composites its cached texture */}
+          <div className="absolute inset-0 nebula-drift">
             <Image
               src="/cosmic/rich_green_nebula.png"
               alt="Nebula"
               fill
-              className="object-cover opacity-70 animate-breathe"
+              className="object-cover opacity-70"
               sizes="100vw"
               priority
             />
@@ -91,7 +113,7 @@ export default function HeroBackground({ hudRef }: HeroBackgroundProps) {
         </div>
       </div>
 
-      {/* ── Bottom-edge nebula fade — transitions hero bg into About's #00050d ── */}
+      {/* ── Bottom-edge nebula fade ── */}
       <div
         aria-hidden
         className="absolute bottom-0 left-0 right-0 z-[4] pointer-events-none"
@@ -101,24 +123,24 @@ export default function HeroBackground({ hudRef }: HeroBackgroundProps) {
         }}
       />
 
-      {/* ── 4. SHUNYA + Taglines (z-[40], above Earth) — fades on scroll ── */}
+      {/* ── 4. SHUNYA + Taglines (z-[40]) — fades on scroll ── */}
       {/*
-        hudRef is attached here. The parent component writes opacity/transform directly.
-        The parallax transform is handled separately via useParallax.
+        This layer has the global parallax on it. The 4 text subtrees inside each get
+        contain:layout paint style so text paints are isolated from each other and from
+        the parent. This prevents a single text repaint from triggering the whole layer.
       */}
       <div
         ref={hudRef}
         className="absolute inset-0 z-[40] pointer-events-none"
-        style={{ 
-          transform: `translate3d(calc(var(--mouse-x, 0) * -35px), calc(var(--mouse-y, 0) * -35px), 0)`,
+        style={{
+          transform: `translate3d(calc(var(--mouse-x, 0) * -30px), calc(var(--mouse-y, 0) * -30px), 0)`,
           willChange: 'transform',
-          contain: 'layout paint'
         }}
       >
         {/* ──── HUD DATA PANELS (4 Corners) ──── */}
-        
-        {/* Top Left: Origin Statement */}
-        <div className="hidden md:flex absolute top-[8vh] left-[5vw] flex-col pointer-events-none z-[15]">
+
+        {/* Top Left */}
+        <div className="hidden lg:flex absolute top-[8vh] left-[5vw] flex-col pointer-events-none z-[15]" style={{ contain: 'layout paint style' }}>
           <div className="flex items-center gap-3 mb-3 opacity-70">
             <svg width="10" height="10" viewBox="0 0 10 10" fill="none" className="animate-pulse"><rect width="3" height="3" fill="#60A5FA"/><rect y="7" width="3" height="3" fill="#60A5FA"/></svg>
             <span style={{ fontFamily: 'var(--font-corpta), sans-serif' }} className="text-[0.55rem] tracking-[0.4em] text-blue-300 uppercase">Archive // 01</span>
@@ -126,20 +148,17 @@ export default function HeroBackground({ hudRef }: HeroBackgroundProps) {
           <p className="max-w-[260px] pl-4 border-l border-blue-400/40"
              style={{
                fontFamily: 'var(--font-corpta), sans-serif',
-               fontSize: '0.65rem',
-               fontWeight: 600,
-               letterSpacing: '0.25em',
-               lineHeight: '1.8',
-               color: 'rgba(230,240,255,0.9)',
-               textTransform: 'uppercase',
+               fontSize: '0.65rem', fontWeight: 600,
+               letterSpacing: '0.25em', lineHeight: '1.8',
+               color: 'rgba(230,240,255,0.9)', textTransform: 'uppercase',
                textShadow: '0 0 12px rgba(96, 165, 250, 0.4)'
              }}>
             For decades, we built machines to master nature.
           </p>
         </div>
 
-        {/* Top Right: Apex Query */}
-        <div className="hidden md:flex absolute top-[8vh] right-[5vw] flex-col items-end pointer-events-none z-[15]">
+        {/* Top Right */}
+        <div className="hidden lg:flex absolute top-[8vh] right-[5vw] flex-col items-end pointer-events-none z-[15]" style={{ contain: 'layout paint style' }}>
           <div className="flex items-center gap-3 mb-3 opacity-70">
             <span style={{ fontFamily: 'var(--font-corpta), sans-serif' }} className="text-[0.55rem] tracking-[0.4em] text-blue-300 uppercase">Query // 99</span>
             <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="2" fill="#60A5FA"/><circle cx="5" cy="5" r="4.5" stroke="#60A5FA" strokeWidth="1"/></svg>
@@ -147,12 +166,9 @@ export default function HeroBackground({ hudRef }: HeroBackgroundProps) {
           <p className="max-w-[260px] pr-4 border-r border-blue-400/40 text-right"
              style={{
                fontFamily: 'var(--font-corpta), sans-serif',
-               fontSize: '0.65rem',
-               fontWeight: 600,
-               letterSpacing: '0.25em',
-               lineHeight: '1.8',
-               color: 'rgba(230,240,255,0.9)',
-               textTransform: 'uppercase',
+               fontSize: '0.65rem', fontWeight: 600,
+               letterSpacing: '0.25em', lineHeight: '1.8',
+               color: 'rgba(230,240,255,0.9)', textTransform: 'uppercase',
                textShadow: '0 0 12px rgba(96, 165, 250, 0.4)'
              }}>
             Is technology the apex predator?
@@ -160,35 +176,39 @@ export default function HeroBackground({ hudRef }: HeroBackgroundProps) {
         </div>
 
         {/* SHUNYA Logo */}
-        <div
-          className="absolute left-1/2 -translate-x-1/2 w-full h-[150px] md:h-[clamp(200px,35vw,550px)] scale-[1.25] md:scale-100 origin-center"
-          style={{
-            top: '5vh',
-            filter: 'brightness(0) invert(1) drop-shadow(0 0 18px rgba(255,255,255,0.35)) drop-shadow(0 0 50px rgba(100,180,255,0.18))',
-            clipPath: 'polygon(0 0, 100% 0, 100% 88%, 0 88%)',
-          }}
-        >
-          <Image
-            src="/cosmic/shunya-logo.png"
-            alt="SHUNYA"
-            fill
-            className="object-contain object-center"
-            sizes="(max-width: 768px) 100vw, 50vw"
-            priority
-          />
+        <div className="absolute w-full left-1/2 -translate-x-1/2 top-[9vh] lg:top-[5vh] z-[20] pointer-events-none flex justify-center">
+          {/* Static filter wrapper — GPU composites this once, not per animation frame */}
+          <div
+            style={{
+              filter: 'brightness(0) invert(1) drop-shadow(0 0 22px rgba(120,180,255,0.8)) drop-shadow(0 0 60px rgba(59,130,246,0.45))',
+            }}
+          >
+            <div
+              className="relative w-[95vw] lg:w-[80vw] max-w-[1400px] h-[150px] lg:h-[clamp(200px,35vw,550px)] origin-center animate-logo-pulse"
+              style={{
+                clipPath: 'polygon(0 0, 100% 0, 100% 88%, 0 88%)',
+              }}
+            >
+              <Image
+                src="/cosmic/shunya-logo.png"
+                alt="SHUNYA"
+                fill
+                className="object-contain object-center"
+                sizes="(max-width: 1024px) 95vw, 80vw"
+                priority
+              />
+            </div>
+          </div>
         </div>
 
-        {/* Bottom Left: Core Values */}
-        <div className="hidden md:flex absolute bottom-[8vh] left-[5vw] flex-col pointer-events-none z-[15]">
+        {/* Bottom Left */}
+        <div className="hidden lg:flex absolute bottom-[8vh] left-[5vw] flex-col pointer-events-none z-[15]" style={{ contain: 'layout paint style' }}>
           <p className="max-w-[280px] pl-4 border-l border-blue-400/40"
              style={{
                fontFamily: 'var(--font-corpta), sans-serif',
-               fontSize: '0.65rem',
-               fontWeight: 600,
-               letterSpacing: '0.35em',
-               lineHeight: '2',
-               color: 'rgba(230,240,255,0.9)',
-               textTransform: 'uppercase',
+               fontSize: '0.65rem', fontWeight: 600,
+               letterSpacing: '0.35em', lineHeight: '2',
+               color: 'rgba(230,240,255,0.9)', textTransform: 'uppercase',
                textShadow: '0 0 12px rgba(96, 165, 250, 0.4)'
              }}>
             Logic <br/>
@@ -201,17 +221,14 @@ export default function HeroBackground({ hudRef }: HeroBackgroundProps) {
           </div>
         </div>
 
-        {/* Bottom Right: Convergence Statement */}
-        <div className="hidden md:flex absolute bottom-[8vh] right-[5vw] flex-col items-end pointer-events-none z-[15]">
+        {/* Bottom Right */}
+        <div className="hidden lg:flex absolute bottom-[8vh] right-[5vw] flex-col items-end pointer-events-none z-[15]" style={{ contain: 'layout paint style' }}>
           <p className="max-w-[340px] pr-4 border-r border-blue-400/40 text-right"
              style={{
                fontFamily: 'var(--font-corpta), sans-serif',
-               fontSize: '0.6rem',
-               fontWeight: 500,
-               letterSpacing: '0.2em',
-               lineHeight: '2',
-               color: 'rgba(180,210,255,0.85)',
-               textTransform: 'uppercase',
+               fontSize: '0.6rem', fontWeight: 500,
+               letterSpacing: '0.2em', lineHeight: '2',
+               color: 'rgba(180,210,255,0.85)', textTransform: 'uppercase',
                textShadow: '0 0 12px rgba(96, 165, 250, 0.3)'
              }}>
             Now, at the edge of intelligence, we realize the ultimate technology isn&apos;t silicon—it&apos;s the ecosystem itself. Welcome to the convergence.
@@ -222,85 +239,64 @@ export default function HeroBackground({ hudRef }: HeroBackgroundProps) {
           </div>
         </div>
 
-        {/* ──── MOBILE HUD LAYOUT ──── */}
-        
-        {/* Mobile Center Data Block (below logo) */}
-        <div className="flex md:hidden absolute top-[28vh] left-[6vw] right-[6vw] flex-col items-center justify-center z-[15] pointer-events-none text-center">
+        {/* ──── MOBILE HUD LAYOUT (Asymmetric Art Direction) ──── */}
+        <div className="flex lg:hidden absolute top-[32vh] left-[6vw] right-[6vw] flex-col gap-[5vh] z-[15] pointer-events-none" style={{ contain: 'layout paint style' }}>
           
-          {/* Top Label */}
-          <div className="flex items-center justify-center gap-3 mb-5 opacity-90">
-            <div className="w-10 h-[1px] bg-blue-400/40"></div>
-            <svg width="8" height="8" viewBox="0 0 10 10" fill="none" className="animate-pulse"><rect width="3" height="3" fill="#60A5FA"/><rect y="7" width="3" height="3" fill="#60A5FA"/></svg>
-            <span style={{ fontFamily: 'var(--font-corpta), sans-serif' }} className="text-[0.55rem] tracking-[0.3em] text-blue-300 uppercase">Archive // 01</span>
-            <div className="w-10 h-[1px] bg-blue-400/40"></div>
-          </div>
-
-          {/* Heading */}
-          <p className="max-w-[320px]" style={{
-               fontFamily: 'var(--font-corpta), sans-serif',
-               fontSize: '0.85rem',
-               fontWeight: 500,
-               letterSpacing: '0.25em',
-               lineHeight: '1.8',
-               color: 'rgba(230,240,255,0.95)',
-               textTransform: 'uppercase',
-               textShadow: '0 0 10px rgba(96, 165, 250, 0.3)'
-             }}>
-            For decades, we built machines<br/>to master nature.
-          </p>
-          
-          {/* Spacer / Divider */}
-          <div className="flex items-center justify-center my-6 opacity-60">
-             <div className="w-1 h-[1px] bg-blue-400"></div>
-             <div className="w-12 h-[1px] bg-blue-400/30 mx-1"></div>
-             <div className="w-1 h-[1px] bg-blue-400"></div>
-          </div>
-
-          {/* Body */}
-          <p className="max-w-[280px]"
-             style={{
-               fontFamily: 'var(--font-corpta), sans-serif',
-               fontSize: '0.65rem',
-               fontWeight: 400,
-               letterSpacing: '0.2em',
-               lineHeight: '2',
-               color: 'rgba(160,200,255,0.7)',
-               textTransform: 'uppercase',
-             }}>
-            Now, we realize the ultimate technology is the ecosystem itself.<br/><br/>
-            <span style={{ color: 'rgba(200,220,255,0.9)', fontWeight: 600 }}>Welcome to the convergence.</span>
-          </p>
-        </div>
-
-        {/* Mobile Bottom Status Bar */}
-        <div className="flex md:hidden absolute bottom-[4vh] left-0 right-0 justify-center items-end z-[15] pointer-events-none pb-2">
-          
-          <div className="flex items-end justify-between w-[85vw] border-b border-blue-400/30 pb-3 relative">
-            {/* Left corner accent */}
-            <div className="absolute -bottom-[1px] left-0 w-3 h-[2px] bg-blue-400/80"></div>
-            {/* Right corner accent */}
-            <div className="absolute -bottom-[1px] right-0 w-3 h-[2px] bg-blue-400/80"></div>
-
-            <div className="flex flex-col text-left">
-              <span style={{ fontFamily: 'var(--font-corpta), sans-serif' }} className="text-[0.55rem] tracking-[0.3em] text-blue-400/80 uppercase mb-1">Status</span>
-              <span style={{ fontFamily: 'var(--font-corpta), sans-serif', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.2em', color: 'rgba(230,240,255,0.95)', textShadow: '0 0 10px rgba(96,165,250,0.5)', textTransform: 'uppercase' }}>
-                Convergence
-              </span>
+          {/* Mid-Left Panel */}
+          <div className="flex flex-col items-start text-left w-full">
+            <div className="flex items-center gap-3 mb-3 opacity-90">
+              <svg width="8" height="8" viewBox="0 0 10 10" fill="none" className="animate-pulse"><rect width="3" height="3" fill="#60A5FA"/><rect y="7" width="3" height="3" fill="#60A5FA"/></svg>
+              <ScrambledText style={{ fontFamily: 'var(--font-corpta), sans-serif' }} className="text-[0.55rem] tracking-[0.3em] text-blue-300 uppercase">Archive // 01</ScrambledText>
+              <div className="w-12 h-[1px] bg-blue-400/40"></div>
             </div>
-            
-            <div className="flex flex-col text-right">
-              <span style={{ fontFamily: 'var(--font-corpta), sans-serif' }} className="text-[0.55rem] tracking-[0.3em] text-blue-400/80 uppercase mb-1">Parameters</span>
-              <span style={{ fontFamily: 'var(--font-corpta), sans-serif', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.2em', color: 'rgba(230,240,255,0.95)', textShadow: '0 0 10px rgba(96,165,250,0.5)', textTransform: 'uppercase' }}>
-                Logic · Life
-              </span>
+            <ScrambledText className="max-w-[280px] pl-4 border-l border-blue-400/30" style={{
+                 fontFamily: 'var(--font-corpta), sans-serif',
+                 fontSize: '0.8rem', fontWeight: 500,
+                 letterSpacing: '0.2em', lineHeight: '1.7',
+                 color: 'rgba(230,240,255,0.95)', textTransform: 'uppercase',
+                 textShadow: '0 0 10px rgba(96, 165, 250, 0.3)'
+               }}>
+              For decades, we built machines to master nature.
+            </ScrambledText>
+          </div>
+
+          {/* Bottom-Right Panel (Next to Earth) */}
+          <div className="flex flex-col items-end text-right w-full self-end">
+            <div className="flex items-center gap-3 mb-3 opacity-90 justify-end w-full">
+              <div className="w-12 h-[1px] bg-blue-400/40"></div>
+              <ScrambledText style={{ fontFamily: 'var(--font-corpta), sans-serif' }} className="text-[0.55rem] tracking-[0.3em] text-blue-300 uppercase">Conclusion</ScrambledText>
+              <svg width="8" height="8" viewBox="0 0 10 10" fill="none" className="animate-pulse"><rect width="3" height="3" fill="#60A5FA"/><rect y="7" width="3" height="3" fill="#60A5FA"/></svg>
+            </div>
+            <div className="max-w-[280px] pr-4 border-r border-blue-400/30">
+              <ScrambledText style={{
+                   fontFamily: 'var(--font-corpta), sans-serif',
+                   fontSize: '0.7rem', fontWeight: 400,
+                   letterSpacing: '0.2em', lineHeight: '1.8',
+                   color: 'rgba(180,210,255,0.85)', textTransform: 'uppercase',
+                   textShadow: '0 0 12px rgba(96, 165, 250, 0.3)',
+                   marginBottom: '1rem'
+                 }}>
+                Now, we realize the ultimate technology is the ecosystem itself.
+              </ScrambledText>
+              <ScrambledText style={{
+                   fontFamily: 'var(--font-corpta), sans-serif',
+                   fontSize: '0.7rem', fontWeight: 600,
+                   letterSpacing: '0.2em', lineHeight: '1.8',
+                   color: 'rgba(230,240,255,0.95)', textTransform: 'uppercase',
+                   textShadow: '0 0 12px rgba(96, 165, 250, 0.3)'
+                 }}>
+                Welcome to the convergence.
+              </ScrambledText>
             </div>
           </div>
 
         </div>
+
+        {/* Mobile Bottom Status Bar Removed to prevent overlap with Earth */}
 
       </div>
 
-      {/* ── Vignette (z-11, always on top) ── */}
+      {/* ── Vignette (z-11) ── */}
       <div
         className="absolute inset-0 z-[11] pointer-events-none"
         style={{

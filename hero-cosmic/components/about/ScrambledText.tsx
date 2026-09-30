@@ -25,80 +25,52 @@ const ScrambledText: React.FC<ScrambledTextProps> = ({
   const rootRef = useRef<HTMLDivElement>(null);
   const charsRef = useRef<HTMLElement[]>([]);
   // eslint-disable-next-line react-hooks/refs
-  charsRef.current = []; // Clear refs on render
+  charsRef.current = [];
 
   useEffect(() => {
     if (!rootRef.current) return;
 
-    // Cache char positions
     let charPositions: { x: number; y: number }[] = [];
-    
-    const updatePositions = () => {
-      charPositions = charsRef.current.map((c) => {
-        return {
-          x: c.offsetLeft + c.offsetWidth / 2,
-          y: c.offsetTop + c.offsetHeight / 2
-        };
-      });
-    };
-    
-    // Slight delay to ensure layout is done before capturing positions
-    const timeout = setTimeout(updatePositions, 100);
-    window.addEventListener('resize', updatePositions);
 
-    // ── Premium Typewriter Intro Animation ──
+    const updatePositions = () => {
+      charPositions = charsRef.current.map((c) => ({
+        x: c.offsetLeft + c.offsetWidth / 2,
+        y: c.offsetTop + c.offsetHeight / 2,
+      }));
+    };
+
+    const timeout = setTimeout(updatePositions, 100);
+    window.addEventListener('resize', updatePositions, { passive: true });
+
+    // ── Typewriter intro ──
     let hasAnimated = false;
+    let introTl: gsap.core.Timeline | null = null;
     gsap.set(charsRef.current, { opacity: 0 });
 
     const observer = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting && !hasAnimated) {
-        hasAnimated = true;
-        observer.disconnect();
-
-        // ── Pure Typewriter Intro Animation ──
-        const tl = gsap.timeline();
-        
-        let cumulativeDelay = 0;
-        
-        charsRef.current.forEach((c) => {
-          // Base speed ~5ms, with random variation up to +10ms for fast organic human typing rhythm
-          const randomDelay = 0.005 + Math.random() * 0.01;
-          cumulativeDelay += randomDelay;
+      const entry = entries[0];
+      if (entry.isIntersecting) {
+        if (!hasAnimated) {
+          hasAnimated = true;
           
-          // Instant snap to visible (true typewriter)
-          tl.set(c, { opacity: 1 }, cumulativeDelay);
-        });
-      }
-    }, { threshold: 0.25 });
+          if (introTl) introTl.kill();
+          introTl = gsap.timeline();
 
-    observer.observe(rootRef.current);
+          let cumulativeDelay = 0;
 
-    const handleMove = (e: PointerEvent) => {
-      if (!rootRef.current) return;
-      const rect = rootRef.current.getBoundingClientRect();
-      const mouseX = e.clientX - rect.left;
-      const mouseY = e.clientY - rect.top;
-
-      charsRef.current.forEach((c, i) => {
-        const pos = charPositions[i];
-        if (!pos) return;
-
-        const dx = mouseX - pos.x;
-        const dy = mouseY - pos.y;
-        const dist = Math.hypot(dx, dy);
-
-        if (dist < radius) {
-          if (!gsap.isTweening(c)) {
+          charsRef.current.forEach((c) => {
             const original = c.dataset.content || '';
-            const proxy = { p: 0 };
-            const animDuration = Math.max(0.1, duration * (1 - dist / radius));
+            const randomDelay = 0.005 + Math.random() * 0.01;
+            cumulativeDelay += randomDelay;
             
-            gsap.to(proxy, {
+            const proxy = { p: 0 };
+            introTl!.to(proxy, {
               p: 1,
-              duration: animDuration,
+              duration: 0.4 + Math.random() * 0.2, // short glitch burst
               ease: 'none',
+              onStart: () => { c.style.opacity = '1'; },
               onUpdate: () => {
-                if (proxy.p < 0.9) {
+                if (proxy.p < 0.8) {
                   if (Math.random() > speed) {
                     c.innerHTML = scrambleChars[Math.floor(Math.random() * scrambleChars.length)];
                   }
@@ -106,18 +78,82 @@ const ScrambledText: React.FC<ScrambledTextProps> = ({
                   c.innerHTML = original;
                 }
               },
-              onComplete: () => {
+              onComplete: () => { c.innerHTML = original; }
+            }, cumulativeDelay);
+          });
+        }
+      } else {
+        // Reset when it leaves the screen so it glitches again when viewed!
+        hasAnimated = false;
+        if (introTl) {
+          introTl.kill();
+          introTl = null;
+        }
+        gsap.set(charsRef.current, { opacity: 0 });
+        charsRef.current.forEach((c) => { c.innerHTML = c.dataset.content || ''; });
+      }
+    }, { threshold: 0.1 }); // Lower threshold so it triggers earlier and resets safely
+
+    observer.observe(rootRef.current);
+
+    // ── Hover scramble — rAF-gated to prevent per-pointermove thrashing ──
+    // PERF FIX: was running a full O(n) loop on EVERY pointermove event (no throttle).
+    // Now gated by rAF: we record the latest pointer coords and only process them
+    // on the next animation frame — collapses rapid fire events to at most 60/s.
+    let rafScheduled = false;
+    let latestMouseX = 0;
+    let latestMouseY = 0;
+
+    const processMove = () => {
+      rafScheduled = false;
+      if (!rootRef.current) return;
+
+      charsRef.current.forEach((c, i) => {
+        const pos = charPositions[i];
+        if (!pos) return;
+
+        const dx = latestMouseX - pos.x;
+        const dy = latestMouseY - pos.y;
+        const dist = Math.hypot(dx, dy);
+
+        if (dist < radius && !gsap.isTweening(c)) {
+          const original = c.dataset.content || '';
+          const proxy = { p: 0 };
+          const animDuration = Math.max(0.1, duration * (1 - dist / radius));
+
+          gsap.to(proxy, {
+            p: 1,
+            duration: animDuration,
+            ease: 'none',
+            onUpdate: () => {
+              if (proxy.p < 0.9) {
+                if (Math.random() > speed) {
+                  c.innerHTML = scrambleChars[Math.floor(Math.random() * scrambleChars.length)];
+                }
+              } else {
                 c.innerHTML = original;
               }
-            });
-            gsap.to(c, { duration: animDuration });
-          }
+            },
+            onComplete: () => { c.innerHTML = original; },
+          });
         }
       });
     };
 
+    const handleMove = (e: PointerEvent) => {
+      if (!rootRef.current) return;
+      const rect = rootRef.current.getBoundingClientRect();
+      latestMouseX = e.clientX - rect.left;
+      latestMouseY = e.clientY - rect.top;
+
+      if (!rafScheduled) {
+        rafScheduled = true;
+        requestAnimationFrame(processMove);
+      }
+    };
+
     const el = rootRef.current;
-    el.addEventListener('pointermove', handleMove);
+    el.addEventListener('pointermove', handleMove, { passive: true });
 
     return () => {
       clearTimeout(timeout);
@@ -133,11 +169,14 @@ const ScrambledText: React.FC<ScrambledTextProps> = ({
 
   return (
     <>
+      {/*
+        PERF FIX: Removed `will-change: transform` from .scramble-char.
+        The chars only change opacity + innerHTML — will-change:transform was
+        promoting ~600 compositor layers for ZERO benefit, exhausting GPU memory.
+        display:inline-block is kept for layout correctness.
+      */}
       <style dangerouslySetInnerHTML={{ __html: `
-        .scramble-char {
-          will-change: transform;
-          display: inline-block;
-        }
+        .scramble-char { display: inline-block; }
       `}} />
       <div ref={rootRef} className={`text-block ${className}`} style={{ position: 'relative', ...style }}>
         <p style={{ margin: 0 }}>

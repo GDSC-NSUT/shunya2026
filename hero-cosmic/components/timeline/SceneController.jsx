@@ -107,7 +107,7 @@ export default function SceneController() {
     if (el) {
       cardsRef.current[index] = el;
       if (!el._hoverState) {
-        el._hoverState = { zOffset: 0, scaleOffset: 0, rotateX: 0, rotateY: 0 };
+        el._hoverState = { zOffset: 0, scaleOffset: 0, rotateX: 0, rotateY: 0, yOffset: 0, xOffset: 0 };
       }
     }
   }, []);
@@ -115,11 +115,16 @@ export default function SceneController() {
   const handleMouseEnter = useCallback((index) => {
     const cardEl = cardsRef.current[index];
     if (!cardEl || activeDetail) return;
+    
     gsap.to(cardEl._hoverState, {
-      zOffset: 150,       // Pop out towards the camera
-      scaleOffset: 0.15,  // Slight scale bump
+      zOffset: 180,       // Stronger pop out towards the camera
+      yOffset: 0,         // Keep centered
+      xOffset: 0,         // Keep centered
+      scaleOffset: 0.18,  // Enlarge slightly more
+      rotateX: 0,
+      rotateY: 0,
       duration: 0.8,
-      ease: "elastic.out(1, 0.4)", // "Bouncy" feel
+      ease: "elastic.out(1, 0.4)", // Restore the premium bouncy pop
       overwrite: "auto"
     });
   }, [activeDetail]);
@@ -129,11 +134,13 @@ export default function SceneController() {
     if (!cardEl || activeDetail) return;
     gsap.to(cardEl._hoverState, {
       zOffset: 0,
+      yOffset: 0,
+      xOffset: 0,
       scaleOffset: 0,
       rotateX: 0,
       rotateY: 0,
       duration: 0.6,
-      ease: "elastic.out(1, 0.5)", // Tighter recoil bounce
+      ease: "elastic.out(1, 0.5)", // Restore the snappy bouncy recoil
       overwrite: "auto"
     });
   }, [activeDetail]);
@@ -331,12 +338,17 @@ export default function SceneController() {
             clearTimeout(inputTimeout);
             inputTimeout = setTimeout(() => { e.isInputActive = false; }, 150);
 
-            // Normalize large scroll deltas — balanced cap for clear but not jumpy response
+            // Normalize large scroll deltas.
+            // Touch multiplier: 1.8 (was 2.5). The old value combined with
+            // INPUT_SCALE meant a short swipe immediately saturated V_MAX,
+            // creating a hard friction wall and the "snap-back" jerk feeling.
             let raw = self.deltaY;
             if (self.event && self.event.type.includes("touch")) {
-              raw *= 2.5; // Touch multiplier to fix sticky swipe feel on mobile
+              raw *= 1.8;
             }
-            const capped = raw > 40 ? 40 : raw < -40 ? -40 : raw;
+            // Tighter cap: 30 (was 40). Prevents large burst inputs from
+            // overwhelming the physics spring on a single frame.
+            const capped = raw > 30 ? 30 : raw < -30 ? -30 : raw;
             e.velocity += capped * INPUT_SCALE;
           },
         });
@@ -468,18 +480,25 @@ export default function SceneController() {
             );
 
             // Merge base state + local hover state
-            const hover = card._hoverState || { zOffset: 0, scaleOffset: 0, rotateX: 0, rotateY: 0 };
+            const hover = card._hoverState || { zOffset: 0, scaleOffset: 0, rotateX: 0, rotateY: 0, yOffset: 0, xOffset: 0 };
             
             let finalScale = state.scale + hover.scaleOffset;
             let finalRotateX = (state.rotateX || 0) + hover.rotateX;
             let finalRotateY = state.rotateY + hover.rotateY;
-            // The z index needs to be a flat number for z-index, but we can also add actual Z translation
             let finalZOffset = hover.zOffset;
+            let finalYOffset = hover.yOffset || 0;
+            let finalXOffset = hover.xOffset || 0;
+
+            // Strictly respect the physical Z-index of the stack.
+            // By NOT artificially boosting the z-index on hover, the background cards 
+            // will physically slide out from *behind* the front cards like a real 
+            // stack of physical cards, instead of magically phasing through them.
+            let finalZIndex = state.z;
 
             // ── Final Transform (Local Perspective) ──────────────────
             card.style.transform =
-              "translate3d(" + state.x + "px," + state.y + "px," + finalZOffset + "px) perspective(1200px) scale(" + finalScale + ") rotateX(" + finalRotateX + "deg) rotateY(" + finalRotateY + "deg)";
-            card.style.zIndex = state.z;
+              "translate3d(" + (state.x + finalXOffset) + "px," + (state.y + finalYOffset) + "px," + finalZOffset + "px) perspective(1200px) scale(" + finalScale + ") rotateX(" + finalRotateX + "deg) rotateY(" + finalRotateY + "deg)";
+            card.style.zIndex = finalZIndex;
             
             // Performance: Removed expensive card.style.filter = brightness() re-calculation.
             // Opacity and 3D perspective alone provide excellent depth cues with zero CPU overhead.
@@ -492,10 +511,14 @@ export default function SceneController() {
               card.style.visibility = state.visibility;
             }
 
-            // ── Focal state change guard (prevent DOM thrashing) ─────
-            if (card._wasFocal !== state.focal) {
+            // Focal state change guard (prevent DOM thrashing)
+            if (!eng.isFrozen && card._wasFocal !== state.focal) {
               card.tabIndex = state.focal ? 0 : -1;
-              card.setAttribute("aria-hidden", state.focal ? "false" : "true");
+              if (state.focal) {
+                card.removeAttribute('aria-hidden');
+              } else {
+                card.setAttribute('aria-hidden', 'true');
+              }
               card._wasFocal = state.focal;
             }
           }

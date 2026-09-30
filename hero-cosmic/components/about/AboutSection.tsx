@@ -64,7 +64,6 @@ export default function AboutSection() {
         backgroundSize: 'cover', backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
         opacity: 0.15,   // increased to make stars more evident
-        mixBlendMode: 'screen',
       }} />
 
       {/* Top crossfade to blend with Hero */}
@@ -87,59 +86,48 @@ export default function AboutSection() {
       */}
       {isMobile && (
         <div style={{ position: 'relative', zIndex: 10 }}>
-
-          {/* Zone 1: 65vh spacer — Earth animates into this zone from the bottom */}
+          {/* Unified Mobile Layout */}
           <div style={{
-            height: '65vh',
             display: 'flex',
             flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'flex-start',
-            paddingTop: '28px',
+            justifyContent: 'center',
+            paddingTop: '8vh',
+            paddingBottom: '8vh',
+            minHeight: '100svh',
+            paddingLeft: '24px',
+            paddingRight: '24px',
           }}>
             {/* Section label */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6vh' }}>
               <svg width="7" height="7" viewBox="0 0 10 10" fill="none" aria-hidden>
                 <rect width="3" height="3" fill="#60A5FA" className="animate-pulse"/>
                 <rect y="7" width="3" height="3" fill="#60A5FA"/>
               </svg>
-              <span style={{ fontFamily: FONT, fontSize: '0.47rem', letterSpacing: '0.5em', color: 'rgba(96,165,250,0.7)', textTransform: 'uppercase' }}>
+              <span style={{ fontFamily: FONT, fontSize: '0.6rem', letterSpacing: '0.4em', color: 'rgba(96,165,250,0.7)', textTransform: 'uppercase' }}>
                 Section // 02
               </span>
-              <div style={{ width: '44px', height: '1px', background: 'rgba(96,165,250,0.18)' }} />
+              <div style={{ flex: 1, height: '1px', background: 'rgba(96,165,250,0.18)' }} />
             </div>
 
-            {/* Vertical connector from zone 1 into zone 2 */}
-            <div style={{
-              flex: 1,
-              width: '1px',
-              marginTop: '20px',
-              background: 'linear-gradient(to bottom, rgba(96,165,250,0.4), transparent)',
-            }} />
-          </div>
-
-          {/* Zone 2: Text content */}
-          <div style={{ padding: '0 28px 52px 28px', display: 'flex', flexDirection: 'column' }}>
-
             {/* Heading */}
-            <div style={{ marginBottom: '20px', position: 'relative', paddingLeft: '16px' }}>
+            <div style={{ marginBottom: '24px', position: 'relative', paddingLeft: '16px' }}>
               <div style={{
                 position: 'absolute', left: 0, top: 0, bottom: 0, width: '1px',
                 background: 'linear-gradient(to bottom, rgba(96,165,250,0.6), transparent)',
               }}/>
-              <div style={{
-                fontFamily: FONT, fontSize: 'clamp(2rem, 8vw, 2.5rem)',
+              <ScrambledText style={{
+                fontFamily: FONT, fontSize: 'clamp(2.5rem, 12vw, 3.5rem)',
                 fontWeight: 700, letterSpacing: '0.05em', lineHeight: 0.95,
                 textTransform: 'uppercase', color: 'rgba(230,240,255,0.95)',
                 textShadow: '0 0 60px rgba(96,165,250,0.12)', userSelect: 'none',
-              }}>About</div>
-              <div style={{
-                fontFamily: FONT, fontSize: 'clamp(2rem, 8vw, 2.5rem)',
+              }}>About</ScrambledText>
+              <ScrambledText style={{
+                fontFamily: FONT, fontSize: 'clamp(2.5rem, 12vw, 3.5rem)',
                 fontWeight: 700, letterSpacing: '0.05em', lineHeight: 1.05,
                 textTransform: 'uppercase', color: '#ffffff',
                 textShadow: '0 0 40px rgba(96,165,250,0.4), 0 0 90px rgba(96,165,250,0.15)',
                 userSelect: 'none',
-              }}>Shunya</div>
+              }}>Shunya</ScrambledText>
               <div style={{
                 marginTop: '14px', height: '1px', width: '65%',
                 background: 'linear-gradient(to right, rgba(96,165,250,0.5) 0%, rgba(96,165,250,0.05) 80%, transparent 100%)',
@@ -154,9 +142,9 @@ export default function AboutSection() {
               scrambleChars=".:"
               style={{
                 fontFamily: FONT,
-                fontWeight: 300, fontSize: '0.62rem', letterSpacing: '0.06em',
-                lineHeight: '2.0', color: 'rgba(220,232,255,0.70)',
-                textTransform: 'uppercase', marginBottom: '28px',
+                fontWeight: 300, fontSize: '13px', letterSpacing: '0.06em',
+                lineHeight: '2.0', color: 'rgba(220,232,255,0.75)',
+                textTransform: 'uppercase', marginBottom: '32px',
               }}
             >
               {BODY_TEXT}
@@ -165,7 +153,7 @@ export default function AboutSection() {
             {/* HUD metadata */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
               <div style={{ width: '20px', height: '1px', background: 'rgba(96,165,250,0.4)' }}/>
-              <span style={{ fontFamily: FONT, fontSize: '0.42rem', letterSpacing: '0.45em', color: 'rgba(96,165,250,0.45)', textTransform: 'uppercase' }}>
+              <span style={{ fontFamily: FONT, fontSize: '0.6rem', letterSpacing: '0.35em', color: 'rgba(96,165,250,0.45)', textTransform: 'uppercase' }}>
                 GDG NSUT · Est. 2026
               </span>
               <div style={{ flex: 1, height: '1px', background: 'linear-gradient(to right, rgba(96,165,250,0.15), transparent)' }}/>
@@ -207,19 +195,19 @@ export default function AboutSection() {
                 position: 'absolute', left: '-20px', top: 0, bottom: 0, width: '1px',
                 background: 'linear-gradient(to bottom, rgba(96,165,250,0.6), transparent)',
               }}/>
-              <div style={{
+              <ScrambledText style={{
                 fontFamily: FONT, fontSize: 'clamp(3rem, 5.5vw, 5rem)',
                 fontWeight: 700, letterSpacing: '0.05em', lineHeight: 0.95,
                 textTransform: 'uppercase', color: 'rgba(230,240,255,0.95)',
                 textShadow: '0 0 60px rgba(96,165,250,0.12)', userSelect: 'none',
-              }}>About</div>
-              <div style={{
+              }}>About</ScrambledText>
+              <ScrambledText style={{
                 fontFamily: FONT, fontSize: 'clamp(3rem, 5.5vw, 5rem)',
                 fontWeight: 700, letterSpacing: '0.05em', lineHeight: 1.05,
                 textTransform: 'uppercase', color: '#ffffff',
                 textShadow: '0 0 40px rgba(96,165,250,0.4), 0 0 90px rgba(96,165,250,0.15)',
                 userSelect: 'none',
-              }}>Shunya</div>
+              }}>Shunya</ScrambledText>
               <div style={{
                 marginTop: '16px', height: '1px', width: '80%',
                 background: 'linear-gradient(to right, rgba(96,165,250,0.5) 0%, rgba(96,165,250,0.05) 80%, transparent 100%)',

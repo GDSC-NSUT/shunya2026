@@ -16,31 +16,54 @@ export const DATA_SIZE = 6;
 export const HALF_NODES = TOTAL_NODES >> 1; // 9
 
 // ─── Velocity Physics ──────────────────────────────────────────────────────
-export const V_FRICTION = 0.95;      // Smoother deceleration curve (more glide)
-export const V_MAX = 0.08;           // Sped up to ~4.8 cards per second
-export const V_REST = 0.0001;        // Snap to zero at this micro-velocity
-export const INPUT_SCALE = 0.0003;   // Slightly more sensitive for a faster ramp-up
+// V_FRICTION: higher = glides longer. Increased to 0.96 for a fluid, natural coast.
+export const V_FRICTION = 0.96;
+
+// V_MAX: raised to 0.12 for snappier peak speed.
+export const V_MAX = 0.12;
+
+// V_REST: velocity below which we zero out (prevents micro-oscillation).
+export const V_REST = 0.0002;
+
+// INPUT_SCALE: increased to 0.0004 so even small scrolls move the timeline fluidly.
+export const INPUT_SCALE = 0.0004;
 
 // ─── Wave Physics (Kinetic Amplitude Envelope) ─────────────────────────────
-export const WAVE_FREQUENCY = 0.55;  // Decreased (ω) to drastically increase the wavelength
-export const WAVE_AMP_SCALAR = 1200; // Halved to reduce vertical movement (amplitude)
-export const WAVE_AMP_MAX = 200;     // Halved to cap the maximum vertical deviation
-export const WAVE_AMP_SPRING = 0.4;  // Highly responsive spring: reacts instantly to your real-time scroll speed
-export const WAVE_PHASE_SPEED = 0.5; // How fast the phase shifts with progress
+export const WAVE_FREQUENCY = 0.50;  // Slightly lower = longer wavelength = more graceful
+
+// WAVE_AMP_SCALAR: controls how large the wave grows relative to scroll velocity.
+// Restored to 1000 — visible, cinematic EM-wave motion during scrolling.
+// The low WAVE_AMP_SPRING (0.06) ensures it builds and decays smoothly.
+export const WAVE_AMP_SCALAR = 1000;
+
+// WAVE_AMP_MAX: cap on the maximum wave amplitude in pixels.
+export const WAVE_AMP_MAX = 180;
+
+// WAVE_AMP_SPRING: how fast the amplitude chases its target.
+// Previously 0.4 — reacts almost instantaneously → sharp wave onset → feels like a jerk.
+// New value: 0.06 — amplitude trails behind velocity by ~16 frames.
+// This gives the organic "fluid wakes behind the boat" settle instead of
+// "immediately rigid stop."
+export const WAVE_AMP_SPRING = 0.06;
+
+export const WAVE_PHASE_SPEED = 0.5;
 
 // ─── Parallax ──────────────────────────────────────────────────────────────
 export const AMP_X = 25;
 export const AMP_Y = 15;
 
 // ─── Perspective ───────────────────────────────────────────────────────────
-export const VANISHING_POINT_X_PCT = 1.30;   // Pushed out to maintain the wide diagonal
-export const VANISHING_POINT_Y_PCT = -1.20;  // High enough to clip the background cards
-export const PERSPECTIVE_FACTOR = 0.20;      // Increased to spread the cards further apart
-export const CARD_ROTATE_Y_DEG = -15;        // Tilts left edge forward (normal points left, face is straight)
+export const VANISHING_POINT_X_PCT = 1.30;
+export const VANISHING_POINT_Y_PCT = -1.20;
+export const PERSPECTIVE_FACTOR = 0.20;
+export const CARD_ROTATE_Y_DEG = -15;
 
 // ─── Snap ──────────────────────────────────────────────────────────────────
-export const SNAP_THRESHOLD = 0.018;  // Velocity below which magnetic snap engages
-export const SNAP_STRENGTH = 0.04;    // Spring constant for magnetic snapping
+// SNAP_THRESHOLD: lowered significantly to 0.004 so it only snaps when almost completely stopped.
+export const SNAP_THRESHOLD = 0.004;
+
+// SNAP_STRENGTH: weakened to 0.008 so the magnetic pull is buttery soft and avoids artificial jerks.
+export const SNAP_STRENGTH = 0.008;
 
 /**
  * Wrapped delta: how many "slots" is node `i` from the virtual focal point `Pv`?
@@ -56,7 +79,6 @@ export function getDelta(i, Pv) {
  */
 export function getScale(delta) {
   if (delta < 0) {
-    // For past cards, smoothly increase scale linearly so they sweep off the bottom-left without singularity
     return 1 - delta * PERSPECTIVE_FACTOR;
   }
   const denom = 1 + delta * PERSPECTIVE_FACTOR;
@@ -67,18 +89,23 @@ export function getScale(delta) {
  * X position: converges toward vanishing point
  */
 export function getX(delta, W, xOrigin) {
+  const isMobile = W < 768;
   const S = getScale(delta);
   const Vx = W * VANISHING_POINT_X_PCT;
-  return Vx - (Vx - xOrigin) * S;
+  const spacingX = isMobile ? 0.8 : 1.0;
+  return xOrigin + (Vx - xOrigin) * (1 - S) * spacingX;
 }
 
 /**
  * Y base position: converges toward vanishing point (no wave applied yet)
  */
 export function getYBase(delta, H, yOrigin, W) {
+  const isMobile = W < 768;
   const S = getScale(delta);
   const Vy = H * VANISHING_POINT_Y_PCT;
-  return Vy - (Vy - yOrigin) * S;
+  // Decrease spacingY to pack cards closer vertically on mobile, fitting 6 cards
+  const spacingY = isMobile ? 0.6 : 1.0;
+  return yOrigin + (Vy - yOrigin) * (1 - S) * spacingY;
 }
 
 /**
@@ -88,7 +115,6 @@ export function getYBase(delta, H, yOrigin, W) {
  *   Y_wave = A_current * sin(Δ · ω + progress · phase_speed)
  */
 export function getWaveY(delta, amplitude, progress) {
-  // Subtracting progress makes the wave travel UP the timeline (towards the top-left)
   return amplitude * Math.sin(delta * WAVE_FREQUENCY - progress * WAVE_PHASE_SPEED);
 }
 
@@ -105,12 +131,12 @@ export function getSpatialState(delta, W, H, xOrigin, yOrigin, amplitude, progre
   const absDelta = Math.abs(delta);
   
   return {
-    x: getX(delta, W, xOrigin), // Strictly vertical wave, no X displacement
+    x: getX(delta, W, xOrigin),
     y: getYBase(delta, H, yOrigin, W) - getWaveY(delta, amplitude, progress),
     scale: S,
-    rotateY: CARD_ROTATE_Y_DEG,              
-    z: (100 - delta * 10) | 0,               // bitwise floor — focal card on top
-    opacity: delta < -4 ? 0 : delta > 16 ? 0 : 1, // Widened heavily so cards never pop in/out on screen
+    rotateY: (W < 768) ? -8 : CARD_ROTATE_Y_DEG,
+    z: (100 - delta * 10) | 0,
+    opacity: delta < -4 ? 0 : delta > 16 ? 0 : 1,
     visibility: delta < -4 || delta > 16 ? "hidden" : "visible",
     focusFactor: Math.max(0.6, 1 - absDelta * 0.15),
     focal: absDelta < 0.5,

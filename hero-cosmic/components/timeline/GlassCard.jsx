@@ -15,6 +15,7 @@ const GlassCard = React.forwardRef(function GlassCard(
       onMouseMove={onMouseMove}
       role="button"
       aria-label={`View details for ${event.title}`}
+      tabIndex={-1}
     >
       {/* The Background Watermark Index (Repeating 1-6) */}
       <span className="card-index">

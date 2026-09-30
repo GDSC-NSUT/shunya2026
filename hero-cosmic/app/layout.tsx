@@ -20,7 +20,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       lang="en"
       className={`${corpta.variable} antialiased`}
     >
-      <body className="bg-black text-white overflow-hidden font-corpta"><LiquidGlassNav />{children}</body>
+      <body className="bg-black text-white overflow-x-hidden font-corpta"><LiquidGlassNav />{children}</body>
     </html>
   );
 }

@@ -3,11 +3,9 @@
 import React, { useEffect, useRef, useCallback } from 'react';
 
 // ─── Grid configuration ────────────────────────────────────────────
-// Non-uniform column/row splits (fractions of 1)
 const COL_SPLITS = [0.28, 0.38, 0.34]; // 3 columns
 const ROW_SPLITS = [0.45, 0.55];        // 2 rows
 
-// Derived cumulative positions (0 → 1)
 function cumulative(splits: number[]): number[] {
   const result = [0];
   let sum = 0;
@@ -18,8 +16,8 @@ function cumulative(splits: number[]): number[] {
   return result;
 }
 
-const COL_POS = cumulative(COL_SPLITS); // [0, 0.28, 0.66, 1.0]
-const ROW_POS = cumulative(ROW_SPLITS); // [0, 0.45, 1.0]
+const COL_POS = cumulative(COL_SPLITS);
+const ROW_POS = cumulative(ROW_SPLITS);
 
 const NUM_COLS = COL_SPLITS.length;
 const NUM_ROWS = ROW_SPLITS.length;
@@ -31,11 +29,9 @@ const LABEL_COLOR = 'rgba(234,234,234,0.75)';
 const LABEL_SIZE = 11;
 const SCAN_COLOR = '#00D4FF';
 
-// ─── Helpers ────────────────────────────────────────────────────────
-
 function randomLabel(): string {
   const integer = Math.floor(Math.random() * 4);
-  const frac = Math.random().toFixed(7).slice(2); // 7 digits
+  const frac = Math.random().toFixed(7).slice(2);
   return `${integer}.${frac}`;
 }
 
@@ -51,11 +47,12 @@ interface CellInfo {
 /**
  * HudLayer — full-hero SVG with grid, nodes, flickering labels, and scan-pulse.
  *
- * This component mounts ONCE. All animation is ref-driven:
- * - Label flicker: setInterval → direct textContent writes
- * - Scan-pulse: setTimeout chain → direct style.setProperty writes
- *
- * ZERO React state updates after mount.
+ * Performance contract:
+ * - Label flicker: 500ms interval, only 2 random labels per tick (was all 6 at 120ms)
+ * - Scan-pulse: unchanged timeout chain, direct style writes
+ * - SVG uses contain:layout paint style (NOT strict — strict forces expensive stacking context)
+ * - No will-change on the SVG itself
+ * - ZERO React state updates after mount
  */
 export default function HudLayer({ reducedMotion = false }: { reducedMotion?: boolean }) {
   const svgRef = useRef<SVGSVGElement>(null);
@@ -65,18 +62,14 @@ export default function HudLayer({ reducedMotion = false }: { reducedMotion?: bo
   const scanTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const lastScanCell = useRef(-1);
 
-  // Build the grid data from the fractional positions
   const getCells = useCallback((): CellInfo[] => {
     const cells: CellInfo[] = [];
     for (let r = 0; r < NUM_ROWS; r++) {
       for (let c = 0; c < NUM_COLS; c++) {
         cells.push({
-          col: c,
-          row: r,
-          x1: COL_POS[c],
-          y1: ROW_POS[r],
-          x2: COL_POS[c + 1],
-          y2: ROW_POS[r + 1],
+          col: c, row: r,
+          x1: COL_POS[c], y1: ROW_POS[r],
+          x2: COL_POS[c + 1], y2: ROW_POS[r + 1],
         });
       }
     }
@@ -87,18 +80,26 @@ export default function HudLayer({ reducedMotion = false }: { reducedMotion?: bo
 
   // ─── Label initialization + flicker ────────────────────────────
   useEffect(() => {
-    // Initialize labels on mount (avoids hydration mismatch from random values)
+    // Initialize labels on mount
     for (const label of labelRefs.current) {
       if (label) label.textContent = randomLabel();
     }
 
     if (reducedMotion) return;
 
+    const total = labelRefs.current.length;
+
+    // Perf fix: only update 2 random labels per tick at 500ms (was ALL labels at 120ms)
     flickerInterval.current = setInterval(() => {
-      for (const label of labelRefs.current) {
-        if (label) label.textContent = randomLabel();
-      }
-    }, 120);
+      if (total === 0) return;
+      const idx1 = Math.floor(Math.random() * total);
+      let idx2 = Math.floor(Math.random() * total);
+      if (idx2 === idx1) idx2 = (idx1 + 1) % total;
+      const l1 = labelRefs.current[idx1];
+      const l2 = labelRefs.current[idx2];
+      if (l1) l1.textContent = randomLabel();
+      if (l2) l2.textContent = randomLabel();
+    }, 500);
 
     return () => {
       if (flickerInterval.current) clearInterval(flickerInterval.current);
@@ -113,7 +114,6 @@ export default function HudLayer({ reducedMotion = false }: { reducedMotion?: bo
       const lines = scanLineRefs.current;
       if (!lines.length) return;
 
-      // Pick a random cell, not the same as last
       let idx: number;
       do {
         idx = Math.floor(Math.random() * lines.length);
@@ -125,32 +125,26 @@ export default function HudLayer({ reducedMotion = false }: { reducedMotion?: bo
 
       const length = line.getTotalLength();
 
-      // Phase 1: Draw in (0 → 180ms)
       line.style.transition = 'none';
       line.style.strokeDasharray = `${length}`;
       line.style.strokeDashoffset = `${length}`;
       line.style.opacity = '0.9';
       line.style.stroke = SCAN_COLOR;
 
-      // Force reflow to apply initial state without full layout thrashing
       void line.clientLeft;
 
       line.style.transition = 'stroke-dashoffset 180ms ease-out';
       line.style.strokeDashoffset = '0';
 
-      // Phase 2: Hold (180ms → 360ms)
       scanTimeout.current = setTimeout(() => {
-        // Phase 3: Dissolve to faint dashed (360ms → 580ms)
         line.style.transition = 'opacity 220ms ease-in, stroke-dasharray 220ms ease-in';
         line.style.strokeDasharray = '4 6';
         line.style.opacity = '0.3';
 
-        // Phase 4: Disappear (580ms → 680ms)
         scanTimeout.current = setTimeout(() => {
           line.style.transition = 'opacity 100ms ease-in';
           line.style.opacity = '0';
 
-          // Phase 5: Gap → next pulse (680ms → 1380ms)
           scanTimeout.current = setTimeout(() => {
             fireScanPulse();
           }, 600 + Math.random() * 300);
@@ -158,7 +152,6 @@ export default function HudLayer({ reducedMotion = false }: { reducedMotion?: bo
       }, 180);
     }
 
-    // Start the first pulse after a short delay
     scanTimeout.current = setTimeout(fireScanPulse, 500);
 
     return () => {
@@ -167,19 +160,15 @@ export default function HudLayer({ reducedMotion = false }: { reducedMotion?: bo
   }, [reducedMotion]);
 
   // ─── Render ────────────────────────────────────────────────────
-  // All coordinates are in viewBox units (0–100 for percentage-based layout)
   const VB_W = 1000;
   const VB_H = 1000;
-  const MARGIN = 40; // px margin inside the viewBox
+  const MARGIN = 40;
   const innerW = VB_W - MARGIN * 2;
   const innerH = VB_H - MARGIN * 2;
 
-  // Convert fractional positions to viewBox coordinates
   const colX = COL_POS.map(f => MARGIN + f * innerW);
   const rowY = ROW_POS.map(f => MARGIN + f * innerH);
 
-  // Refs will be populated by the callback refs on the elements.
-  // We initialize them to empty arrays or maintain them by index.
   return (
     <svg
       ref={svgRef}
@@ -188,7 +177,9 @@ export default function HudLayer({ reducedMotion = false }: { reducedMotion?: bo
       preserveAspectRatio="none"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
-      style={{ contain: 'strict' }}
+      // Perf fix: contain:layout paint style instead of strict
+      // strict creates an isolated stacking context that forces recomposite on every SVG paint
+      style={{ contain: 'layout paint style' }}
     >
       {/* Vertical grid lines */}
       {colX.map((x, i) => (
@@ -248,7 +239,7 @@ export default function HudLayer({ reducedMotion = false }: { reducedMotion?: bo
         </text>
       ))}
 
-      {/* Per-cell scan-pulse diagonals (bottom-left → top-right, initially invisible) */}
+      {/* Per-cell scan-pulse diagonals */}
       {cells.map((cell, i) => (
         <line
           key={`scan-${i}`}
