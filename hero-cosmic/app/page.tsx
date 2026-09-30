@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import HeroBackground from '@/components/hero/HeroBackground';
 import HeroBorder from '@/components/hero/HeroBorder';
@@ -20,7 +20,15 @@ const HudLayer = dynamic(() => import('@/components/hero/HudLayer'), {
 export default function Home() {
   const reducedMotion = useReducedMotion();
   const [hudVisible, setHudVisible] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false); // false on SSR, resolved after mount
   const { earthRef, hudRef } = useScrollEarth();
+
+  useEffect(() => {
+    setIsDesktop(window.innerWidth >= 1024);
+    const handleResize = () => setIsDesktop(window.innerWidth >= 1024);
+    window.addEventListener('resize', handleResize, { passive: true });
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const handleEnter = useCallback(() => {
     setHudVisible(true);
@@ -105,7 +113,10 @@ export default function Home() {
           onPointerLeave={onPointerLeave}
           onPointerDown={onPointerDown}
         >
-          <HudLayer reducedMotion={reducedMotion} />
+          {/* HudLayer is cursor-interactive — skip on touch/mobile */}
+          {isDesktop && !reducedMotion && (
+            <HudLayer reducedMotion={reducedMotion} />
+          )}
         </div>
 
         {/* Layer 3: Premium architectural framing overlay */}

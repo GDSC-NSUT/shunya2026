@@ -153,11 +153,19 @@ const ScrambledText: React.FC<ScrambledTextProps> = ({
     };
 
     const el = rootRef.current;
-    el.addEventListener('pointermove', handleMove, { passive: true });
+
+    // Skip hover scramble on touch devices — pointermove fires on every scroll
+    // touch-drag, spawning GSAP tweens that thrash the CPU during scroll.
+    const isTouchDevice = typeof window !== 'undefined' &&
+      (navigator.maxTouchPoints > 0 || window.innerWidth < 1024);
+
+    if (!isTouchDevice) {
+      el.addEventListener('pointermove', handleMove, { passive: true });
+    }
 
     return () => {
       clearTimeout(timeout);
-      el.removeEventListener('pointermove', handleMove);
+      if (!isTouchDevice) el.removeEventListener('pointermove', handleMove);
       window.removeEventListener('resize', updatePositions);
       observer.disconnect();
     };

@@ -29,10 +29,15 @@ export default function HeroBackground({ hudRef }: HeroBackgroundProps) {
       <style>{`
         @keyframes nebula-drift {
           0%   { transform: scale(1.08) translate3d(0, 0, 0); }
-          50%  { transform: scale(1.13) translate3d(10px, -10px, 0); }
+          50%  { transform: scale(1.1) translate3d(6px, -6px, 0); }
           100% { transform: scale(1.08) translate3d(0, 0, 0); }
         }
-        .nebula-drift { animation: nebula-drift 35s ease-in-out infinite; will-change: transform; }
+        /* Mobile: disable animation entirely — CSS animation on a full-screen image
+           forces the GPU to re-composite a ~900KB texture every frame. */
+        .nebula-drift { animation: none; transform: scale(1.08); }
+        @media (min-width: 1024px) {
+          .nebula-drift { animation: nebula-drift 50s ease-in-out infinite; will-change: transform; }
+        }
 
         @keyframes logo-pulse {
           0%, 100% { 
@@ -51,31 +56,40 @@ export default function HeroBackground({ hudRef }: HeroBackgroundProps) {
         }
       `}</style>
 
-      {/* ── 1. Star field (z-2) — Dual Parallax Layers ── */}
+      {/* ── 1. Star field (z-2) ── Dual Parallax Layers ── */}
       {/*
-        contain:layout paint isolates these large oversized layers from the rest of the paint tree.
-        No CSS animations — parallax motion comes purely from JS writing --mouse-x/--mouse-y.
+        Mobile: static background-image layers, no will-change, no JS transforms.
+        Mouse-parallax is irrelevant on touch — will-change:transform alone promotes
+        each layer to its own compositor layer, wasting ~50MB of mobile VRAM.
       */}
       <div className="absolute inset-0 z-[2] pointer-events-none" style={{ contain: 'layout paint' }}>
-        {/* Layer 1: Deep stars — slow parallax */}
-        <div aria-hidden style={{
+        {/* Layer 1: Deep stars */}
+        <div aria-hidden className="hidden lg:block" style={{
           position: 'absolute', inset: '-8%',
           transform: `translate3d(calc(var(--mouse-x, 0) * 10px), calc(var(--mouse-y, 0) * 10px), 0)`,
           willChange: 'transform',
           pointerEvents: 'none',
-          backgroundImage: 'url(/cosmic/stars_deep.png)',
+          backgroundImage: 'url(/cosmic/stars_deep.webp)',
+          backgroundSize: 'cover', backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center',
+          opacity: 0.18,
+        }} />
+        {/* Mobile: static star layer, no GPU layer promotion */}
+        <div aria-hidden className="block lg:hidden" style={{
+          position: 'absolute', inset: 0,
+          backgroundImage: 'url(/cosmic/stars_deep.webp)',
           backgroundSize: 'cover', backgroundRepeat: 'no-repeat',
           backgroundPosition: 'center',
           opacity: 0.18,
         }} />
 
-        {/* Layer 2: Near stars — faster parallax */}
-        <div aria-hidden style={{
+        {/* Layer 2: Near stars — desktop only (parallax) */}
+        <div aria-hidden className="hidden lg:block" style={{
           position: 'absolute', inset: '-6%',
           transform: `translate3d(calc(var(--mouse-x, 0) * 20px), calc(var(--mouse-y, 0) * 20px), 0)`,
           willChange: 'transform',
           pointerEvents: 'none',
-          backgroundImage: 'url(/cosmic/stars_cinematic.png)',
+          backgroundImage: 'url(/cosmic/stars_cinematic.webp)',
           backgroundSize: 'cover', backgroundRepeat: 'no-repeat',
           backgroundPosition: 'center',
           opacity: 0.12,
@@ -84,16 +98,15 @@ export default function HeroBackground({ hudRef }: HeroBackgroundProps) {
 
       {/* ── 2. Nebula (z-3) ── */}
       {/*
-        PERF KEY: The filter (contrast/saturate/brightness) is on the STATIC outer div.
-        The GPU rasterizes + filters once and caches the result as a texture.
-        Only the inner div animates (nebula-drift), which the GPU can composite cheaply.
-        Previously the filter was on an animated element — forcing re-rasterization every frame.
+        Mobile: no parallax transform, no will-change, no animation (see CSS above).
+        Desktop: parallax + drift animation.
+        will-change:transform on a large animated element promotes it to its own
+        GPU compositor layer — expensive on mobile where VRAM is shared with RAM.
       */}
       <div
         className="absolute inset-0 z-[3]"
         style={{
           transform: `translate3d(calc(var(--mouse-x, 0) * -40px), calc(var(--mouse-y, 0) * -40px), 0)`,
-          willChange: 'transform',
           contain: 'layout paint',
         }}
       >
@@ -102,7 +115,7 @@ export default function HeroBackground({ hudRef }: HeroBackgroundProps) {
           {/* Only this inner div animates — GPU composites its cached texture */}
           <div className="absolute inset-0 nebula-drift">
             <Image
-              src="/cosmic/rich_green_nebula.png"
+              src="/cosmic/rich_green_nebula.webp"
               alt="Nebula"
               fill
               className="object-cover opacity-70"

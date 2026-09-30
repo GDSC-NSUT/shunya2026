@@ -11,15 +11,14 @@ function easeInOutCubic(t: number): number {
 }
 
 /**
- * useScrollEarth — drives Earth and HUD opacity on scroll via a continuous rAF loop.
+ * useScrollEarth — drives Earth and HUD opacity on scroll via rAF.
  *
- * Performance contract:
- * - The rAF loop runs continuously but is cheap: dead-zone guards prevent DOM writes
- *   on frames where values haven't meaningfully changed.
- * - We intentionally do NOT exit the rAF loop on convergence. Doing so creates a
- *   1-frame gap on the next scroll event (loop exit → scroll fires → startLoop() →
- *   requestAnimationFrame → tick runs) which shows as a visible jerk on 120 Hz screens.
- * - LERPF raised to 0.18 for a more liquid, immediate-feeling response.
+ * Mobile performance contract:
+ * - rAF loop EXITS when values converge (dead-zone < threshold for all axes).
+ *   On mobile this is critical — a continuous loop drains battery and keeps
+ *   the CPU hot, causing thermal throttling that makes everything feel laggy.
+ * - Loop is RESTARTED only on scroll events (passive listener).
+ * - Window dimensions are cached; never read inside the hot tick path.
  */
 export function useScrollEarth() {
   const earthRef = useRef<HTMLDivElement>(null);
@@ -32,72 +31,67 @@ export function useScrollEarth() {
 
     if (hudRef.current) hudRef.current.style.opacity = '1';
 
-    let rafId: number;
-    // Raised from 0.14 → 0.18: more liquid, faster convergence, less "sticky" feel
-    const LERPF = 0.18;
+    let rafId: number | null = null;
+    const LERPF = 0.14; // slightly gentler — less work per frame on mobile
+    const SETTLE = 0.1; // convergence threshold
 
     let curY = 0;
     let curX = 0;
     let curScale = 1;
     let curHud = 1;
-    let curBlur = 0;
 
-    // Track last written values to skip redundant DOM writes (dead-zone)
+    // Track last written values — skip DOM writes when settled
     let lastWrittenY = -9999;
     let lastWrittenX = -9999;
     let lastWrittenScale = -9999;
     let lastWrittenHud = -9999;
-    let lastWrittenBlur = -9999;
 
     let firstTick = true;
 
+    // Cache window dimensions — NEVER read inside tick()
+    let cachedVh = window.innerHeight;
+    let cachedIsMobile = window.innerWidth < 1024;
+
+    const handleResize = () => {
+      cachedVh = window.innerHeight;
+      cachedIsMobile = window.innerWidth < 1024;
+    };
+    window.addEventListener('resize', handleResize, { passive: true });
+
     const tick = () => {
-      const scrollY  = window.scrollY;
-      const curVh    = window.innerHeight;
-      const isMobile = window.innerWidth < 1024;
+      const scrollY = window.scrollY;
+      const curVh   = cachedVh;
+      const isMobile = cachedIsMobile;
 
       const raw    = clamp(scrollY / Math.max(curVh, 1), 0, 1);
       const t      = easeInOutCubic(raw);
       const tgtHud = 1 - clamp(raw / 0.45, 0, 1);
 
-      let tgtX: number, tgtY: number, tgtScale: number, tgtBlur: number;
+      let tgtX: number, tgtY: number, tgtScale: number;
 
       if (isMobile) {
-        tgtScale = lerp(0.90, 0.90, t);
+        tgtScale = 0.90;
         tgtX     = 0;
-        tgtY     = lerp(curVh * 0.49, 0, t); // Pushed lower per user request
-        tgtBlur  = lerp(0, 1.0, t);
-
-        if (scrollY > curVh) {
-          tgtY -= (scrollY - curVh);
-        }
+        tgtY     = lerp(curVh * 0.49, 0, t);
+        if (scrollY > curVh) tgtY -= (scrollY - curVh);
       } else {
         tgtX     = lerp(0, -22, t);
         tgtY     = lerp(curVh * 0.6, -curVh * 0.04, t);
         tgtScale = lerp(1, 0.60, t);
-        tgtBlur  = lerp(0, 1.0, t);
-
-        if (scrollY > curVh) {
-          tgtY -= (scrollY - curVh);
-        }
+        if (scrollY > curVh) tgtY -= (scrollY - curVh);
       }
 
       if (firstTick) {
-        curX = tgtX;
-        curY = tgtY;
-        curScale = tgtScale;
-        curHud = tgtHud;
-        curBlur = tgtBlur;
+        curX = tgtX; curY = tgtY; curScale = tgtScale; curHud = tgtHud;
         firstTick = false;
       } else {
         curX     += (tgtX - curX) * LERPF;
         curY     += (tgtY - curY) * LERPF;
         curScale += (tgtScale - curScale) * LERPF;
         curHud   += (tgtHud - curHud) * LERPF;
-        curBlur  += (tgtBlur - curBlur) * LERPF;
       }
 
-      // ── DOM writes: only when value changed beyond dead-zone ──────
+      // ── DOM writes: only when value changed beyond dead-zone ──
       if (earthRef.current) {
         const xChanged = Math.abs(curX - lastWrittenX) > 0.15;
         const yChanged = Math.abs(curY - lastWrittenY) > 0.15;
@@ -109,11 +103,9 @@ export function useScrollEarth() {
         }
       }
 
-      if (inner && (Math.abs(curScale - lastWrittenScale) > 0.001 || Math.abs(curBlur - lastWrittenBlur) > 0.05)) {
+      if (inner && Math.abs(curScale - lastWrittenScale) > 0.001) {
         inner.style.transform = `translate(-50%, -50%) translate3d(0,0,0) scale(${curScale.toFixed(4)})`;
-        inner.style.filter = curBlur > 0.05 ? `blur(${curBlur.toFixed(2)}px)` : 'none';
         lastWrittenScale = curScale;
-        lastWrittenBlur = curBlur;
       }
 
       if (hudRef.current && Math.abs(curHud - lastWrittenHud) > 0.002) {
@@ -121,14 +113,40 @@ export function useScrollEarth() {
         lastWrittenHud = curHud;
       }
 
-      // Loop runs continuously — no convergence exit.
-      // Dead-zone guards above ensure no DOM work on settled frames.
-      rafId = requestAnimationFrame(tick);
+      // ── Convergence check — EXIT the loop when all values are settled ──
+      // This is the key mobile fix: on mobile the loop was spinning at 60fps
+      // constantly even when the page was completely still, wasting CPU/GPU.
+      const settled =
+        Math.abs(tgtX - curX) < SETTLE &&
+        Math.abs(tgtY - curY) < SETTLE &&
+        Math.abs(tgtScale - curScale) < 0.001 &&
+        Math.abs(tgtHud - curHud) < 0.002;
+
+      if (settled) {
+        rafId = null; // Loop exits — no more rAF until next scroll
+      } else {
+        rafId = requestAnimationFrame(tick);
+      }
     };
 
+    const startLoop = () => {
+      if (rafId === null) {
+        firstTick = false; // Don't snap on re-entry
+        rafId = requestAnimationFrame(tick);
+      }
+    };
+
+    // Bootstrap: run once to set initial position
     rafId = requestAnimationFrame(tick);
 
-    return () => cancelAnimationFrame(rafId);
+    // Only restart the loop when the user actually scrolls
+    window.addEventListener('scroll', startLoop, { passive: true });
+
+    return () => {
+      if (rafId !== null) cancelAnimationFrame(rafId);
+      window.removeEventListener('scroll', startLoop);
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   return { earthRef, hudRef };

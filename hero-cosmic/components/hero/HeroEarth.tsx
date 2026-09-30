@@ -5,17 +5,17 @@ import { Canvas, useFrame, useLoader } from '@react-three/fiber';
 import * as THREE from 'three';
 
 /**
- * EarthSphere — performance tuned.
+ * EarthSphere — mobile-first performance.
  *
- * Segment count reduced: 48x48 (2304 tris) → 32x32 (1024 tris).
- * Visually identical at hero scale; saves ~55% GPU vertex work.
+ * Mobile: 16x16 sphere (256 tris), DPR capped at 1, depth+stencil off.
+ * Desktop: 32x32 sphere (1024 tris), DPR up to 1.5.
  *
- * Rotation delta * 0.08 (was 0.5) for a more majestic, slower spin.
- * Slower rotation means fewer visible pixels change per frame → lower fill rate.
+ * The single biggest GPU saving on mobile is DPR=1.
+ * At DPR=3 (iPhone Pro), the GPU renders 9× more pixels for the same visual.
  */
-function EarthSphere() {
+function EarthSphere({ isMobile }: { isMobile: boolean }) {
   const meshRef = useRef<THREE.Mesh>(null);
-  const texture = useLoader(THREE.TextureLoader, '/cosmic/detailed-earth-map.png');
+  const texture = useLoader(THREE.TextureLoader, '/cosmic/detailed-earth-map.webp');
 
   const cloudyTexture = React.useMemo(() => {
     const tex = texture.clone();
@@ -25,14 +25,15 @@ function EarthSphere() {
     return tex;
   }, [texture]);
 
-  // Adaptive geometry: 24x24 on mobile (576 tris), 32x32 on desktop (1024 tris)
-  const isMobile = typeof window !== 'undefined' && window.innerWidth < 1024;
-  const segments = isMobile ? 24 : 32;
-  const geometry = React.useMemo(() => new THREE.SphereGeometry(1, segments, segments), [segments]);
+  // Mobile: 16x16 (256 tris). Desktop: 32x32 (1024 tris).
+  const segments = isMobile ? 16 : 32;
+  const geometry = React.useMemo(
+    () => new THREE.SphereGeometry(1, segments, segments),
+    [segments]
+  );
 
   useFrame((_, delta) => {
     if (meshRef.current) {
-      // Significantly increased rotation speed for a highly dynamic spin
       meshRef.current.rotation.y += delta * 0.6;
     }
   });
@@ -45,16 +46,18 @@ function EarthSphere() {
 }
 
 export default function HeroEarth() {
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 1024;
+
   return (
     <Canvas
-      dpr={Math.min(typeof window !== 'undefined' ? window.devicePixelRatio : 1, 1.5)}
+      // Mobile: force DPR=1 — at DPR=3 the GPU renders 9x more pixels for zero visible gain at hero scale
+      dpr={isMobile ? 1 : Math.min(typeof window !== 'undefined' ? window.devicePixelRatio : 1, 1.5)}
       camera={{ position: [0, 0, 3.2], fov: 38.5, near: 0.1, far: 100 }}
       gl={{
         alpha: true,
-        antialias: false,
-        powerPreference: 'high-performance',
-        // Avoid allocating depth buffer bits we don't use
-        depth: true,
+        antialias: false,        // Already off — keep
+        powerPreference: isMobile ? 'low-power' : 'high-performance',
+        depth: false,            // No depth needed for a single sphere with no overlap
         stencil: false,
       }}
       style={{ background: 'transparent', width: '100%', height: '100%', display: 'block' }}
@@ -62,20 +65,17 @@ export default function HeroEarth() {
         gl.setClearColor(new THREE.Color(0x000000), 0);
       }}
     >
-      {/* Deep space ambient — near-zero for dramatic dark side */}
+      {/* Deep space ambient */}
       <ambientLight intensity={0.02} />
-
       {/* Primary Key Light (The Sun) */}
       <directionalLight position={[8, 4, 3]} intensity={3.5} color="#fffcf2" />
-
       {/* Atmospheric Rim Light */}
       <directionalLight position={[-6, 1, -5]} intensity={2.8} color="#60a5fa" />
-
-      {/* Starlight Fill - Boosted to visually balance the left side */}
-      <directionalLight position={[-5, 0, 4]} intensity={0.8} color="#3b82f6" />
+      {/* Starlight Fill */}
+      {!isMobile && <directionalLight position={[-5, 0, 4]} intensity={0.8} color="#3b82f6" />}
 
       <React.Suspense fallback={null}>
-        <EarthSphere />
+        <EarthSphere isMobile={isMobile} />
       </React.Suspense>
     </Canvas>
   );

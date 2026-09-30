@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useRef } from 'react';
+import { useCallback, useRef, useEffect } from 'react';
 
 interface PointerTrackerOptions {
   /** Lerp factor for eased following (0–1). Default 0.18 */
@@ -61,18 +61,38 @@ export function usePointerTracker(options: PointerTrackerOptions = {}) {
     cancelAnimationFrame(rafId.current);
   }, []);
 
+  const cachedRect = useRef<DOMRect | null>(null);
+
+  const updateRect = useCallback(() => {
+    if (containerRef.current) {
+      cachedRect.current = containerRef.current.getBoundingClientRect();
+    }
+  }, []);
+
+  // Update rect on scroll or resize to keep it accurate
+  useEffect(() => {
+    window.addEventListener('resize', updateRect, { passive: true });
+    window.addEventListener('scroll', updateRect, { passive: true });
+    return () => {
+      window.removeEventListener('resize', updateRect);
+      window.removeEventListener('scroll', updateRect);
+    };
+  }, [updateRect]);
+
   const onPointerMove = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
-    const rect = containerRef.current?.getBoundingClientRect();
+    if (!cachedRect.current) updateRect();
+    const rect = cachedRect.current;
     if (!rect) return;
     rawTarget.current.x = e.clientX - rect.left;
     rawTarget.current.y = e.clientY - rect.top;
-  }, []);
+  }, [updateRect]);
 
   const onPointerEnter = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
     // Handle touch separately
     if (e.pointerType === 'touch') return;
 
-    const rect = containerRef.current?.getBoundingClientRect();
+    if (!cachedRect.current) updateRect();
+    const rect = cachedRect.current;
     if (!rect) return;
 
     const x = e.clientX - rect.left;
@@ -93,7 +113,7 @@ export function usePointerTracker(options: PointerTrackerOptions = {}) {
     isInside.current = true;
     startLoop();
     onEnter?.(x, y);
-  }, [startLoop, onEnter]);
+  }, [startLoop, onEnter, updateRect]);
 
   const onPointerLeave = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
     if (e.pointerType === 'touch') return;

@@ -47,3 +47,5 @@ If something is ambiguous:
 
 - NEVER push code to GitHub without the user's explicit permission.
 
+
+- NEVER push code to GitHub without the user's explicit permission.

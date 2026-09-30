@@ -45,9 +45,18 @@ export function useParallax() {
       }
     };
 
+    let cachedW = window.innerWidth;
+    let cachedH = window.innerHeight;
+
+    const handleResize = () => {
+      cachedW = window.innerWidth;
+      cachedH = window.innerHeight;
+    };
+    window.addEventListener('resize', handleResize, { passive: true });
+
     const handleMouseMove = (e: MouseEvent) => {
-      targetX = (e.clientX / window.innerWidth) * 2 - 1;
-      targetY = (e.clientY / window.innerHeight) * 2 - 1;
+      targetX = (e.clientX / cachedW) * 2 - 1;
+      targetY = (e.clientY / cachedH) * 2 - 1;
     };
 
     const handleMouseEnter = () => {
@@ -73,6 +82,7 @@ export function useParallax() {
       document.documentElement.removeEventListener('mouseenter', handleMouseEnter);
       document.documentElement.removeEventListener('mouseleave', handleMouseLeave);
       window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('resize', handleResize);
     };
   }, [prefersReducedMotion]);
 
