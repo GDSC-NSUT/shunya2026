@@ -65,7 +65,7 @@ export function useScrollEarth() {
       if (isMobile) {
         tgtScale = lerp(0.90, 0.90, t);
         tgtX     = 0;
-        tgtY     = lerp(curVh * 0.38, 0, t); // Centers Earth at 50vh (behind the text) instead of shooting it to the top
+        tgtY     = lerp(curVh * 0.49, 0, t); // Pushed lower per user request
         tgtBlur  = lerp(0, 1.0, t);
 
         if (scrollY > curVh) {

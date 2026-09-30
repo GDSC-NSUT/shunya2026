@@ -239,54 +239,66 @@ export default function HeroBackground({ hudRef }: HeroBackgroundProps) {
           </div>
         </div>
 
-        {/* ──── MOBILE HUD LAYOUT (Asymmetric Art Direction) ──── */}
-        <div className="flex lg:hidden absolute top-[32vh] left-[6vw] right-[6vw] flex-col gap-[5vh] z-[15] pointer-events-none" style={{ contain: 'layout paint style' }}>
+        {/* ──── MOBILE HUD LAYOUT (Artistic / Editorial Sci-Fi) ──── */}
+        <div className="flex lg:hidden absolute top-[30vh] w-full flex-col z-[15] pointer-events-none overflow-hidden" style={{ contain: 'layout paint style' }}>
           
-          {/* Mid-Left Panel */}
-          <div className="flex flex-col items-start text-left w-full">
-            <div className="flex items-center gap-3 mb-3 opacity-90">
-              <svg width="8" height="8" viewBox="0 0 10 10" fill="none" className="animate-pulse"><rect width="3" height="3" fill="#60A5FA"/><rect y="7" width="3" height="3" fill="#60A5FA"/></svg>
-              <ScrambledText style={{ fontFamily: 'var(--font-corpta), sans-serif' }} className="text-[0.55rem] tracking-[0.3em] text-blue-300 uppercase">Archive // 01</ScrambledText>
-              <div className="w-12 h-[1px] bg-blue-400/40"></div>
-            </div>
-            <ScrambledText className="max-w-[280px] pl-4 border-l border-blue-400/30" style={{
-                 fontFamily: 'var(--font-corpta), sans-serif',
-                 fontSize: '0.8rem', fontWeight: 500,
-                 letterSpacing: '0.2em', lineHeight: '1.7',
-                 color: 'rgba(230,240,255,0.95)', textTransform: 'uppercase',
-                 textShadow: '0 0 10px rgba(96, 165, 250, 0.3)'
-               }}>
-              For decades, we built machines to master nature.
-            </ScrambledText>
+          {/* Abstract background elements for depth */}
+          <div className="absolute top-[5%] right-[-10%] opacity-20 blur-[6px]">
+            <span style={{ fontFamily: 'var(--font-corpta), sans-serif' }} className="text-[8rem] text-blue-500 leading-none">01</span>
+          </div>
+          <div className="absolute bottom-[20%] left-[-5%] opacity-15 blur-[8px]">
+            <span style={{ fontFamily: 'var(--font-corpta), sans-serif' }} className="text-[10rem] text-blue-600 leading-none">//</span>
           </div>
 
-          {/* Bottom-Right Panel (Next to Earth) */}
-          <div className="flex flex-col items-end text-right w-full self-end">
-            <div className="flex items-center gap-3 mb-3 opacity-90 justify-end w-full">
-              <div className="w-12 h-[1px] bg-blue-400/40"></div>
-              <ScrambledText style={{ fontFamily: 'var(--font-corpta), sans-serif' }} className="text-[0.55rem] tracking-[0.3em] text-blue-300 uppercase">Conclusion</ScrambledText>
-              <svg width="8" height="8" viewBox="0 0 10 10" fill="none" className="animate-pulse"><rect width="3" height="3" fill="#60A5FA"/><rect y="7" width="3" height="3" fill="#60A5FA"/></svg>
+          {/* Artistic Block 1 */}
+          <div className="relative w-full px-6 mb-[5vh]">
+            <div className="flex items-center gap-3 mb-2 opacity-80">
+               <ScrambledText style={{ fontFamily: 'var(--font-corpta), sans-serif' }} className="text-[0.55rem] tracking-[0.4em] text-blue-300">ARCHIVE</ScrambledText>
+               <div className="w-[40px] h-[1px] bg-gradient-to-r from-blue-400 to-transparent"></div>
             </div>
-            <div className="max-w-[280px] pr-4 border-r border-blue-400/30">
-              <ScrambledText style={{
-                   fontFamily: 'var(--font-corpta), sans-serif',
-                   fontSize: '0.7rem', fontWeight: 400,
-                   letterSpacing: '0.2em', lineHeight: '1.8',
-                   color: 'rgba(180,210,255,0.85)', textTransform: 'uppercase',
-                   textShadow: '0 0 12px rgba(96, 165, 250, 0.3)',
-                   marginBottom: '1rem'
-                 }}>
-                Now, we realize the ultimate technology is the ecosystem itself.
+            
+            {/* Fragmented Typography */}
+            <div className="relative z-10">
+              <ScrambledText style={{ fontFamily: 'var(--font-corpta), sans-serif' }} className="text-[1.15rem] leading-none text-white opacity-95 tracking-[0.1em] block mb-3 text-shadow-xl">
+                 FOR DECADES,
               </ScrambledText>
-              <ScrambledText style={{
-                   fontFamily: 'var(--font-corpta), sans-serif',
-                   fontSize: '0.7rem', fontWeight: 600,
-                   letterSpacing: '0.2em', lineHeight: '1.8',
-                   color: 'rgba(230,240,255,0.95)', textTransform: 'uppercase',
-                   textShadow: '0 0 12px rgba(96, 165, 250, 0.3)'
-                 }}>
-                Welcome to the convergence.
+              
+              <div className="ml-[10%] pl-3 border-l-[2px] border-blue-500/40 relative">
+                {/* Tiny glowing node on the border */}
+                <div className="absolute top-0 left-[-3px] w-1 h-3 bg-blue-400 shadow-[0_0_8px_#60A5FA]"></div>
+                <ScrambledText style={{ fontFamily: 'var(--font-corpta), sans-serif' }} className="text-[0.75rem] leading-[1.6] text-blue-100/90 tracking-[0.1em] block max-w-[220px] text-left">
+                   WE BUILT MACHINES TO MASTER NATURE.
+                </ScrambledText>
+              </div>
+            </div>
+          </div>
+
+          {/* Artistic Block 2 */}
+          <div className="relative w-full px-6 text-right mt-[2vh]">
+            <div className="flex items-center justify-end gap-3 mb-2 opacity-80">
+               <div className="w-[40px] h-[1px] bg-gradient-to-l from-blue-400 to-transparent"></div>
+               <ScrambledText style={{ fontFamily: 'var(--font-corpta), sans-serif' }} className="text-[0.55rem] tracking-[0.4em] text-blue-300 inline-block">CONCLUSION</ScrambledText>
+            </div>
+            
+            {/* Fragmented Typography */}
+            <div className="relative z-10">
+              <ScrambledText style={{ fontFamily: 'var(--font-corpta), sans-serif' }} className="text-[1.1rem] leading-none text-blue-50 opacity-90 tracking-[0.05em] block mb-3 text-shadow-lg pr-2">
+                 NOW, WE REALIZE
               </ScrambledText>
+              
+              <div className="mr-[5%] pr-3 border-r-[2px] border-blue-500/40 relative mb-[3vh] flex justify-end">
+                <div className="absolute top-0 right-[-3px] w-1 h-3 bg-blue-400 shadow-[0_0_8px_#60A5FA]"></div>
+                <ScrambledText style={{ fontFamily: 'var(--font-corpta), sans-serif' }} className="text-[0.75rem] leading-[1.6] text-blue-100/80 tracking-[0.1em] block max-w-[240px] text-right">
+                   THE ULTIMATE TECHNOLOGY IS THE ECOSYSTEM ITSELF.
+                </ScrambledText>
+              </div>
+              
+              <div className="relative inline-block group mt-2">
+                 <div className="absolute inset-0 bg-blue-500/20 blur-[10px]"></div>
+                 <ScrambledText style={{ fontFamily: 'var(--font-corpta), sans-serif' }} className="relative text-[0.85rem] font-bold text-white tracking-[0.15em] uppercase text-shadow-[0_0_20px_rgba(96,165,250,0.8)] border-b border-blue-400/50 pb-1">
+                    Welcome to the convergence.
+                 </ScrambledText>
+              </div>
             </div>
           </div>
 

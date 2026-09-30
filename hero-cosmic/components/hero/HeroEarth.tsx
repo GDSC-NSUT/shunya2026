@@ -32,8 +32,8 @@ function EarthSphere() {
 
   useFrame((_, delta) => {
     if (meshRef.current) {
-      // Adjusted rotation speed (0.15) for a slightly faster, dynamic spin
-      meshRef.current.rotation.y += delta * 0.15;
+      // Significantly increased rotation speed for a highly dynamic spin
+      meshRef.current.rotation.y += delta * 0.6;
     }
   });
 
