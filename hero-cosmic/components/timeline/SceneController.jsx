@@ -342,7 +342,7 @@ export default function SceneController() {
             const isTouch = self.event && self.event.type.includes("touch");
             
             if (isTouch) {
-              raw *= 4.5; // Massive boost for mobile swipe feel
+              raw *= 5.5; // Massive boost for mobile swipe feel
             }
             
             // Cap to prevent physics breaking.
