@@ -74,8 +74,12 @@ export function init() {
               EVENT ${paddedIndex} // ${String(N).padStart(2, '0')}
             </div>
             <div class="event-card__full-title" style="color: ${headlineColor};">// ${event.name}</div>
-            <div class="event-card__tags">
-              ${tags.map(tag => `<span class="event-card__tag" style="color: ${headlineColor};">${tag}</span>`).join('<span class="tag-separator" style="color: ${headlineColor};">&amp;</span>')}
+            <div class="event-card__tags" style="font-family: var(--font-ui); font-size: 0.65rem; opacity: 0.8; letter-spacing: 0.1em; text-transform: uppercase;">
+              <span class="event-card__tag" style="color: ${headlineColor};">${event.date}</span>
+              <span class="tag-separator" style="color: ${headlineColor}; margin: 0 6px;">&bull;</span>
+              <span class="event-card__tag" style="color: ${headlineColor};">${event.venue}</span>
+              <span class="tag-separator" style="color: ${headlineColor}; margin: 0 6px;">&bull;</span>
+              <span class="event-card__tag" style="color: ${headlineColor};">By GDG NSUT</span>
             </div>
           </div>
           <h2 class="event-headline ${isFirst ? 'is-active' : ''}" style="color: ${headlineColor};">

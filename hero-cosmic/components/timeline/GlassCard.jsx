@@ -25,11 +25,10 @@ const GlassCard = React.forwardRef(function GlassCard(
       {/* Card content (bottom-aligned) */}
       <div className="card-content-v2">
         <p className="card-tag">
-          {event.tag}
+          {event.date}
         </p>
         <h3 className="card-title">{event.title}</h3>
-        <p className="card-description">{event.description}</p>
-        <p className="card-date">{event.date} &bull; {event.venue}</p>
+        <p className="card-date">{event.venue} &bull; By GDG NSUT</p>
       </div>
     </div>
   );
