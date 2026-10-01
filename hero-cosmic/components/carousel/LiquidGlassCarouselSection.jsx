@@ -75,7 +75,7 @@ export default function LiquidGlassCarouselSection() {
         className="absolute top-12 left-1/2 -translate-x-1/2 z-30 pointer-events-none select-none flex flex-col items-center w-full"
       >
         <h1 
-          className="text-5xl md:text-[5rem] font-normal leading-none -tracking-[0.02em] uppercase text-white whitespace-nowrap"
+          className="text-4xl sm:text-5xl md:text-[5rem] font-normal leading-none -tracking-[0.02em] uppercase text-white whitespace-nowrap"
           style={{ fontFamily: 'var(--font-corpta), sans-serif' }}
         >
           Past Shunya
