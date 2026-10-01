@@ -1,13 +1,13 @@
 /**
  * Scroll Controller Module
- * Manages single-column GSAP ScrollTrigger timeline and seamless infinite looping for 6 events.
+ * Manages single-column GSAP ScrollTrigger timeline and seamless infinite looping for 8 events.
  *
  * Infinite loop strategy:
- *   - Render CYCLES=3 full copies of the 6 events in the DOM (18 cards).
- *   - One cycle = 6 × SCROLL_PER_EVENT = 7,200 px.
+ *   - Render CYCLES=3 full copies of the 8 events in the DOM (24 cards).
+ *   - One cycle = 8 × SCROLL_PER_EVENT = 9,600 px.
  *   - User starts at cycle 1 (middle copy) on load.
  *   - Loop triggers ONLY when exiting the active cycle boundaries:
- *       • Scrolled past all 6 events (relY >= 2 * cyclePx) -> jump back one cycle (-cyclePx).
+ *       • Scrolled past all 8 events (relY >= 2 * cyclePx) -> jump back one cycle (-cyclePx).
  *       • Scrolled backward before event 1 (relY < cyclePx) -> jump forward one cycle (+cyclePx).
  *   - When jumping, timeline progress is synchronized instantaneously to prevent scrub rewind sweeps.
  */
@@ -37,14 +37,16 @@ export function init() {
       { id: 'devlympics',         name: '24-Hour Devlympics',  tags: ['Hackathon', 'Innovation'],           headlineColor: '#4EFFF3', leftAccent: '#FF8800', rightAccent: '#C084FC', accent: '#FF8800' },
       { id: 'flow-in-flux',       name: 'Flow in Flux 2026',   tags: ['UI/UX', 'Product Design'],          headlineColor: '#FFF3A3', leftAccent: '#D946EF', rightAccent: '#CCFF00', accent: '#D946EF' },
       { id: 'hallucination-hunt', name: 'Hallucination Hunt',  tags: ['Debugging', 'Collaboration'],        headlineColor: '#FFE600', leftAccent: '#00E676', rightAccent: '#FF2A6D', accent: '#00E676' },
-      { id: 'case-a-thon',        name: 'AI Case-a-thon',      tags: ['Business Strategy', 'AI Analytics'],headlineColor: '#F472B6', leftAccent: '#3B82F6', rightAccent: '#F59E0B', accent: '#3B82F6' }
+      { id: 'case-a-thon',        name: 'AI Case-a-thon',      tags: ['Business Strategy', 'AI Analytics'],headlineColor: '#F472B6', leftAccent: '#3B82F6', rightAccent: '#F59E0B', accent: '#3B82F6' },
+      { id: 'glitch-race',        name: 'The Glitch Race',     tags: ['Design', 'Problem Solving'],         headlineColor: '#FF4400', leftAccent: '#FF4400', rightAccent: '#00FFFF', accent: '#FF4400' },
+      { id: 'biome-orbit',        name: 'Biome Orbit',         tags: ['Puzzle', 'Immersive'],               headlineColor: '#00FFAA', leftAccent: '#00FFAA', rightAccent: '#0088FF', accent: '#00FFAA' }
     ];
   }
 
-  const N = cardData.length;            // 6
-  const cyclePx = N * SCROLL_PER_EVENT; // 7,200 px — one full loop
+  const N = cardData.length;            // 8
+  const cyclePx = N * SCROLL_PER_EVENT; // 9,600 px — one full loop
 
-  // Render CYCLES full copies of the 6 events
+  // Render CYCLES full copies of the 8 events
   const renderData = [];
   for (let c = 0; c < CYCLES; c++) {
     cardData.forEach((ev, i) => renderData.push({ ...ev, _cycle: c, _localIndex: i }));
@@ -92,7 +94,7 @@ export function init() {
   });
 
   const cards = Array.from(scrollContainer.querySelectorAll('.event-card'));
-  const totalCards = cards.length;                        // CYCLES × N = 18
+  const totalCards = cards.length;                        // CYCLES × N = 24
   const totalScroll = (totalCards - 1) * SCROLL_PER_EVENT;
   const step = 2.0;
 

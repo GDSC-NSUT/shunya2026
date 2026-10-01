@@ -27,11 +27,34 @@ export const events = [
       analog: 'CLIMATE PREDICTION MODEL',
       coexistence: 'ECOLOGICAL REGENERATION'
     },
-    format: 'Live Elimination &bull; Multi-Round',
-    teamSize: '1 &ndash; 2 Operatives',
-    duration: '3 Hours High-Stakes',
-    prize: '$4,000 Cash + GPU Compute',
-    description: 'A prompt-engineering and logic battle against an adversarial LLM. Use creativity, jailbreak deduction, and forensic prompting to bypass security firewalls and extract the vault access keys before time runs out.'
+    format: 'Prompt Engineering + AI Adversarial Thinking',
+    date: '11th September',
+    venue: 'APJ',
+    description: 'An interactive AI-adversarial event where participants compete against an LLM. Battle to crack secret passwords using strategic prompt engineering. The difficulty increases with each round, simulating the adversarial edge between human intelligence and AI systems.'
+  },
+  {
+    id: 'devlympics',
+    name: 'Devlympics — Hackathon',
+    tagline: 'A 24-hour cybersecurity sprint addressing real-world vulnerabilities.',
+    tags: ['DISTRIBUTED COMPUTING', 'MYCELIUM NODE'],
+    headlineColor: 'var(--headline-devlympics)',
+    biomeColor: 'var(--accent-devlympics-left)',
+    techColor: 'var(--accent-devlympics-right)',
+    leftAccent: 'var(--accent-devlympics-left)',
+    rightAccent: 'var(--accent-devlympics-right)',
+    accent: 'var(--accent-devlympics-left)',
+    biologicalModel: 'MYCELIAL NETWORK',
+    technologicalAnalog: 'DISTRIBUTED SYSTEMS',
+    sharedPrinciple: 'DECENTRALIZED INFRASTRUCTURE',
+    telemetry: {
+      observed: 'NUTRIENT EXCHANGE',
+      analog: 'DATA PACKET ROUTING',
+      coexistence: 'NODE DEPENDENCY'
+    },
+    format: 'Overnight 24-Hour Hackathon',
+    date: '12th–13th September',
+    venue: 'Smart Block',
+    description: 'A 24-hour cybersecurity sprint in which teams develop a functional security or threat-detection prototype from scratch. Address vulnerabilities like unauthorized access, phishing, and data breaches, and pitch your final security solution to a judging panel.'
   },
   {
     id: 'autopilot',
@@ -52,40 +75,15 @@ export const events = [
       analog: 'MULTI-AGENT DRONE SWARM',
       coexistence: 'DECENTRALIZED LOGIC'
     },
-    format: 'Autonomous Benchmark &bull; Agent Arena',
-    teamSize: '1 &ndash; 4 Builders',
-    duration: '6 Hours Sprint',
-    prize: '$5,000 Cash + Seed Fast-Track',
-    description: 'Architect and deploy multi-agent autonomous swarms capable of spatial reasoning, dynamic tool utilization, and self-correcting decision trees in volatile simulated environments.'
-  },
-  {
-    id: 'devlympics',
-    name: '24-Hour Devlympics',
-    tagline: 'A 24-hour build-and-pitch innovation sprint with mentors.',
-    tags: ['DISTRIBUTED COMPUTING', 'MYCELIUM NODE'],
-    headlineColor: 'var(--headline-devlympics)',
-    biomeColor: 'var(--accent-devlympics-left)',
-    techColor: 'var(--accent-devlympics-right)',
-    leftAccent: 'var(--accent-devlympics-left)',
-    rightAccent: 'var(--accent-devlympics-right)',
-    accent: 'var(--accent-devlympics-left)',
-    biologicalModel: 'MYCELIAL NETWORK',
-    technologicalAnalog: 'DISTRIBUTED SYSTEMS',
-    sharedPrinciple: 'DECENTRALIZED INFRASTRUCTURE',
-    telemetry: {
-      observed: 'NUTRIENT EXCHANGE',
-      analog: 'DATA PACKET ROUTING',
-      coexistence: 'NODE DEPENDENCY'
-    },
-    format: '24-Hour Nonstop &bull; Build & Pitch',
-    teamSize: '2 &ndash; 4 Founders',
-    duration: '24 Hours Endurance',
-    prize: '$10,000 Pool + VC Intros',
-    description: 'The ultimate endurance test for builders. Conceive, develop, and live-demo a functioning software or hardware AI prototype within 24 hours, guided by industry tech leads and venture mentors.'
+    format: 'Agentic AI Challenge',
+    duration: '6 hours',
+    date: '12th September',
+    venue: 'APJ',
+    description: 'A 6-hour Agentic AI challenge where teams create AI agents capable of solving task-specific problems using tools. Judged on accuracy, latency, tool usage, and total cost. External platforms like Claude Code or Antigravity are strictly prohibited.'
   },
   {
     id: 'flow-in-flux',
-    name: 'Flow in Flux',
+    name: 'Flow in Flux 2026',
     tagline: 'Branding, UI/UX, product design, game design, AI-assisted design.',
     tags: ['FLUID SIMULATION', 'ENERGY MOVEMENT'],
     headlineColor: 'var(--headline-flow-flux)',
@@ -102,16 +100,15 @@ export const events = [
       analog: 'DATA STREAM OPTIMIZATION',
       coexistence: 'FLUID ARCHITECTURE'
     },
-    format: 'Creative Suite &bull; Visual Showcase',
-    teamSize: '1 &ndash; 3 Designers',
-    duration: '8 Hours Intensive',
-    prize: '$4,500 Cash + Design Fellowship',
-    description: 'A comprehensive design arena pushing the boundaries of interaction design, dynamic generative design systems, and spatial interfaces. Create fluid, hyper-responsive digital artifacts that captivate.'
+    format: 'Overnight 2-day competition',
+    date: '11th–12th September',
+    venue: 'Smart Block',
+    description: 'A 2-day overnight design competition focused on solving real-world design challenges across Branding, UI/UX, Product Design, Game Design, and AI-Assisted Design. From sprint to presentation, projects are evaluated on creativity, feasibility, and quality.'
   },
   {
     id: 'hallucination-hunt',
-    name: 'Hallucination Hunt',
-    tagline: 'A collaborative technical challenge track for developers of all levels.',
+    name: 'The Hallucination Hunt',
+    tagline: 'A collaborative technical challenge track reversing the AI workflow.',
     tags: ['MIMICRY', 'PATTERN RECOGNITION'],
     headlineColor: 'var(--headline-hallucination)',
     biomeColor: 'var(--accent-hallucination-left)',
@@ -127,16 +124,15 @@ export const events = [
       analog: 'ADVERSARIAL DETECTION',
       coexistence: 'DECEPTIVE PATTERNS'
     },
-    format: 'Capture The Bug &bull; Collaborative Track',
-    teamSize: '1 &ndash; 4 Engineers',
-    duration: '4 Hours Diagnostics',
-    prize: '$3,500 Bounty Pool',
-    description: 'Track down, diagnose, and isolate complex model hallucinations, poisoned embeddings, and subtle edge-case failures in deep-learning architectures under live pressure.'
+    format: 'Leaderboard Bug Hunt',
+    date: '11th September',
+    venue: 'Mini Audi',
+    description: 'A timed, leaderboard-style bug hunt focused on reviewing AI-generated code. Participants must audit snippets generated by LLMs, identify subtle logic errors, detect hallucinated API calls, and fix the generated code. A test of human critical thinking and AI-reliability.'
   },
   {
     id: 'case-a-thon',
     name: 'AI Case-a-thon',
-    tagline: 'Real-world business case challenges solved with AI-powered strategy.',
+    tagline: 'Real-world socio-economic problems solved with AI-powered strategy.',
     tags: ['NEURAL SYSTEMS', 'PATTERN PROCESSING'],
     headlineColor: 'var(--headline-caseathon)',
     biomeColor: 'var(--accent-caseathon-left)',
@@ -152,10 +148,57 @@ export const events = [
       analog: 'MACHINE LEARNING MODELS',
       coexistence: 'PREDICTIVE REASONING'
     },
-    format: 'Consulting Arena &bull; Case Presentation',
-    teamSize: '2 &ndash; 4 Strategists',
-    duration: '5 Hours Analysis',
-    prize: '$5,000 Cash + Consulting Grants',
-    description: 'Devise data-driven strategic interventions for Fortune 500 scenarios using generative analytics and quantitative AI models. Bridge technical capability with multi-million dollar market impact.'
+    format: 'Consulting Case Competition',
+    date: '12th September',
+    venue: 'Mini Audi',
+    description: 'A high-intensity consulting case competition focused on applying AI to complex real-world socio-economic problems. Evaluate financial sustainability, ethical AI integration, and operational feasibility to scale social impact for nonprofits.'
+  },
+  {
+    id: 'glitch-race',
+    name: 'The Glitch Race',
+    tagline: 'Rapid creative problem solving across multiple design domains.',
+    tags: ['CHROMATIC ABERRATION', 'SIGNAL PROCESSING'],
+    headlineColor: 'var(--headline-glitch-race)',
+    biomeColor: 'var(--accent-glitch-race-left)',
+    techColor: 'var(--accent-glitch-race-right)',
+    leftAccent: 'var(--accent-glitch-race-left)',
+    rightAccent: 'var(--accent-glitch-race-right)',
+    accent: 'var(--accent-glitch-race-left)',
+    biologicalModel: 'GENETIC MUTATION',
+    technologicalAnalog: 'SIGNAL NOISE & ARTIFACTS',
+    sharedPrinciple: 'EVOLUTIONARY ADVANCEMENT',
+    telemetry: {
+      observed: 'DNA RECOMBINATION',
+      analog: 'ALGORITHMIC GLITCHES',
+      coexistence: 'CONTROLLED CHAOS'
+    },
+    format: '2-Day Overnight Design Competition',
+    date: '11th September',
+    venue: 'Mini Audi',
+    description: 'A 2-day overnight design competition solving real-world design challenges across UI/UX, Product Design, Game Design, and Packaging. Participants face problem statement allocation and a rapid design sprint, culminating in project presentations to the jury.'
+  },
+  {
+    id: 'biome-orbit',
+    name: 'Biome Orbit',
+    tagline: 'An immersive puzzle quest bridging natural biomes and space technology.',
+    tags: ['ATMOSPHERIC ENTRY', 'ECOSYSTEM BALANCE'],
+    headlineColor: 'var(--headline-biome-orbit)',
+    biomeColor: 'var(--accent-biome-orbit-left)',
+    techColor: 'var(--accent-biome-orbit-right)',
+    leftAccent: 'var(--accent-biome-orbit-left)',
+    rightAccent: 'var(--accent-biome-orbit-right)',
+    accent: 'var(--accent-biome-orbit-left)',
+    biologicalModel: 'TERRESTRIAL BIOMES',
+    technologicalAnalog: 'ORBITAL HABITATS',
+    sharedPrinciple: 'LIFE SUPPORT SYSTEMS',
+    telemetry: {
+      observed: 'BIOME SUCCESSION',
+      analog: 'ENVIRONMENTAL CONTROLS',
+      coexistence: 'SYMBIOTIC STABILITY'
+    },
+    format: 'Immersive Puzzle Quest',
+    date: '12th September',
+    venue: 'Mini Audi',
+    description: 'An interactive escape-style quest. The venue is divided into four zones (Forest, Ocean, Atmosphere, Orbit). Teams receive a mission objective and must progress sequentially by solving nature-and-technology-inspired puzzles to unlock the final launch code.'
   }
 ];

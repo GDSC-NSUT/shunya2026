@@ -11,9 +11,9 @@
  * μ_spring << μ_friction  →  cards stop before wave flattens  →  organic "jelly" settle
  */
 
-export const TOTAL_NODES = 18;
-export const DATA_SIZE = 6;
-export const HALF_NODES = TOTAL_NODES >> 1; // 9
+export const TOTAL_NODES = 24;
+export const DATA_SIZE = 8;
+export const HALF_NODES = TOTAL_NODES >> 1; // 12
 
 // ─── Velocity Physics ──────────────────────────────────────────────────────
 // V_FRICTION: higher = glides longer. Increased to 0.96 for a fluid, natural coast.

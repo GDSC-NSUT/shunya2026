@@ -28,6 +28,8 @@
   --headline-flow-flux: #FF00FF;      /* Plasma Pink */
   --headline-hallucination: #D4FF00;  /* Toxic Lime */
   --headline-caseathon: #FFFFFF;      /* Pure White */
+  --headline-glitch-race: #FF4400;    /* Glitch Orange */
+  --headline-biome-orbit: #00FFAA;    /* Biome Cyan-Green */
 
   /* ── Dual-Hemisphere Chromatic Pairings (Left Celestial vs Right HUD) ───── */
   /* 01. Zero Day */
@@ -53,6 +55,14 @@
   /* 06. Case-a-thon */
   --accent-caseathon-left: #FFFFFF;
   --accent-caseathon-right: #0066FF;
+
+  /* 07. The Glitch Race */
+  --accent-glitch-race-left: #FF4400;
+  --accent-glitch-race-right: #00FFFF;
+
+  /* 08. Biome Orbit */
+  --accent-biome-orbit-left: #00FFAA;
+  --accent-biome-orbit-right: #0088FF;
 
   /* Legacy Fallback Accents */
   --accent-zero-day: #FF0055;

@@ -19,7 +19,7 @@ const GlassCard = React.forwardRef(function GlassCard(
     >
       {/* The Background Watermark Index (Repeating 1-6) */}
       <span className="card-index">
-        {String((nodeIndex % 6) + 1).padStart(2, "0")}
+        {String((nodeIndex % 8) + 1).padStart(2, "0")}
       </span>
 
       {/* Card content (bottom-aligned) */}
@@ -29,7 +29,7 @@ const GlassCard = React.forwardRef(function GlassCard(
         </p>
         <h3 className="card-title">{event.title}</h3>
         <p className="card-description">{event.description}</p>
-        <p className="card-date">{event.date}</p>
+        <p className="card-date">{event.date} &bull; {event.venue}</p>
       </div>
     </div>
   );

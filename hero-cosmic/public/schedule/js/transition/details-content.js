@@ -12,10 +12,12 @@ export function renderDetails(event) {
 
   const headlineColor = event.headlineColor || event.accent || 'var(--star-white)';
   const primaryAccent = event.accent || headlineColor;
-  const format = event.format || 'Hybrid &bull; Prompting & Code Battles';
-  const teamSize = event.teamSize || '1 &ndash; 4 Operatives';
-  const duration = event.duration || 'Full Night Sprint';
-  const prize = event.prize || '$10,000 Prize Pool + Grants';
+  const format = event.format || 'Mission Critical Task';
+  const teamSize = event.teamSize || null;
+  const duration = event.duration || null;
+  const prize = event.prize || null;
+  const date = event.date || 'TBD';
+  const venue = event.venue || 'TBD';
   const description = event.description || 'Deep-space challenge briefing and tactical evaluation criteria are classified until mission briefing.';
   const tags = event.tags ? event.tags.slice(0, 3) : ['AI Challenge', 'Special Ops'];
 
@@ -45,21 +47,31 @@ export function renderDetails(event) {
 
         <div class="details-view__meta-grid">
           <div class="details-view__meta-card">
+            <span class="details-view__meta-label">DATE & VENUE</span>
+            <span class="details-view__meta-value">${date} &bull; ${venue}</span>
+          </div>
+          <div class="details-view__meta-card">
             <span class="details-view__meta-label">FORMAT</span>
             <span class="details-view__meta-value">${format}</span>
           </div>
+          ${teamSize ? `
           <div class="details-view__meta-card">
             <span class="details-view__meta-label">TEAM SIZE</span>
             <span class="details-view__meta-value">${teamSize}</span>
           </div>
+          ` : ''}
+          ${duration ? `
           <div class="details-view__meta-card">
             <span class="details-view__meta-label">DURATION</span>
             <span class="details-view__meta-value">${duration}</span>
           </div>
+          ` : ''}
+          ${prize ? `
           <div class="details-view__meta-card">
             <span class="details-view__meta-label">REWARDS & PRIZE</span>
             <span class="details-view__meta-value" style="color: ${headlineColor}; font-weight: 700;">${prize}</span>
           </div>
+          ` : ''}
         </div>
 
         <div class="details-view__footer">
