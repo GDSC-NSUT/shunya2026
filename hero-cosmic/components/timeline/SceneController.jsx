@@ -269,9 +269,13 @@ export default function SceneController() {
     []
   );
 
+  const dismissCallbackRef = useRef();
+  const clickCallbackRef = useRef();
+
   useEffect(() => {
     dismissCallbackRef.current = handleDismiss;
-  }, [handleDismiss]);
+    clickCallbackRef.current = handleCardClick;
+  }, [handleDismiss, handleCardClick]);
 
   const handleCardClick = useCallback(
     (nodeIndex) => {
@@ -393,6 +397,16 @@ export default function SceneController() {
           wheelSpeed: -1,
           tolerance: 10,
           preventDefault: true,
+          onClick: (self) => {
+            const ev = self.event;
+            const cardEl = ev.target.closest('.glass-card');
+            if (cardEl && clickCallbackRef.current) {
+              const nodeIndex = parseInt(cardEl.dataset.nodeIndex, 10);
+              if (!isNaN(nodeIndex)) {
+                clickCallbackRef.current(nodeIndex);
+              }
+            }
+          },
           onChangeY: (self) => {
             if (e.isFrozen) {
               if (e.activeCardIndex !== -1 && dismissCallbackRef.current) {
