@@ -22,47 +22,47 @@
   --star-muted: rgba(165, 214, 167, 0.45);
 
   /* ── Curated Luxury High-Contrast Headline Colors ──────────────────────── */
-  --headline-zero-day: #FF0055;       /* Cyberpunk Red */
-  --headline-autopilot: #FFB800;      /* Solar Gold */
-  --headline-devlympics: #00FF9D;     /* Neon Emerald */
-  --headline-flow-flux: #FF00FF;      /* Plasma Pink */
-  --headline-hallucination: #D4FF00;  /* Toxic Lime */
-  --headline-caseathon: #FFFFFF;      /* Pure White */
-  --headline-glitch-race: #FF4400;    /* Glitch Orange */
-  --headline-biome-orbit: #00FFAA;    /* Biome Cyan-Green */
+  --headline-zero-day: #FF003C;       /* Crimson Red */
+  --headline-autopilot: #0066FF;      /* Electric Blue */
+  --headline-devlympics: #FFE600;     /* Cyber Yellow */
+  --headline-flow-flux: #8A2BE2;      /* Deep Violet */
+  --headline-hallucination: #39FF14;  /* Toxic Lime */
+  --headline-caseathon: #FF6600;      /* Neon Orange */
+  --headline-glitch-race: #FF00FF;    /* Hot Magenta */
+  --headline-biome-orbit: #00FFFF;    /* Pure Cyan */
 
   /* ── Dual-Hemisphere Chromatic Pairings (Left Celestial vs Right HUD) ───── */
   /* 01. Zero Day */
-  --accent-zero-day-left: #FF0055;
-  --accent-zero-day-right: #9D00FF;
+  --accent-zero-day-left: #FF003C;
+  --accent-zero-day-right: #FFB800;
 
   /* 02. Autopilot */
-  --accent-autopilot-left: #FFB800;
-  --accent-autopilot-right: #FFFFFF;
+  --accent-autopilot-left: #0066FF;
+  --accent-autopilot-right: #00FFFF;
 
   /* 03. Devlympics */
-  --accent-devlympics-left: #00FF9D;
-  --accent-devlympics-right: #0033FF;
+  --accent-devlympics-left: #FFE600;
+  --accent-devlympics-right: #FF6600;
 
   /* 04. Flow in Flux */
-  --accent-flow-flux-left: #FF00FF;
-  --accent-flow-flux-right: #00F0FF;
+  --accent-flow-flux-left: #8A2BE2;
+  --accent-flow-flux-right: #FF00FF;
 
   /* 05. Hallucination Hunt */
-  --accent-hallucination-left: #D4FF00;
-  --accent-hallucination-right: #FF5500;
+  --accent-hallucination-left: #39FF14;
+  --accent-hallucination-right: #00FFAA;
 
   /* 06. Case-a-thon */
-  --accent-caseathon-left: #FFFFFF;
-  --accent-caseathon-right: #0066FF;
+  --accent-caseathon-left: #FF6600;
+  --accent-caseathon-right: #FFE600;
 
   /* 07. The Glitch Race */
-  --accent-glitch-race-left: #FF4400;
-  --accent-glitch-race-right: #00FFFF;
+  --accent-glitch-race-left: #FF00FF;
+  --accent-glitch-race-right: #8A2BE2;
 
   /* 08. Biome Orbit */
-  --accent-biome-orbit-left: #00FFAA;
-  --accent-biome-orbit-right: #0088FF;
+  --accent-biome-orbit-left: #00FFFF;
+  --accent-biome-orbit-right: #0066FF;
 
   /* Legacy Fallback Accents */
   --accent-zero-day: #FF0055;

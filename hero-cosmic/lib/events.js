@@ -64,7 +64,7 @@ export const EVENTS = [
     title: "The Glitch Race",
     tag: "Design + Innovation + Rapid Solving",
     description: "A 2-day overnight design competition solving real-world design challenges across multiple creative domains including UI/UX, Game Design, and Packaging. Rapid creative problem solving from problem allocation to jury evaluation.",
-    accent: "#FF4400", // Glitch Orange
+    accent: "#FF00FF", // Neon Magenta
     date: "11th September",
     venue: "Mini Audi",
   },
@@ -73,7 +73,7 @@ export const EVENTS = [
     title: "Biome Orbit",
     tag: "Immersive Puzzle Quest + Nature + Tech",
     description: "A sequential puzzle quest through four zones representing different natural biomes (Forest, Ocean, Atmosphere, Orbit). Solve nature-and-technology-inspired puzzles to unlock the final launch code in this immersive, timed challenge.",
-    accent: "#00FFAA", // Biome Cyan-Green
+    accent: "#00FFFF", // Electric Cyan
     date: "12th September",
     venue: "Mini Audi",
   },
