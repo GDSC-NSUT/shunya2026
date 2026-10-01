@@ -270,11 +270,6 @@ export default function SceneController() {
   );
   const clickCallbackRef = useRef();
 
-  useEffect(() => {
-    dismissCallbackRef.current = handleDismiss;
-    clickCallbackRef.current = handleCardClick;
-  }, [handleDismiss, handleCardClick]);
-
   const handleCardClick = useCallback(
     (nodeIndex) => {
       const e = engineRef.current;
@@ -359,6 +354,11 @@ export default function SceneController() {
     },
     [activeDetail]
   );
+
+  useEffect(() => {
+    dismissCallbackRef.current = handleDismiss;
+    clickCallbackRef.current = handleCardClick;
+  }, [handleDismiss, handleCardClick]);
 
   // ─── Main Effect: Observer + Ticker ────────────────────────────────────
   useEffect(() => {
