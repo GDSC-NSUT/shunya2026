@@ -3,46 +3,23 @@
 ## Non-negotiables
 - Do not invent files, paths, tools, or dependencies.
 - Do not touch unrelated code.
-- Do not create the HUD effect in the asset-generation step.
-- Do not make the hero visually heavy.
-- Do not sacrifice performance for decoration.
-- Do not finalize uncertainty as fact.
-- Do not silently skip repository inspection.
-- Do not turn a local cursor effect into a global animation.
-- Do not make any further changes to the Earth models, alignments, sizing, or layout; the current layout is final.
+- Do not sacrifice mobile performance for desktop decoration (blur, gradients).
+- Do not trigger React state updates inside the GSAP ticker loop.
 - NEVER push code to GitHub without the user's explicit permission.
 
 ## Visual rules
-- Earth belongs low in the frame.
-- Nebula and stars belong above and around it.
-- Negative space is a feature, not a bug.
-- HUD lines must stay thin and restrained.
-- Accent color should be rare, not constant.
-- Details must read premium at hero scale.
+- Maintain the dark, cosmic aesthetic (neon accents against dark backgrounds).
+- Typography must stay consistent with the `corpta` font and the `Space Grotesk` tabular numbers.
+- Glassmorphism should be used carefully — disable `backdrop-filter: blur` on mobile elements if they are animated.
 
 ## Motion rules
-- Cursor-local reveal only.
-- Outside the reveal, nothing from the HUD should animate.
-- Prefer a continuous HUD layer clipped by a mask over remounting content.
-- Keep motion elegant and controlled.
-- Avoid jittery or game-like movement.
-
-## Performance rules
-- Keep runtime work minimal.
-- Prefer transform, opacity, masking, and lightweight SVG.
-- Avoid layout thrash.
-- Avoid per-frame React state updates.
-- Avoid dense particle systems.
-- Keep assets optimized for web.
+- Animations must feel premium, bouncy, and cinematic (e.g. `elastic.out` or `expo.out`).
+- GSAP Observer logic handles touch/wheel input. Do not mix native scrolling with the kinetic wave engine.
+- Mobile interactions should feel "loose" and fast (high scroll multiplier, high velocity cap).
+- Avoid per-frame React state updates. Use `gsap.quickTo` or direct DOM manipulation (`ref.current.style.transform`) for 60fps tracking.
+- When animating an element with GSAP `fromTo`, explicitly overwrite ALL transform properties (`x`, `y`, `z`, `scale`, `rotation`) if the element previously inherited values from a physics engine.
 
 ## Review checklist before shipping
-- Is the visual hierarchy clear?
-- Is the scene still readable with the HUD layered on top?
-- Does the page feel smooth?
-- Are the files modular?
-- Is the implementation faithful to the brief?
-- Did we avoid inventing unsupported details?
-
-## Escalation rule
-If a required fact cannot be verified from the repo or the provided source:
-stop and ask before changing the design.
+- Does this break on mobile? (Verify JS/CSS media queries).
+- Is this running smoothly at 60fps? (No heavy layers during animations).
+- Did I overwrite React inline CSS variables when clearing styles? (Use `.removeProperty` or explicitly unset specific styles instead of `cssText = ''`).
