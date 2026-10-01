@@ -194,8 +194,18 @@ export default function SceneController() {
             ease: 'power3.in',
             onComplete: () => {
               cardEl.classList.remove('detail-expanded');
-              cardEl.style.cssText = ''; // full reset
-              gsap.set(cardEl, { opacity: 1 }); // restore opacity for next time
+              cardEl.style.position = '';
+              cardEl.style.zIndex = '';
+              cardEl.style.borderRadius = '';
+              cardEl.style.padding = '';
+              cardEl.style.width = '';
+              cardEl.style.height = '';
+              cardEl.style.top = '';
+              cardEl.style.bottom = '';
+              cardEl.style.left = '';
+              cardEl.style.right = '';
+              cardEl.style.background = '';
+              gsap.set(cardEl, { opacity: 1, clearProps: 'xPercent,yPercent' }); // restore opacity and clear GSAP transforms
 
               const delta = getDelta(e.activeCardIndex, e.progress);
               const state = getSpatialState(
