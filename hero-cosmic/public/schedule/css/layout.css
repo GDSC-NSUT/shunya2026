@@ -212,8 +212,8 @@
   width: 100vw;
   height: 100vh;
   pointer-events: none;
-  will-change: transform, opacity;
   z-index: 10;
+  visibility: hidden;
 }
 
 .event-card.is-active {

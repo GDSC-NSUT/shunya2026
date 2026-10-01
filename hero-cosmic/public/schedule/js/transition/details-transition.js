@@ -96,7 +96,7 @@ function openAirlock(eventData) {
 
   const { view, seam, closeBtn } = rendered;
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const easeCurtain = "expo.inOut";   // premium symmetrical cinematic ease
+  const easeCurtain = "power4.inOut";   // ultra-premium organic cinematic ease
 
   // Lock body scroll
   document.body.style.overflow = 'hidden';
@@ -132,9 +132,9 @@ function openAirlock(eventData) {
       ease: easeCurtain
     }, 0);
 
-    // 2. Details view: emerge from depth (scale 0.96 -> 1, opacity 0 -> 1)
+    // 2. Details view: emerge from depth (subtle, premium scale 0.97 -> 1)
     airlockTimeline.fromTo(view,
-      { scale: 0.92, opacity: 0, y: 40 },
+      { scale: 0.97, opacity: 0, y: 30 },
       { scale: 1, opacity: 1, y: 0, duration: 0.9, ease: easeCurtain },
       0.05  // tiny delay to stagger entry after scroll inner starts receding
     );

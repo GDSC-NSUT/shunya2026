@@ -49,6 +49,8 @@ function buildStars() {
 
 function buildAsteroids() {
   asteroids = [];
+  const isMobile = window.innerWidth < 768;
+  if (isMobile) return; // Skip complex polygon paths on mobile GPU
   for (let i = 0; i < 20; i++) {
     asteroids.push(makeAsteroid());
   }
@@ -80,7 +82,8 @@ function makeAsteroid(yStart) {
 function resize() {
   width  = window.innerWidth;
   height = window.innerHeight;
-  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const isMobile = width < 768;
+  const dpr = isMobile ? 1 : Math.min(window.devicePixelRatio || 1, 2);
   canvas.width  = width  * dpr;
   canvas.height = height * dpr;
   ctx.setTransform(1, 0, 0, 1, 0, 0);

@@ -112,8 +112,8 @@ export function buildTimelineTransitions(tl, cards, step = 2.0) {
   
   const outDuration = transitionDuration;
   const inDuration  = transitionDuration;
-  const easeOut     = 'none'; // Linear, no acceleration/deceleration
-  const easeIn      = 'none'; // Linear, no acceleration/deceleration
+  const easeOut     = 'power2.inOut'; // Premium, elastic acceleration
+  const easeIn      = 'power2.inOut'; // Premium, elastic deceleration
 
   const items = cards.map(card => {
     const headline  = card.querySelector('.event-headline');
