@@ -323,13 +323,18 @@ export default function SceneController() {
         cardEl.style.bottom = 'auto';
         cardEl.style.right = 'auto';
 
-        // Mobile: slide up and fade in to center
+        // Mobile: slide up and fade in to center, resetting ALL physics transforms
         gsap.fromTo(cardEl,
-          { xPercent: -50, yPercent: -50, y: window.innerHeight / 2 + 300, opacity: 0 },
+          { 
+            xPercent: -50, yPercent: -50, 
+            x: 0, y: window.innerHeight / 2 + 300, z: 0,
+            scale: 1, rotateX: 0, rotateY: 0,
+            opacity: 0 
+          },
           {
-            xPercent: -50,
-            yPercent: -50,
-            y: 0,
+            xPercent: -50, yPercent: -50, 
+            x: 0, y: 0, z: 0,
+            scale: 1, rotateX: 0, rotateY: 0,
             opacity: 1,
             duration: 0.6,
             ease: 'expo.out',
