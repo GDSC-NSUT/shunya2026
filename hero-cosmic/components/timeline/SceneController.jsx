@@ -301,12 +301,6 @@ export default function SceneController() {
       cardEl.classList.add('detail-expanded');
       cardEl.style.position = 'fixed';
       cardEl.style.zIndex = '9999';
-      const isMobile = e.W < 768;
-
-      // ── Step 3: Apply final geometry (layout properties) ──
-      cardEl.classList.add('detail-expanded');
-      cardEl.style.position = 'fixed';
-      cardEl.style.zIndex = '9999';
       
       if (isMobile) {
         cardEl.style.borderRadius = '24px';
