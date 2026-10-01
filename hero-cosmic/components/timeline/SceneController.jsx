@@ -185,7 +185,8 @@ export default function SceneController() {
         if (contentEl) gsap.set(contentEl, { opacity: 0, y: 0 });
         if (indexEl) gsap.set(indexEl, { opacity: 0 });
 
-        if (window.innerWidth < 768) {
+        const isMobile = window.matchMedia('(max-width: 768px)').matches;
+        if (isMobile) {
           // Mobile: fade and slide down
           gsap.to(cardEl, {
             y: window.innerHeight / 2 + 300,
@@ -305,7 +306,7 @@ export default function SceneController() {
       // ── Step 2: Record initial geometry ──
       e.flipState = Flip.getState(cardEl);
 
-      const isMobile = e.W < 768;
+      const isMobile = window.matchMedia('(max-width: 768px)').matches;
 
       // ── Step 3: Apply final geometry (layout properties) ──
       cardEl.classList.add('detail-expanded');
