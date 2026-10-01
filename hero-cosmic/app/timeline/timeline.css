@@ -280,12 +280,13 @@
 
 .glass-card.detail-expanded {
   justify-content: center; /* Center the text vertically instead of bottom */
-  filter: brightness(1) !important; /* Force it to be fully bright and solid */
+  filter: brightness(1) !important; /* Force it to be fully bright */
   background: linear-gradient(
     135deg,
-    color-mix(in srgb, var(--card-accent) 25%, rgba(255, 255, 255, 0.15)),
-    color-mix(in srgb, var(--card-accent) 8%, rgba(0, 0, 0, 0.1))
+    color-mix(in srgb, var(--card-accent) 25%, rgba(0, 5, 5, 0.65)),
+    color-mix(in srgb, var(--card-accent) 8%, rgba(0, 0, 0, 0.5))
   ) !important;
+  backdrop-filter: blur(24px);
 }
 
 .glass-card.detail-expanded .card-title {

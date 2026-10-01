@@ -185,28 +185,17 @@ export default function SceneController() {
         if (contentEl) gsap.set(contentEl, { opacity: 0, y: 0 });
         if (indexEl) gsap.set(indexEl, { opacity: 0 });
 
-        cardEl.classList.remove('detail-expanded');
-        cardEl.style.position = '';
-        cardEl.style.zIndex = '';
-        cardEl.style.borderRadius = '';
-        cardEl.style.padding = '';
-        cardEl.style.width = '';
-        cardEl.style.height = '';
-        cardEl.style.top = '';
-        cardEl.style.bottom = '';
-        cardEl.style.left = '';
-        cardEl.style.right = '';
-        cardEl.style.background = '';
-
         if (window.innerWidth < 768) {
-          // Mobile: slide down off screen
+          // Mobile: fade and slide down
           gsap.to(cardEl, {
-            y: window.innerHeight,
+            y: window.innerHeight / 2 + 300,
+            opacity: 0,
             duration: 0.4,
             ease: 'power3.in',
             onComplete: () => {
               cardEl.classList.remove('detail-expanded');
               cardEl.style.cssText = ''; // full reset
+              gsap.set(cardEl, { opacity: 1 }); // restore opacity for next time
 
               const delta = getDelta(e.activeCardIndex, e.progress);
               const state = getSpatialState(
@@ -231,6 +220,19 @@ export default function SceneController() {
             }
           });
         } else {
+          cardEl.classList.remove('detail-expanded');
+          cardEl.style.position = '';
+          cardEl.style.zIndex = '';
+          cardEl.style.borderRadius = '';
+          cardEl.style.padding = '';
+          cardEl.style.width = '';
+          cardEl.style.height = '';
+          cardEl.style.top = '';
+          cardEl.style.bottom = '';
+          cardEl.style.left = '';
+          cardEl.style.right = '';
+          cardEl.style.background = '';
+
           const delta = getDelta(e.activeCardIndex, e.progress);
           const state = getSpatialState(
             delta, e.W, e.H, e.xOrigin, e.yOrigin, e.amplitude, e.progress
@@ -299,24 +301,32 @@ export default function SceneController() {
       cardEl.classList.add('detail-expanded');
       cardEl.style.position = 'fixed';
       cardEl.style.zIndex = '9999';
-      cardEl.style.borderRadius = isMobile ? '28px 28px 0 0' : '28px';
-      cardEl.style.padding = isMobile ? '32px' : '48px';
-      cardEl.style.width = isMobile ? '100vw' : '42vw';
-      cardEl.style.height = isMobile ? '70vh' : '80vh';
+      const isMobile = e.W < 768;
 
+      // ── Step 3: Apply final geometry (layout properties) ──
+      cardEl.classList.add('detail-expanded');
+      cardEl.style.position = 'fixed';
+      cardEl.style.zIndex = '9999';
+      
       if (isMobile) {
-        cardEl.style.top = 'auto';
-        cardEl.style.bottom = '0';
-        cardEl.style.left = '0';
-        cardEl.style.right = '0';
-        cardEl.style.transform = 'none';
+        cardEl.style.borderRadius = '24px';
+        cardEl.style.padding = '32px';
+        cardEl.style.width = '85vw';
+        cardEl.style.height = '60vh';
+        cardEl.style.top = '50%';
+        cardEl.style.left = '50%';
+        cardEl.style.bottom = 'auto';
+        cardEl.style.right = 'auto';
 
-        // Mobile: slide up from below, no Flip (avoids layout thrash)
+        // Mobile: slide up and fade in to center
         gsap.fromTo(cardEl,
-          { y: window.innerHeight },
+          { xPercent: -50, yPercent: -50, y: window.innerHeight / 2 + 300, opacity: 0 },
           {
+            xPercent: -50,
+            yPercent: -50,
             y: 0,
-            duration: 0.55,
+            opacity: 1,
+            duration: 0.6,
             ease: 'expo.out',
             onComplete: () => {
               // ── Step 4 (mobile): reveal content only after geometry settles ──
