@@ -607,6 +607,19 @@ nextjs-portal {
 
   .card-title {
     font-size: 20px;
+    word-break: break-word;
+  }
+
+  .glass-card.detail-expanded {
+    width: 260px; /* Give it a bit more breathing room on mobile when open */
+    height: 360px;
+    z-index: 50;
+  }
+
+  .glass-card.detail-expanded .card-title {
+    font-size: 22px;
+    word-break: break-word;
+    line-height: 1.1;
   }
 
   .card-tag {
