@@ -101,22 +101,22 @@ export default function CreativeFooter() {
 
           <div className="flex gap-8 md:gap-12 text-[10px] md:text-xs tracking-[0.2em] uppercase text-white/50 w-full md:w-auto justify-between md:justify-end">
             <ul className="flex flex-col gap-4">
-              <li className="text-blue-500 mb-2">Systems</li>
-              {['Timeline', 'Archive', 'Terminal', 'Index'].map((item) => (
+              <li className="text-white mb-2 font-bold tracking-widest">Socials</li>
+              {['Instagram', 'LinkedIn'].map((item) => (
                 <li key={item}>
-                  <a href="#" className="hover:text-white transition-colors duration-300 relative group flex items-center gap-2">
-                    <span className="w-2 h-[1px] bg-white/20 group-hover:bg-blue-400 group-hover:w-4 transition-all" />
+                  <a href="#" className="text-blue-400 hover:text-white transition-colors duration-300 relative group flex items-center gap-2">
+                    <span className="w-2 h-[1px] bg-blue-500/50 group-hover:bg-blue-400 group-hover:w-4 transition-all" />
                     {item}
                   </a>
                 </li>
               ))}
             </ul>
             <ul className="flex flex-col gap-4">
-              <li className="text-blue-500 mb-2">Network</li>
-              {['Discord', 'Instagram', 'Github', 'Access'].map((item) => (
+              <li className="text-white mb-2 font-bold tracking-widest">GDSC</li>
+              {['Website', 'Discord'].map((item) => (
                 <li key={item}>
-                  <a href="#" className="hover:text-white transition-colors duration-300 relative group flex items-center gap-2">
-                    <span className="w-2 h-[1px] bg-white/20 group-hover:bg-blue-400 group-hover:w-4 transition-all" />
+                  <a href="#" className="text-blue-400 hover:text-white transition-colors duration-300 relative group flex items-center gap-2">
+                    <span className="w-2 h-[1px] bg-blue-500/50 group-hover:bg-blue-400 group-hover:w-4 transition-all" />
                     {item}
                   </a>
                 </li>

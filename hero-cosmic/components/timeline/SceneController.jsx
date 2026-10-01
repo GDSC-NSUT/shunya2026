@@ -268,8 +268,6 @@ export default function SceneController() {
     },
     []
   );
-
-  const dismissCallbackRef = useRef();
   const clickCallbackRef = useRef();
 
   useEffect(() => {
