@@ -441,13 +441,13 @@ export default function SceneController() {
             const isTouch = self.event && self.event.type.includes("touch");
             
             if (isTouch) {
-              raw *= 7.0; // Massive boost for mobile swipe feel
+              raw *= 15.0; // Massive boost for mobile swipe feel (ultra sensitive)
             }
             
             // Cap to prevent physics breaking.
             // Desktop wheel is capped lower (30) so scroll-wheels don't jerk.
-            // Mobile touch is capped higher (90) to allow fast "throw" swipes.
-            const capLimit = isTouch ? 90 : 30;
+            // Mobile touch is capped higher (150) to allow fast "throw" swipes.
+            const capLimit = isTouch ? 150 : 30;
             const capped = raw > capLimit ? capLimit : raw < -capLimit ? -capLimit : raw;
             
             e.velocity += capped * INPUT_SCALE;
