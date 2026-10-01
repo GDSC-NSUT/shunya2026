@@ -20,10 +20,12 @@ interface HeroBackgroundProps {
  * - HUD text container: contain:layout paint style per subtree so text paints don't trigger parent recomposite
  */
 export default function HeroBackground({ hudRef }: HeroBackgroundProps) {
-  useParallax();
+  const containerRef = React.useRef<HTMLDivElement>(null);
+  useParallax(containerRef);
 
   return (
     <div
+      ref={containerRef}
       className="fixed inset-0 bg-black overflow-hidden pointer-events-none"
     >
       <style>{`
@@ -110,20 +112,17 @@ export default function HeroBackground({ hudRef }: HeroBackgroundProps) {
           contain: 'layout paint',
         }}
       >
-        {/* Static filter wrapper — GPU rasterizes once */}
-        <div className="absolute inset-0" style={{ filter: 'contrast(1.4) saturate(1.15) brightness(0.82)', contain: 'strict' }}>
-          {/* Only this inner div animates — GPU composites its cached texture */}
+        {/* No filter wrapper — CSS filter on an animated element forces GPU re-rasterize every frame */}
           <div className="absolute inset-0 nebula-drift">
             <Image
               src="/cosmic/rich_green_nebula.webp"
               alt="Nebula"
               fill
-              className="object-cover opacity-70"
+              className="object-cover opacity-[0.56]"
               sizes="100vw"
               priority
             />
           </div>
-        </div>
       </div>
 
       {/* ── Bottom-edge nebula fade ── */}
@@ -260,7 +259,7 @@ export default function HeroBackground({ hudRef }: HeroBackgroundProps) {
             <span style={{ fontFamily: 'var(--font-corpta), sans-serif' }} className="text-[8rem] text-blue-500 leading-none">01</span>
           </div>
           <div className="absolute bottom-[20%] left-[-5%] opacity-15 blur-[8px]">
-            <span style={{ fontFamily: 'var(--font-corpta), sans-serif' }} className="text-[10rem] text-blue-600 leading-none">//</span>
+            <span style={{ fontFamily: 'var(--font-corpta), sans-serif' }} className="text-[10rem] text-blue-600 leading-none">{"//"}</span>
           </div>
 
           {/* Artistic Block 1 */}

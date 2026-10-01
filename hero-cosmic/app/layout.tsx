@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import LiquidGlassNav from "../components/navigation/LiquidGlassNav";
+import SmoothScroll from "../components/SmoothScroll";
 
 const corpta = localFont({
   src: "../public/fonts/Corpta.ttf.otf",
@@ -26,7 +27,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="preload" as="image" href="/cosmic/stars_cinematic.webp" type="image/webp" />
         <link rel="preload" as="image" href="/cosmic/rich_green_nebula.webp" type="image/webp" />
       </head>
-      <body className="bg-black text-white overflow-x-hidden font-corpta"><LiquidGlassNav />{children}</body>
+      <body className="bg-black text-white overflow-x-hidden font-corpta">
+        <LiquidGlassNav />
+        {/* SmoothScroll wraps all page content with Lenis cinematic lerped scrolling */}
+        <SmoothScroll>
+          {children}
+        </SmoothScroll>
+      </body>
     </html>
   );
 }

@@ -12,7 +12,7 @@ import { useReducedMotion } from './useReducedMotion';
  * Dead-zone: values within 0.0005 of target skip the CSS var write.
  * Cost when idle (mouse still): ~2 subtractions + 2 comparisons per frame — negligible.
  */
-export function useParallax() {
+export function useParallax(containerRef?: React.RefObject<HTMLDivElement | null>) {
   const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
@@ -36,8 +36,9 @@ export function useParallax() {
 
       // Only write to DOM if there's a meaningful change
       if (Math.abs(diffX) > 0.0005 || Math.abs(diffY) > 0.0005) {
-        document.documentElement.style.setProperty('--mouse-x', currentX.toFixed(4));
-        document.documentElement.style.setProperty('--mouse-y', currentY.toFixed(4));
+        const targetElement = containerRef?.current || document.documentElement;
+        targetElement.style.setProperty('--mouse-x', currentX.toFixed(4));
+        targetElement.style.setProperty('--mouse-y', currentY.toFixed(4));
       }
 
       if (running) {

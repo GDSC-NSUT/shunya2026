@@ -1,23 +1,25 @@
 'use client';
 
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef } from 'react';
 
 import HeroBorder from '../hero/HeroBorder';
 import ScrambledText from './ScrambledText';
 
 export function useIsMobile() {
-  const [isMobile, setIsMobile] = useState(true); // default true for SSR safety, but we'll hydrate immediately
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setMounted(true);
-    const check = () => setIsMobile(window.innerWidth < 768);
-    check();
-    window.addEventListener('resize', check, { passive: true });
-    return () => window.removeEventListener('resize', check);
+  // CRITICAL: initialise with false so server and first client render match.
+  // The real value is resolved after mount in useEffect.
+  // Reading window.innerWidth during render causes SSR/client mismatch (hydration error).
+  const [isMobile, setIsMobile] = React.useState(false);
+
+  React.useEffect(() => {
+    const mq = window.matchMedia('(max-width: 767px)');
+    // Set accurate value immediately after mount (no visual flash — paint hasn't happened yet)
+    setIsMobile(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
   }, []);
-  // Avoid hydration mismatch by returning true until mounted, but you can also just use CSS fallback if you want.
-  // Here we just return the value. The mismatch will happen but will be fixed instantly.
+
   return isMobile;
 }
 
@@ -47,8 +49,9 @@ export default function AboutSection() {
       {/* Star layer 1 — deep stars */}
       <div aria-hidden style={{
         position: 'absolute', inset: '-10%', zIndex: 0,
-        transform: `translate3d(calc(var(--mouse-x, 0) * -18px), calc(var(--mouse-y, 0) * -18px), 0)`,
-        willChange: 'transform', pointerEvents: 'none',
+        transform: isMobile ? 'none' : `translate3d(calc(var(--mouse-x, 0) * -18px), calc(var(--mouse-y, 0) * -18px), 0)`,
+        willChange: isMobile ? 'auto' : 'transform',
+        pointerEvents: 'none',
         backgroundImage: 'url(/cosmic/stars_deep.png)',
         backgroundSize: 'cover', backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
@@ -58,8 +61,9 @@ export default function AboutSection() {
       {/* Star layer 2 — nearer stars */}
       <div aria-hidden style={{
         position: 'absolute', inset: '-8%', zIndex: 0,
-        transform: `translate3d(calc(var(--mouse-x, 0) * -32px), calc(var(--mouse-y, 0) * -32px), 0)`,
-        willChange: 'transform', pointerEvents: 'none',
+        transform: isMobile ? 'none' : `translate3d(calc(var(--mouse-x, 0) * -32px), calc(var(--mouse-y, 0) * -32px), 0)`,
+        willChange: isMobile ? 'auto' : 'transform',
+        pointerEvents: 'none',
         backgroundImage: 'url(/cosmic/stars_cinematic.png)',
         backgroundSize: 'cover', backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',

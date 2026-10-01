@@ -68,7 +68,7 @@ export function init() {
         <div class="event-card__hemisphere event-card__hemisphere--right"></div>
         <div class="event-card__center">
           <div class="event-card__meta-bar">
-            <div class="event-card__counter" style="color: ${headlineColor}; font-family: var(--font-ui); font-size: 0.7rem; font-weight: 600; letter-spacing: 0.25em; opacity: 0.7; margin-bottom: 16px; text-transform: uppercase; border: 1px solid currentColor; padding: 6px 14px; border-radius: 100px; display: inline-block; background: rgba(0,0,0,0.2); backdrop-filter: blur(4px);">
+            <div class="event-card__counter" style="color: ${headlineColor}; font-family: var(--font-ui); font-size: 0.7rem; font-weight: 600; letter-spacing: 0.25em; opacity: 0.7; margin-bottom: 16px; text-transform: uppercase; border: 1px solid currentColor; padding: 6px 14px; border-radius: 100px; display: inline-block; background: rgba(0,0,0,0.6);">
               EVENT ${paddedIndex} // ${String(N).padStart(2, '0')}
             </div>
             <div class="event-card__full-title" style="color: ${headlineColor};">// ${event.name}</div>
@@ -111,12 +111,20 @@ export function init() {
         const activeIndex = Math.min(totalCards - 1, Math.max(0, Math.round(rawIndex)));
         const localIndex = activeIndex % N;
 
-        cards.forEach((card, i) => {
-          const isActive = (i === activeIndex);
-          card.classList.toggle('is-active', isActive);
-          const headline = card.querySelector('.event-headline');
-          if (headline) headline.classList.toggle('is-active', isActive);
-        });
+        // Optimization: Only touch DOM if the active index changed
+        if (self.prevActiveIndex !== activeIndex) {
+          self.prevActiveIndex = activeIndex;
+          cards.forEach((card, i) => {
+            const isActive = (i === activeIndex);
+            if (card.classList.contains('is-active') !== isActive) {
+              card.classList.toggle('is-active', isActive);
+            }
+            const headline = card.querySelector('.event-headline');
+            if (headline && headline.classList.contains('is-active') !== isActive) {
+              headline.classList.toggle('is-active', isActive);
+            }
+          });
+        }
 
         // Notify app of active event changes for header status tracker & background tinting
         if (localIndex !== currentActiveLocal) {

@@ -96,7 +96,7 @@ function openAirlock(eventData) {
 
   const { view, seam, closeBtn } = rendered;
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const easeCurtain = "expo.out";   // ultra-smooth cinematic deceleration
+  const easeCurtain = "expo.inOut";   // premium symmetrical cinematic ease
 
   // Lock body scroll
   document.body.style.overflow = 'hidden';
@@ -124,18 +124,18 @@ function openAirlock(eventData) {
 
   if (!prefersReducedMotion) {
     // 2. Scroll inner: recede depth + fade (scale 1 -> 0.97, opacity 1 -> 0.15)
+    // CRITICAL: Removed filter: 'blur(4px)' as blurring massive DOM elements during a scale tween destroys mobile GPU framerates
     airlockTimeline.to(scrollInner, {
-      scale: 0.97,
-      opacity: 0.15,
-      filter: 'blur(4px)',
-      duration: 0.65,
+      scale: 0.95,
+      opacity: 0.1,
+      duration: 0.9,
       ease: easeCurtain
     }, 0);
 
     // 2. Details view: emerge from depth (scale 0.96 -> 1, opacity 0 -> 1)
     airlockTimeline.fromTo(view,
-      { scale: 0.96, opacity: 0, y: 24 },
-      { scale: 1, opacity: 1, y: 0, duration: 0.75, ease: easeCurtain },
+      { scale: 0.92, opacity: 0, y: 40 },
+      { scale: 1, opacity: 1, y: 0, duration: 0.9, ease: easeCurtain },
       0.05  // tiny delay to stagger entry after scroll inner starts receding
     );
 
@@ -154,13 +154,13 @@ function openAirlock(eventData) {
     if (detailsContainer) {
       const children = Array.from(detailsContainer.children);
       if (children.length > 0) {
-        gsap.set(children, { opacity: 0, y: 20 });
+        gsap.set(children, { opacity: 0, y: 30 });
         airlockTimeline.to(children, {
           opacity: 1, y: 0,
-          duration: 0.55,
-          ease: 'expo.out',
-          stagger: 0.07
-        }, 0.35);
+          duration: 0.75,
+          ease: 'power3.out',
+          stagger: 0.08
+        }, 0.5); // start as the geometry tween starts slowing down
       }
     }
   } else {

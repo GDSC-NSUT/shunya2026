@@ -27,8 +27,12 @@ let asteroids = [];
 // ── Build data ─────────────────────────────────────────────────────────────
 function buildStars() {
   stars = [];
+  const isMobile = window.innerWidth < 768;
+  const countMultiplier = isMobile ? 0.35 : 1.0; // Huge reduction for mobile
+
   LAYERS.forEach((cfg, li) => {
-    for (let i = 0; i < cfg.count; i++) {
+    const count = Math.floor(cfg.count * countMultiplier);
+    for (let i = 0; i < count; i++) {
       stars.push({
         li,
         x:  Math.random() * width,
@@ -119,20 +123,18 @@ function draw(time) {
     const twk = Math.sin(sec * s.tw + s.ph) * 0.25 + 0.75;
     ctx.globalAlpha = s.a * twk;
 
-    // Glow for big near stars (Optimized: Removed expensive radial gradients)
+    // Glow for big near stars
     if (s.li === 2 && s.r > 2.0) {
       ctx.globalAlpha = s.a * twk * 0.15;
       ctx.fillStyle = '#ffffff';
-      ctx.beginPath();
-      ctx.arc(px, py, s.r * 4.0, 0, Math.PI * 2);
-      ctx.fill();
+      // Use fillRect instead of arc for massive performance boost
+      ctx.fillRect(px - s.r * 2.5, py - s.r * 2.5, s.r * 5.0, s.r * 5.0);
     }
 
     ctx.globalAlpha = s.a * twk;
     ctx.fillStyle = '#ffffff';
-    ctx.beginPath();
-    ctx.arc(px, py, s.r, 0, Math.PI * 2);
-    ctx.fill();
+    // Use fillRect for standard stars
+    ctx.fillRect(px - s.r, py - s.r, s.r * 2.0, s.r * 2.0);
   }
 
   // ── ASTEROIDS ────────────────────────────────────────────────────────────

@@ -108,18 +108,12 @@ body {
 
 /* ─── Mobile Responsiveness ──────────────────────────────────────── */
 @media (max-width: 767px) {
-  /* Larger HUD touch mask for finger interaction */
+  /* Disable HUD touch mask on mobile — HudLayer isn't rendered anyway, and mask kills GPU */
   .hud-mask-container {
-    -webkit-mask-image: radial-gradient(
-      circle 180px at var(--mx, 50%) var(--my, 50%),
-      rgba(0,0,0,1) 50%,
-      rgba(0,0,0,0) 100%
-    );
-    mask-image: radial-gradient(
-      circle 180px at var(--mx, 50%) var(--my, 50%),
-      rgba(0,0,0,1) 50%,
-      rgba(0,0,0,0) 100%
-    );
+    -webkit-mask-image: none !important;
+    mask-image: none !important;
+    opacity: 1 !important;
+    transform: none !important;
   }
 
 }

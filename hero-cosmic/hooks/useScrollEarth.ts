@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, RefObject } from 'react';
 
 function lerp(a: number, b: number, t: number): number {
   return a + (b - a) * t;
@@ -20,7 +20,7 @@ function easeInOutCubic(t: number): number {
  * - Loop is RESTARTED only on scroll events (passive listener).
  * - Window dimensions are cached; never read inside the hot tick path.
  */
-export function useScrollEarth() {
+export function useScrollEarth(bgRef?: RefObject<HTMLDivElement | null>) {
   const earthRef = useRef<HTMLDivElement>(null);
   const hudRef   = useRef<HTMLDivElement>(null);
 
@@ -58,12 +58,19 @@ export function useScrollEarth() {
     };
     window.addEventListener('resize', handleResize, { passive: true });
 
+    // Track Lenis virtual scroll position — falls back to window.scrollY if Lenis hasn't mounted yet
+    let lenisScrollY = 0;
+
     const tick = () => {
-      const scrollY = window.scrollY;
+      // Use Lenis virtual scroll position so Earth physics follow the eased scroll,
+      // not the raw native position (which would make Earth jitter on fast wheel spin)
+      const scrollY = lenisScrollY;
       const curVh   = cachedVh;
       const isMobile = cachedIsMobile;
 
-      const raw    = clamp(scrollY / Math.max(curVh, 1), 0, 1);
+      // Increase scroll distance to 1.5x viewport height to "slow down" the transition
+      const scrollDistance = curVh * 1.5;
+      const raw    = clamp(scrollY / Math.max(scrollDistance, 1), 0, 1);
       const t      = easeInOutCubic(raw);
       const tgtHud = 1 - clamp(raw / 0.45, 0, 1);
 
@@ -73,15 +80,16 @@ export function useScrollEarth() {
         tgtScale = 0.90;
         tgtX     = 0;
         tgtY     = lerp(curVh * 0.49, 0, t);
-        if (scrollY > curVh) tgtY -= (scrollY - curVh);
+        if (scrollY > scrollDistance) tgtY -= (scrollY - scrollDistance);
       } else {
         tgtX     = lerp(0, -22, t);
         tgtY     = lerp(curVh * 0.6, -curVh * 0.04, t);
         tgtScale = lerp(1, 0.60, t);
-        if (scrollY > curVh) tgtY -= (scrollY - curVh);
+        if (scrollY > scrollDistance) tgtY -= (scrollY - scrollDistance);
       }
 
-      if (firstTick) {
+      if (firstTick || Math.abs(tgtY - curY) > curVh) {
+        // Snap immediately on first tick or if there's a massive jump (e.g. dragging scrollbar)
         curX = tgtX; curY = tgtY; curScale = tgtScale; curHud = tgtHud;
         firstTick = false;
       } else {
@@ -129,25 +137,72 @@ export function useScrollEarth() {
       }
     };
 
-    const startLoop = () => {
-      if (rafId === null) {
-        firstTick = false; // Don't snap on re-entry
-        rafId = requestAnimationFrame(tick);
-      }
-    };
 
     // Bootstrap: run once to set initial position
     rafId = requestAnimationFrame(tick);
 
-    // Only restart the loop when the user actually scrolls
-    window.addEventListener('scroll', startLoop, { passive: true });
+
+
+    // Prefer Lenis scroll events (virtual/eased position) over native scroll.
+    // If Lenis hasn't loaded yet we fall back to native scroll.
+    const startLoop = (scrollOrLenis: number | { scroll: number }) => {
+      // Called by either: lenis.on('scroll', cb) where arg is {scroll} object,
+      // or native 'scroll' event where we read window.scrollY
+      if (typeof scrollOrLenis === 'object' && 'scroll' in scrollOrLenis) {
+        lenisScrollY = scrollOrLenis.scroll;
+      } else {
+        lenisScrollY = window.scrollY;
+      }
+
+      // Visibility
+      const isInView = lenisScrollY < cachedVh * 2.0;
+      if (el) {
+        el.classList.toggle('invisible', !isInView);
+        el.classList.toggle('visible', isInView);
+      }
+      if (bgRef?.current) {
+        bgRef.current.style.display = isInView ? 'block' : 'none';
+      }
+
+      if (rafId === null) {
+        firstTick = false;
+        rafId = requestAnimationFrame(tick);
+      }
+    };
+
+    // Try to subscribe to Lenis, fall back to native scroll
+    const tryLenisSubscription = () => {
+      if (window.__lenis) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        window.__lenis.on('scroll', startLoop as any);
+        window.removeEventListener('scroll', nativeStartLoop);
+      }
+    };
+
+    const nativeStartLoop = () => startLoop(window.scrollY);
+
+    // Start with native scroll listener, then switch to Lenis when it mounts
+    window.addEventListener('scroll', nativeStartLoop, { passive: true });
+    // Lenis mounts asynchronously in a client useEffect — poll briefly
+    const lenisCheckInterval = setInterval(() => {
+      if (window.__lenis) {
+        clearInterval(lenisCheckInterval);
+        tryLenisSubscription();
+      }
+    }, 100);
+    // Give up polling after 3s and stick with native scroll
+    setTimeout(() => clearInterval(lenisCheckInterval), 3000);
 
     return () => {
       if (rafId !== null) cancelAnimationFrame(rafId);
-      window.removeEventListener('scroll', startLoop);
+      window.removeEventListener('scroll', nativeStartLoop);
+      if (window.__lenis) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        window.__lenis.off('scroll', startLoop as any);
+      }
       window.removeEventListener('resize', handleResize);
     };
   }, []);
 
-  return { earthRef, hudRef };
+  return { earthRef, hudRef };  // bgRef ownership stays in page.tsx
 }

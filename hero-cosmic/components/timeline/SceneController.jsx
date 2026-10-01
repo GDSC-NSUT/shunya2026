@@ -179,46 +179,45 @@ export default function SceneController() {
 
       const cardEl = cardsRef.current[e.activeCardIndex];
       if (cardEl && e.flipState) {
-        cardEl.classList.remove("detail-expanded");
-        cardEl.style.position = "";
-        cardEl.style.zIndex = "";
-        cardEl.style.borderRadius = "";
-        cardEl.style.padding = "";
-        cardEl.style.width = "";
-        cardEl.style.height = "";
-        cardEl.style.top = "";
-        cardEl.style.bottom = "";
-        cardEl.style.left = "";
-        cardEl.style.right = "";
-        cardEl.style.background = "";
-        
-        // For mobile, skip GSAP Flip entirely to avoid layout thrashing.
-        // Perform a hardware-accelerated slide-down.
+        // ── Step 1: Instantly hide content before reverse geometry ──
+        const contentEl = cardEl.querySelector('.card-content-v2');
+        const indexEl = cardEl.querySelector('.card-index');
+        if (contentEl) gsap.set(contentEl, { opacity: 0, y: 0 });
+        if (indexEl) gsap.set(indexEl, { opacity: 0 });
+
+        cardEl.classList.remove('detail-expanded');
+        cardEl.style.position = '';
+        cardEl.style.zIndex = '';
+        cardEl.style.borderRadius = '';
+        cardEl.style.padding = '';
+        cardEl.style.width = '';
+        cardEl.style.height = '';
+        cardEl.style.top = '';
+        cardEl.style.bottom = '';
+        cardEl.style.left = '';
+        cardEl.style.right = '';
+        cardEl.style.background = '';
+
         if (window.innerWidth < 768) {
+          // Mobile: slide down off screen
           gsap.to(cardEl, {
-            y: window.innerHeight, // slide completely off screen
+            y: window.innerHeight,
             duration: 0.4,
-            ease: "power3.in",
+            ease: 'power3.in',
             onComplete: () => {
-              cardEl.classList.remove("detail-expanded");
-              cardEl.style.position = "";
-              cardEl.style.zIndex = "";
-              cardEl.style.borderRadius = "";
-              cardEl.style.padding = "";
-              cardEl.style.width = "";
-              cardEl.style.height = "";
-              cardEl.style.top = "";
-              cardEl.style.bottom = "";
-              cardEl.style.left = "";
-              cardEl.style.right = "";
-              cardEl.style.background = "";
-              
+              cardEl.classList.remove('detail-expanded');
+              cardEl.style.cssText = ''; // full reset
+
               const delta = getDelta(e.activeCardIndex, e.progress);
               const state = getSpatialState(
                 delta, e.W, e.H, e.xOrigin, e.yOrigin, e.amplitude, e.progress
               );
               cardEl.style.transform = `translate3d(${state.x}px, ${state.y}px, 0) scale(${state.scale}) rotateY(${state.rotateY}deg) perspective(1200px)`;
               cardEl.style.zIndex = state.z;
+
+              // Restore content visibility
+              if (contentEl) gsap.set(contentEl, { opacity: 1, y: 0, clearProps: 'all' });
+              if (indexEl) gsap.set(indexEl, { opacity: 1, clearProps: 'all' });
 
               e.isFrozen = false;
               e.activeCardIndex = -1;
@@ -232,25 +231,21 @@ export default function SceneController() {
             }
           });
         } else {
-          // Re-calculate and forcefully apply its correct 3D position in the timeline
-          // so GSAP Flip knows exactly where to animate it back to.
           const delta = getDelta(e.activeCardIndex, e.progress);
           const state = getSpatialState(
-            delta,
-            e.W,
-            e.H,
-            e.xOrigin,
-            e.yOrigin,
-            e.amplitude,
-            e.progress
+            delta, e.W, e.H, e.xOrigin, e.yOrigin, e.amplitude, e.progress
           );
           cardEl.style.transform = `translate3d(${state.x}px, ${state.y}px, 0) scale(${state.scale}) rotateY(${state.rotateY}deg) perspective(1200px)`;
           cardEl.style.zIndex = state.z;
 
           Flip.from(e.flipState, {
-            duration: 0.85,
-            ease: "expo.inOut",
+            duration: 0.65,
+            ease: 'expo.inOut',
             onComplete: () => {
+              // Restore content visibility after reverse morph
+              if (contentEl) gsap.set(contentEl, { clearProps: 'all' });
+              if (indexEl) gsap.set(indexEl, { clearProps: 'all' });
+
               e.isFrozen = false;
               e.activeCardIndex = -1;
               e.flipState = null;
@@ -268,7 +263,7 @@ export default function SceneController() {
         e.activeCardIndex = -1;
         setActiveDetail(null);
       }
-      
+
       setIsExpanding(false);
     },
     []
@@ -283,8 +278,6 @@ export default function SceneController() {
       const e = engineRef.current;
       if (e.isFrozen || activeDetail) return;
 
-      const delta = getDelta(nodeIndex, e.progress);
-
       const cardEl = cardsRef.current[nodeIndex];
       if (!cardEl) return;
 
@@ -293,51 +286,69 @@ export default function SceneController() {
       e.velocity = 0;
       setIsExpanding(true);
 
+      // ── Step 1: Hide content BEFORE Flip records geometry ──
+      // This prevents React/Flip from seeing layout-painted text during the morph.
+      const contentEl = cardEl.querySelector('.card-content-v2');
+      const indexEl = cardEl.querySelector('.card-index');
+      if (contentEl) gsap.set(contentEl, { opacity: 0 });
+      if (indexEl) gsap.set(indexEl, { opacity: 0 });
+
+      // ── Step 2: Record initial geometry ──
       e.flipState = Flip.getState(cardEl);
 
       const isMobile = e.W < 768;
-      cardEl.classList.add("detail-expanded");
-      cardEl.style.position = "fixed";
-      cardEl.style.zIndex = "9999";
-      cardEl.style.borderRadius = isMobile ? "28px 28px 0 0" : "28px";
-      cardEl.style.padding = isMobile ? "32px" : "48px";
-      cardEl.style.width = isMobile ? "100vw" : "42vw";
-      cardEl.style.height = isMobile ? "70vh" : "80vh";
-      
-      const event = EVENTS[nodeIndex % DATA_SIZE];
-      /* Removed the hardcoded #0a0a0a gradient that was massively dimming the card */
+
+      // ── Step 3: Apply final geometry (layout properties) ──
+      cardEl.classList.add('detail-expanded');
+      cardEl.style.position = 'fixed';
+      cardEl.style.zIndex = '9999';
+      cardEl.style.borderRadius = isMobile ? '28px 28px 0 0' : '28px';
+      cardEl.style.padding = isMobile ? '32px' : '48px';
+      cardEl.style.width = isMobile ? '100vw' : '42vw';
+      cardEl.style.height = isMobile ? '70vh' : '80vh';
 
       if (isMobile) {
-        cardEl.style.top = "auto";
-        cardEl.style.bottom = "0";
-        cardEl.style.left = "0";
-        cardEl.style.right = "0";
-        cardEl.style.transform = "none";
+        cardEl.style.top = 'auto';
+        cardEl.style.bottom = '0';
+        cardEl.style.left = '0';
+        cardEl.style.right = '0';
+        cardEl.style.transform = 'none';
 
-        // Mobile: Skip GSAP Flip entirely to avoid layout thrashing on width/height.
-        // Pure GPU transform slide up from bottom.
-        gsap.fromTo(cardEl, 
+        // Mobile: slide up from below, no Flip (avoids layout thrash)
+        gsap.fromTo(cardEl,
           { y: window.innerHeight },
-          { 
-            y: 0, 
-            duration: 0.5, 
-            ease: "power3.out",
+          {
+            y: 0,
+            duration: 0.55,
+            ease: 'expo.out',
             onComplete: () => {
+              // ── Step 4 (mobile): reveal content only after geometry settles ──
+              if (contentEl) gsap.to(contentEl, { opacity: 1, duration: 0.4, ease: 'power2.out' });
+              if (indexEl) gsap.to(indexEl, { opacity: 1, duration: 0.4, ease: 'power2.out' });
               const event = EVENTS[nodeIndex % DATA_SIZE];
               setActiveDetail({ ...event, nodeIndex });
             }
           }
         );
       } else {
-        cardEl.style.top = "10vh";
-        cardEl.style.left = "auto";
-        cardEl.style.right = "5%";
-        cardEl.style.transform = "none";
-        
+        cardEl.style.top = '10vh';
+        cardEl.style.left = 'auto';
+        cardEl.style.right = '5%';
+        cardEl.style.transform = 'none';
+
+        // ── Step 4 (desktop): morph geometry only, no content visible ──
         Flip.from(e.flipState, {
-          duration: 0.85,
-          ease: "expo.inOut",
+          duration: 0.7,
+          ease: 'expo.inOut',
           onComplete: () => {
+            // Reveal content after geometry is 100% settled — no competing animations
+            if (contentEl) {
+              gsap.fromTo(contentEl,
+                { opacity: 0, y: 12 },
+                { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }
+              );
+            }
+            if (indexEl) gsap.to(indexEl, { opacity: 1, duration: 0.5, ease: 'power2.out' });
             const event = EVENTS[nodeIndex % DATA_SIZE];
             setActiveDetail({ ...event, nodeIndex });
           },

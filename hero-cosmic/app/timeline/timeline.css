@@ -302,8 +302,6 @@
 
 .glass-card.detail-expanded .card-description {
   display: block;
-  opacity: 0;
-  animation: detailFadeIn 0.4s 0.2s ease forwards;
 }
 
 .glass-card.detail-expanded .card-date {

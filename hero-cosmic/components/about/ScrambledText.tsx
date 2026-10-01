@@ -83,14 +83,8 @@ const ScrambledText: React.FC<ScrambledTextProps> = ({
           });
         }
       } else {
-        // Reset when it leaves the screen so it glitches again when viewed!
-        hasAnimated = false;
-        if (introTl) {
-          introTl.kill();
-          introTl = null;
-        }
-        gsap.set(charsRef.current, { opacity: 0 });
-        charsRef.current.forEach((c) => { c.innerHTML = c.dataset.content || ''; });
+        // Do NOT reset on scroll-out — killing+restarting GSAP tweens for every char
+        // on every scroll event is a severe CPU spike. Animate-once is the correct pattern.
       }
     }, { threshold: 0.1 }); // Lower threshold so it triggers earlier and resets safely
 

@@ -1,10 +1,12 @@
 'use client';
 
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import HeroBackground from '@/components/hero/HeroBackground';
 import HeroBorder from '@/components/hero/HeroBorder';
 import AboutSection from '@/components/about/AboutSection';
+import SponsorsMarquee from '@/components/sponsors/SponsorsMarquee';
+import CreativeFooter from '@/components/footer/CreativeFooter';
 import { usePointerTracker } from '@/hooks/usePointerTracker';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useScrollEarth } from '@/hooks/useScrollEarth';
@@ -17,11 +19,17 @@ const HudLayer = dynamic(() => import('@/components/hero/HudLayer'), {
   ssr: false,
 });
 
+// Liquid Glass Carousel — WebGL, canvas-based. Must be client-side only.
+const LiquidGlassCarouselSection = dynamic(
+  () => import('@/components/carousel/LiquidGlassCarouselSection'),
+  { ssr: false }
+);
+
 export default function Home() {
   const reducedMotion = useReducedMotion();
-  const [hudVisible, setHudVisible] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false); // false on SSR, resolved after mount
-  const { earthRef, hudRef } = useScrollEarth();
+  const bgRef = useRef<HTMLDivElement>(null);
+  const { earthRef, hudRef } = useScrollEarth(bgRef);
 
   useEffect(() => {
     setIsDesktop(window.innerWidth >= 1024);
@@ -30,32 +38,24 @@ export default function Home() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const handleEnter = useCallback(() => {
-    setHudVisible(true);
-  }, []);
-
-  const handleLeave = useCallback(() => {
-    setHudVisible(false);
-  }, []);
-
-  const handleTap = useCallback(() => {
-    setHudVisible(true);
-    // Touch auto-fade is handled inside the hook (2.5s timeout calls onLeave)
-  }, []);
-
   const { containerRef, onPointerMove, onPointerEnter, onPointerLeave, onPointerDown } =
     usePointerTracker({
       lerp: 0.18,
       snap: reducedMotion,
-      onEnter: handleEnter,
-      onLeave: handleLeave,
-      onTap: handleTap,
+      onEnter: () => containerRef.current?.classList.add('hud-visible'),
+      onLeave: () => containerRef.current?.classList.remove('hud-visible'),
+      onTap: () => {
+        containerRef.current?.classList.add('hud-visible');
+        setTimeout(() => containerRef.current?.classList.remove('hud-visible'), 1500);
+      }
     });
 
   return (
     <main className="relative w-full overflow-x-hidden bg-black">
       {/* ── Fixed cosmic background (stars, nebula, HUD) ── */}
-      <HeroBackground hudRef={hudRef} />
+      <div ref={bgRef} style={{ display: 'block' }}>
+        <HeroBackground hudRef={hudRef} />
+      </div>
 
       {/*
         ── Fixed Earth ──
@@ -64,26 +64,13 @@ export default function Home() {
         Both use standard Tailwind left-1/2 -translate-x-1/2 for bulletproof horizontal centering.
       */}
       <div
+        className="fixed z-[5] lg:z-30 pointer-events-none will-change-transform w-[clamp(280px,90vw,820px)] h-[clamp(280px,90vw,820px)] left-1/2 top-1/2 visible"
         ref={earthRef}
-        className="fixed z-[5] lg:z-30 pointer-events-none will-change-transform"
-        style={{
-          width: 'clamp(350px, 100vw, 820px)',
-          height: 'clamp(350px, 100vw, 820px)',
-          left: '50%',
-          top: '50%',
-          transform: 'translate(-50%, -50%) translate3d(0, 0, 0)', // Default desktop center
-        }}
       >
         {/* Inner canvas that handles scaling */}
         <div
           data-earth-inner
-          className="absolute w-full h-full pointer-events-none"
-          style={{
-            left: '50%',
-            top: '50%',
-            transform: 'translate(-50%, -50%) translate3d(0,0,0) scale(1)', // Hook drives this
-            transformOrigin: 'center center',
-          }}
+          className="absolute w-full h-full pointer-events-none left-1/2 top-1/2 origin-center"
         >
           {/* Atmospheric glow halo */}
           <div
@@ -103,11 +90,11 @@ export default function Home() {
       </div>
 
       {/* ── Hero viewport (100vh spacer) ── */}
-      <div className="relative w-full z-10" style={{ height: '100svh' }}>
+      <div className="relative w-full z-10" style={{ height: '150svh' }}>
         {/* Layer 2: HUD reveal mask container */}
         <div
           ref={containerRef}
-          className={`hud-mask-container ${hudVisible ? 'hud-visible' : ''}`}
+          className="hud-mask-container"
           onPointerMove={onPointerMove}
           onPointerEnter={onPointerEnter}
           onPointerLeave={onPointerLeave}
@@ -125,6 +112,58 @@ export default function Home() {
 
       {/* ── About Shunya section (100vh, seamless continuation) ── */}
       <AboutSection key="about-section-fixed" />
+
+      {/* ── PART 2: The grounded reality (Fades in after Part 1) ── */}
+      <PartTwoWrapper>
+        {/* ── Liquid Glass Carousel (WebGL, ssr:false) ── */}
+        <LiquidGlassCarouselSection />
+
+        {/* ── Sponsorship Marquee ── */}
+        <SponsorsMarquee />
+
+        {/* ── Creative Sci-Fi Footer ── */}
+        <CreativeFooter />
+      </PartTwoWrapper>
     </main>
+  );
+}
+
+/**
+ * Isolates Part 2 into a wrapper that fades and slides up 
+ * only when it comes into the viewport, creating a distinct "barrier" reveal.
+ */
+function PartTwoWrapper({ children }: { children: React.ReactNode }) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          el.style.opacity = '1';
+          el.style.transform = 'translateY(0)';
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.05 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      style={{
+        opacity: 0,
+        transform: 'translateY(100px)',
+        transition: 'opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1)',
+        willChange: 'opacity, transform'
+      }}
+    >
+      {children}
+    </div>
   );
 }
