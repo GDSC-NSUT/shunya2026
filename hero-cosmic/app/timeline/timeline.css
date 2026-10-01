@@ -615,6 +615,12 @@ nextjs-portal {
     width: 260px; /* Give it a bit more breathing room on mobile when open */
     height: 360px;
     z-index: 50;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .star-field-layer {
+    display: none !important;
   }
 
   .glass-card.detail-expanded .card-title {

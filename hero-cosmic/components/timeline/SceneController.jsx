@@ -675,7 +675,7 @@ export default function SceneController() {
         {/* INTERACTIVE PARALLAX SPACE BACKGROUND */}
         <div style={{ position: "absolute", inset: 0, overflow: "hidden", zIndex: -1, pointerEvents: "none" }}>
           
-          <div ref={starBgMouseRef} style={{ position: "absolute", inset: "-150px", willChange: "transform" }}>
+          <div ref={starBgMouseRef} className="star-field-layer" style={{ position: "absolute", inset: "-150px", willChange: "transform" }}>
             <div
               ref={starBgRef}
               style={{
@@ -707,7 +707,7 @@ export default function SceneController() {
             />
           </div>
 
-          <div ref={starMidMouseRef} style={{ position: "absolute", inset: "-150px", willChange: "transform" }}>
+          <div ref={starMidMouseRef} className="star-field-layer" style={{ position: "absolute", inset: "-150px", willChange: "transform" }}>
             <div
               ref={starMidRef}
               style={{
@@ -737,7 +737,7 @@ export default function SceneController() {
             />
           </div>
 
-          <div ref={starFrontMouseRef} style={{ position: "absolute", inset: "-150px", willChange: "transform" }}>
+          <div ref={starFrontMouseRef} className="star-field-layer" style={{ position: "absolute", inset: "-150px", willChange: "transform" }}>
             <div
               ref={starFrontRef}
               style={{
