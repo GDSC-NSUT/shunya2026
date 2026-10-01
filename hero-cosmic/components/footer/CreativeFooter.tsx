@@ -53,11 +53,11 @@ export default function CreativeFooter() {
           className="w-full h-full"
           style={{
             backgroundImage: `
-              linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px),
-              linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px)
+              linear-gradient(to right, rgba(255,255,255,0.08) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(255,255,255,0.08) 1px, transparent 1px)
             `,
-            backgroundSize: '3rem 3rem',
-            transform: 'perspective(1000px) rotateX(60deg) scale(2.5) translateY(-20%)',
+            backgroundSize: '4rem 4rem',
+            transform: 'perspective(1200px) rotateX(65deg) scale(3) translateY(-10%)',
             transformOrigin: 'top center',
           }}
         />
@@ -131,14 +131,19 @@ export default function CreativeFooter() {
           {/* Glowing Core - pure CSS gradient, NO CSS blur (Massive Perf Boost) */}
           <div 
             ref={glowRef}
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] md:w-[600px] md:h-[600px] pointer-events-none mix-blend-screen"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] md:w-[800px] md:h-[800px] pointer-events-none mix-blend-screen"
             style={{
-              background: 'radial-gradient(circle, rgba(37,99,235,0.4) 0%, rgba(37,99,235,0) 70%)'
+              background: 'radial-gradient(circle, rgba(56,189,248,0.2) 0%, rgba(59,130,246,0.1) 40%, rgba(0,0,0,0) 70%)'
             }}
           />
 
           <h2
-            className="text-[20vw] md:text-[12vw] leading-none text-white text-center uppercase tracking-tighter drop-shadow-[0_0_20px_rgba(255,255,255,0.2)] md:drop-shadow-[0_0_30px_rgba(255,255,255,0.2)]"
+            className="text-[22vw] md:text-[14vw] font-normal leading-none text-transparent text-center uppercase tracking-tighter"
+            style={{ 
+              WebkitTextStroke: '2px rgba(255,255,255,0.8)',
+              textShadow: '0 0 40px rgba(59,130,246,0.5)',
+              fontFamily: 'var(--font-corpta), sans-serif'
+            }}
           >
             SHUNYA
           </h2>

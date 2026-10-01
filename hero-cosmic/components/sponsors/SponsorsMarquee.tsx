@@ -30,17 +30,25 @@ export default function SponsorsMarquee() {
         }} 
       />
       
+      {/* Edge fade masks for a seamless, premium scroll */}
+      <div className="absolute inset-0 z-20 pointer-events-none" style={{ background: 'linear-gradient(to right, #000000 0%, transparent 15%, transparent 85%, #000000 100%)' }} />
+      
       <div className="w-full flex space-x-8 md:space-x-12 overflow-hidden items-center relative z-10">
-        <div className="flex animate-marquee space-x-12 md:space-x-16 items-center whitespace-nowrap">
+        <div className="flex animate-marquee space-x-12 md:space-x-24 items-center whitespace-nowrap">
           {MARQUEE_ITEMS.map((sponsor, idx) => (
             <div 
               key={idx} 
-              className="flex items-center gap-2 md:gap-4"
+              className="flex items-center gap-4 md:gap-8 group cursor-default"
             >
-              <span className="text-white/20 text-[10px] md:text-sm tracking-widest">{`0${(idx % SPONSORS.length) + 1}`}</span>
-              <span className="text-3xl md:text-5xl font-normal text-white/50 tracking-widest uppercase">
+              <div className="flex flex-col items-end">
+                <span className="text-white/30 text-[9px] md:text-xs font-mono tracking-[0.2em]">{`SYS.SPONSOR`}</span>
+                <span className="text-blue-400/80 text-[10px] md:text-sm font-mono tracking-widest">{`0${(idx % SPONSORS.length) + 1}`}</span>
+              </div>
+              <span className="text-4xl md:text-6xl font-normal text-transparent tracking-widest uppercase transition-all duration-500 group-hover:text-white"
+                    style={{ WebkitTextStroke: '1px rgba(255, 255, 255, 0.4)', textShadow: '0 0 0 rgba(255,255,255,0)' }}>
                 {sponsor}
               </span>
+              <div className="h-8 md:h-12 w-[1px] bg-gradient-to-b from-transparent via-white/20 to-transparent ml-4 md:ml-8" />
             </div>
           ))}
         </div>
