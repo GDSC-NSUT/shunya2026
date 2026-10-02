@@ -5,10 +5,9 @@ import { useRouter, usePathname } from 'next/navigation';
 
 /* ── Section registry ── */
 const SECTIONS = [
-  { id: 'home',       label: 'Home' },
-  { id: 'timeline',   label: 'Timeline' },
-  { id: 'schedule',   label: 'Schedule' },
-  { id: 'about-team', label: 'About Team' },
+  { id: 'home',     label: 'Home' },
+  { id: 'timeline', label: 'Timeline' },
+  { id: 'schedule', label: 'Schedule' },
 ] as const;
 
 type SectionId = (typeof SECTIONS)[number]['id'];
@@ -189,16 +188,14 @@ export default function LiquidGlassNav() {
     }
     if (pathname === '/') {
       const handleScroll = () => {
-        const aboutEl = document.getElementById('about-team');
+        const aboutEl = document.getElementById('about');
         if (aboutEl) {
           const rect = aboutEl.getBoundingClientRect();
           if (rect.top <= window.innerHeight / 2) {
-            setActiveSection('about-team');
             setInAbout(true);
             return;
           }
         }
-        setActiveSection('home');
         setInAbout(false);
       };
       window.addEventListener('scroll', handleScroll, { passive: true });
@@ -224,15 +221,6 @@ export default function LiquidGlassNav() {
       else window.scrollTo({ top: 0, behavior: 'smooth' });
       setExpanded(false);
       return;
-    }
-    if (id === 'about-team') {
-      if (pathname !== '/') {
-        router.push('/#about-team');
-      } else {
-        const el = document.getElementById('about-team');
-        if (el) el.scrollIntoView({ behavior: 'smooth' });
-      }
-      setExpanded(false);
     }
   };
 

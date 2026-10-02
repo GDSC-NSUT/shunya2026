@@ -11,7 +11,7 @@
  */
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 // Framer stubs are injected via next.config webpack alias:
 // 'framer' → '@/lib/framer-stubs'
@@ -21,42 +21,57 @@ import SwiperCarousel from "./SwiperCarousel";
 
 const SHUNYA_PROJECTS = [
   {
-    brand: "SHUNYA",
-    description: "The hub for everything NSUT",
-    image: { src: "/assets/carousel/shunya.jpg" },
+    brand: "KEYNOTES",
+    description: "Visionary talks and tech leadership",
+    image: { src: "/assets/carousel/shunya_01.webp" },
   },
   {
-    brand: "EVENTS",
-    description: "Campus events, workshops & more",
-    image: { src: "/assets/carousel/events.jpg" },
+    brand: "HACKATHONS",
+    description: "Intense 24-hour building sprints",
+    image: { src: "/assets/carousel/shunya_02.webp" },
+  },
+  {
+    brand: "PITCHING",
+    description: "Showcasing student-built innovations",
+    image: { src: "/assets/carousel/shunya_03.webp" },
+  },
+  {
+    brand: "CONVERGENCE",
+    description: "Over 1,000+ passionate creators united",
+    image: { src: "/assets/carousel/shunya_04.webp" },
+  },
+  {
+    brand: "COLLABORATION",
+    description: "Developing cross-disciplinary tech solutions",
+    image: { src: "/assets/carousel/shunya_05.webp" },
+  },
+  {
+    brand: "WORKSHOPS",
+    description: "Hands-on deep dives and masterclasses",
+    image: { src: "/assets/carousel/shunya_06.webp" },
   },
   {
     brand: "COMMUNITY",
-    description: "Connect with the NSUT family",
-    image: { src: "/assets/carousel/community.jpg" },
-  },
-  {
-    brand: "RESOURCES",
-    description: "Notes, papers, and study material",
-    image: { src: "/assets/carousel/resources.jpg" },
-  },
-  {
-    brand: "CLUBS",
-    description: "Find your tribe on campus",
-    image: { src: "/assets/carousel/clubs.jpg" },
+    description: "The vibrant heartbeat of GDG NSUT",
+    image: { src: "/assets/carousel/shunya_07.webp" },
   },
 ];
 
 export default function LiquidGlassCarouselSection() {
-  // Mobile: cap pixelRatio at 1 to prevent GPU thrashing.
-  // Desktop: allow up to 1.5 (not the default 2 which is wasteful on HiDPI).
   const [isMobile, setIsMobile] = useState(false);
-  const [pixelRatio, setPixelRatio] = useState(1);
+  const [pixelRatio, setPixelRatio] = useState(2);
 
   useEffect(() => {
-    const mobileCheck = window.innerWidth < 768;
-    setIsMobile(mobileCheck);
-    setPixelRatio(mobileCheck ? 1 : Math.min(window.devicePixelRatio || 1, 1.5));
+    const mq = window.matchMedia("(max-width: 767px)");
+    const update = () => {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setIsMobile(mq.matches);
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setPixelRatio(mq.matches ? 1 : Math.min(window.devicePixelRatio || 2, 2.5));
+    };
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
   }, []);
 
   return (
@@ -79,7 +94,7 @@ export default function LiquidGlassCarouselSection() {
           style={{ fontFamily: 'var(--font-corpta), sans-serif' }}
         >
           Past Shunya
-          <sup className="font-sans text-[14px] md:text-lg align-super ml-2 text-white/50">(05)</sup>
+          <sup className="font-sans text-[14px] md:text-lg align-super ml-2 text-white/50">(07)</sup>
         </h1>
       </div>
 
@@ -100,13 +115,13 @@ export default function LiquidGlassCarouselSection() {
           snap={true}
           autoScrollSpeed={-1.5}
           snapDistance={60}
-          dispersion={15}
+          dispersion={0}
           zoom={0}
-          blur={2}
-          glow={1.5}
-          blueRing={2.0}
+          blur={0}
+          glow={1.0}
+          blueRing={1.5}
           blueColor="#ffffff"
-          shimmer={true}
+          shimmer={false}
           rimWave={0.4}
           lensShape="circle"
           lensRotation={65}

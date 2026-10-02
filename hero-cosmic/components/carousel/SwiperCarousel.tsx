@@ -138,7 +138,15 @@ const Carousel_003 = ({
   );
 };
 
-export default function SwiperCarousel({ projects }: { projects: any[] }) {
+export interface CarouselProject {
+  brand: string;
+  description: string;
+  image: {
+    src: string;
+  };
+}
+
+export default function SwiperCarousel({ projects }: { projects: CarouselProject[] }) {
   const images = projects.map((p) => ({
     src: p.image.src,
     alt: p.brand,

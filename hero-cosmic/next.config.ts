@@ -2,6 +2,7 @@ import type { NextConfig } from "next";
 import path from "path";
 
 const nextConfig: NextConfig = {
+  devIndicators: false,
   allowedDevOrigins: ['127.0.0.1', 'localhost', '::1'],
 
   // Enable gzip/brotli compression for all responses
