@@ -150,7 +150,28 @@ export default function LiquidGlassNav() {
   const [inAbout, setInAbout] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
+  const [isCardSelected, setIsCardSelected] = useState(false);
   const pillRef = useRef<HTMLDivElement>(null);
+
+  /* ── Listen for schedule detail view open/close messages ── */
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      if (event.data?.type === 'shunya:details-open') {
+        setIsCardSelected(true);
+      } else if (event.data?.type === 'shunya:details-close') {
+        setIsCardSelected(false);
+      }
+    };
+    window.addEventListener('message', handleMessage);
+    return () => window.removeEventListener('message', handleMessage);
+  }, []);
+
+  /* ── Reset card selection when navigating away from schedule ── */
+  useEffect(() => {
+    if (pathname !== '/schedule') {
+      setIsCardSelected(false);
+    }
+  }, [pathname]);
 
   /* ── Detect pointer type and mobile view client-side only ── */
   const [isPointerFine, setIsPointerFine] = useState(true);
@@ -316,6 +337,20 @@ export default function LiquidGlassNav() {
   const dynamicPillBase: React.CSSProperties = {
     ...pillBase,
     borderRadius: isMobile && expanded ? '32px' : '999px',
+    transform: isCardSelected
+      ? 'translate(-50%, -150%)'
+      : isMobile && expanded
+      ? 'translateX(-50%) translateY(0)'
+      : 'translateX(-50%)',
+    opacity: isCardSelected ? 0 : 1,
+    pointerEvents: isCardSelected ? 'none' : 'auto',
+    transition: [
+      'padding 320ms cubic-bezier(0.4,0,0.2,1)',
+      'box-shadow 200ms ease',
+      'border-radius 320ms ease',
+      'transform 400ms cubic-bezier(0.16, 1, 0.3, 1)',
+      'opacity 300ms ease',
+    ].join(', '),
   };
 
   return (

@@ -72,6 +72,10 @@ function openAirlock(eventData) {
   isAnimating = true;
   isOpen = true;
 
+  try {
+    window.parent.postMessage({ type: 'shunya:details-open' }, '*');
+  } catch (e) {}
+
   // Record exact scroll position prior to transition
   recordedScrollY = window.scrollY;
 
@@ -110,6 +114,9 @@ function openAirlock(eventData) {
       }
     },
     onReverseComplete: () => {
+      try {
+        window.parent.postMessage({ type: 'shunya:details-close' }, '*');
+      } catch (e) {}
       // Explicitly clear inline styles GSAP left on scroll-inner
       const si = document.getElementById('scroll-inner');
       if (si) gsap.set(si, { clearProps: 'scale,opacity,transform' });
@@ -182,6 +189,10 @@ function openAirlock(eventData) {
 function closeAirlock() {
   if (isAnimating || !airlockTimeline) return;
   isAnimating = true;
+
+  try {
+    window.parent.postMessage({ type: 'shunya:details-close' }, '*');
+  } catch (e) {}
 
   // Preserve scroll position during reverse
   window.scrollTo(0, recordedScrollY);
