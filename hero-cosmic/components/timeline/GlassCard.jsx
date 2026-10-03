@@ -11,6 +11,7 @@ const GlassCard = React.forwardRef(function GlassCard(
       style={{ "--card-accent": event.accent }}
       onClick={onClick}
       onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
       onMouseMove={onMouseMove}
       data-node-index={nodeIndex}
       role="button"
