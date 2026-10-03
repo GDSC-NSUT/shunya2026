@@ -101,26 +101,34 @@ export default function CreativeFooter() {
 
           <div className="flex gap-8 md:gap-12 text-[10px] md:text-xs tracking-[0.2em] uppercase text-white/50 w-full md:w-auto justify-between md:justify-end">
             <ul className="flex flex-col gap-4">
-              <li className="text-white mb-2 font-bold tracking-widest">Socials</li>
-              {['Instagram', 'LinkedIn'].map((item) => (
-                <li key={item}>
-                  <a href="#" className="text-blue-400 hover:text-white transition-colors duration-300 relative group flex items-center gap-2">
-                    <span className="w-2 h-[1px] bg-blue-500/50 group-hover:bg-blue-400 group-hover:w-4 transition-all" />
-                    {item}
-                  </a>
-                </li>
-              ))}
+              <li className="text-white mb-2 font-bold tracking-widest">Shunya</li>
+              <li>
+                <a href="https://www.instagram.com/shunyansut?stkn=MXdrN2dkanM5bDYzNA%3D%3D&utm_source=qr" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-white transition-colors duration-300 relative group flex items-center gap-2">
+                  <span className="w-2 h-[1px] bg-blue-500/50 group-hover:bg-blue-400 group-hover:w-4 transition-all" />
+                  Instagram
+                </a>
+              </li>
             </ul>
             <ul className="flex flex-col gap-4">
               <li className="text-white mb-2 font-bold tracking-widest">GDSC</li>
-              {['Website', 'Discord'].map((item) => (
-                <li key={item}>
-                  <a href="#" className="text-blue-400 hover:text-white transition-colors duration-300 relative group flex items-center gap-2">
-                    <span className="w-2 h-[1px] bg-blue-500/50 group-hover:bg-blue-400 group-hover:w-4 transition-all" />
-                    {item}
-                  </a>
-                </li>
-              ))}
+              <li>
+                <a href="https://www.gdgnsut.com/" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-white transition-colors duration-300 relative group flex items-center gap-2">
+                  <span className="w-2 h-[1px] bg-blue-500/50 group-hover:bg-blue-400 group-hover:w-4 transition-all" />
+                  Website
+                </a>
+              </li>
+              <li>
+                <a href="https://www.instagram.com/gdgnsut?stkn=MXY5aXhyNmd3aWtyYw%3D%3D&utm_source=qr" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-white transition-colors duration-300 relative group flex items-center gap-2">
+                  <span className="w-2 h-[1px] bg-blue-500/50 group-hover:bg-blue-400 group-hover:w-4 transition-all" />
+                  Instagram
+                </a>
+              </li>
+              <li>
+                <a href="https://www.linkedin.com/company/gdgnsut/" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-white transition-colors duration-300 relative group flex items-center gap-2">
+                  <span className="w-2 h-[1px] bg-blue-500/50 group-hover:bg-blue-400 group-hover:w-4 transition-all" />
+                  LinkedIn
+                </a>
+              </li>
             </ul>
           </div>
         </div>
