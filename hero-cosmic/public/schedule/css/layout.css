@@ -1626,6 +1626,9 @@
   pointer-events: auto;
   user-select: none;
   isolation: isolate;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
   /* JS drives width/height via GSAP — no CSS transition here */
 }
 
@@ -1678,6 +1681,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 999px;
+  overflow: hidden;
 }
 
 /* ── Button row — this is the natural-size flex container ─────── */
@@ -1697,6 +1702,7 @@
   padding: 10px 20px;          /* Adjusted padding for desktop */
   background: transparent;
   border: none;
+  outline: none;
   cursor: pointer;
   font-family: var(--font-ui);
   font-size: 1.1rem;           /* Adjusted font-size for desktop */
@@ -1717,6 +1723,11 @@
 
 .dynamic-island__day-btn:hover {
   color: var(--star-white);
+}
+
+.dynamic-island__day-btn:focus,
+.dynamic-island__day-btn:focus-visible {
+  outline: none;
 }
 
 .dynamic-island__day-btn.is-active {
@@ -2003,10 +2014,7 @@
     0 0 28px var(--island-glow, rgba(0, 240, 255, 0.3));
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
-  transition:
-    transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
-    width   0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
-    box-shadow 0.4s ease;
+  transition: box-shadow 0.4s ease;
   z-index: 0;
   pointer-events: none;
 }
