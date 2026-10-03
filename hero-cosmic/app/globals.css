@@ -17,6 +17,31 @@ html {
   overflow-y: auto;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
+  
+  /* Firefox Scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(96, 165, 250, 0.3) #000000;
+}
+
+/* ── Cosmic Scrollbar (WebKit) ── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #000000;
+  border-left: 1px solid rgba(255, 255, 255, 0.05);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(96, 165, 250, 0.25);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(96, 165, 250, 0.5);
+  border: 1px solid rgba(96, 165, 250, 0.8);
+}
+::-webkit-scrollbar-corner {
+  background: #000000;
 }
 
 body {
