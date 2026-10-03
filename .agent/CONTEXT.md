@@ -37,3 +37,6 @@
 ## Known Issues / Watch-outs
 - **State vs GSAP:** Be very careful mixing React State and GSAP. `SceneController.jsx` operates almost entirely outside the React render cycle using refs to maintain 60fps. If you add React state updates into the GSAP ticker or scroll callbacks, you will destroy performance.
 - **GSAP Transforms:** GSAP remembers inline styles. If you pull an element out of the kinetic wave (which has heavy 3D transforms), you MUST manually clear or explicitly overwrite those properties (`x`, `y`, `z`, `scale`, `rotation`) when expanding it.
+
+- **Tailwind v4 Route Caching Bug:** Avoid using \<style jsx>\ within \use client\ components alongside Tailwind utility classes. Route transitions can cause Tailwind's layered classes to be silently dropped or overridden. Global CSS animations must reside in \globals.css\.
+- **Global CSS Isolation:** Never use unlayered global resets (\* { margin: 0 }\) in route-specific CSS files (like \	imeline.css\). Next.js retains these sheets during soft navigations, causing them to leak and globally destroy Tailwind v4 utility classes (since unlayered CSS overrides layered CSS).
