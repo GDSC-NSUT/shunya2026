@@ -31,7 +31,8 @@ export const events = [
     format: 'Prompt Engineering + AI Adversarial Thinking',
     date: '11th September',
     venue: 'APJ',
-    description: 'An interactive AI-adversarial event where participants compete against an LLM. Battle to crack secret passwords using strategic prompt engineering. The difficulty increases with each round, simulating the adversarial edge between human intelligence and AI systems.'
+    description: 'An interactive AI-adversarial event where participants compete against an LLM. Battle to crack secret passwords using strategic prompt engineering. The difficulty increases with each round, simulating the adversarial edge between human intelligence and AI systems.',
+    registerUrl: 'https://unstop.com/hackathons/zero-day-apocalypse-shunya-2026-netaji-subhas-university-of-technology-nsut-delhi-1764669?lb=YnzLtiB5&utm_medium=Share&utm_source=gdscnsu34405&utm_campaign=Online_coding_challenge'
   },
   {
     id: 'flow-in-flux',
@@ -55,7 +56,8 @@ export const events = [
     format: 'Overnight 2-day competition',
     date: '11th–12th September',
     venue: 'Smart Block',
-    description: 'A 2-day overnight design competition focused on solving real-world design challenges across Branding, UI/UX, Product Design, Game Design, and AI-Assisted Design. From sprint to presentation, projects are evaluated on creativity, feasibility, and quality.'
+    description: 'A 2-day overnight design competition focused on solving real-world design challenges across Branding, UI/UX, Product Design, Game Design, and AI-Assisted Design. From sprint to presentation, projects are evaluated on creativity, feasibility, and quality.',
+    registerUrl: 'https://unstop.com/competitions/flow-in-flux-shunya-2026-netaji-subhas-university-of-technology-nsut-delhi-1764670?lb=YnzLtiB5&utm_medium=Share&utm_source=gdscnsu34405&utm_campaign=Events'
   },
   {
     id: 'hallucination-hunt',
@@ -130,7 +132,8 @@ export const events = [
     duration: '6 hours',
     date: '12th September',
     venue: 'APJ',
-    description: 'A 6-hour Agentic AI challenge where teams create AI agents capable of solving task-specific problems using tools. Judged on accuracy, latency, tool usage, and total cost. External platforms like Claude Code or Antigravity are strictly prohibited.'
+    description: 'A 6-hour Agentic AI challenge where teams create AI agents capable of solving task-specific problems using tools. Judged on accuracy, latency, tool usage, and total cost. External platforms like Claude Code or Antigravity are strictly prohibited.',
+    registerUrl: 'https://unstop.com/hackathons/autopilot-shunya-2026-netaji-subhas-university-of-technology-nsut-delhi-1764668?lb=YnzLtiB5&utm_medium=Share&utm_source=gdscnsu34405&utm_campaign=Online_coding_challenge'
   },
   {
     id: 'case-a-thon',
@@ -202,6 +205,7 @@ export const events = [
     format: 'Overnight 24-Hour Hackathon',
     date: '12th–13th September',
     venue: 'Smart Block',
-    description: 'A 24-hour cybersecurity sprint in which teams develop a functional security or threat-detection prototype from scratch. Address vulnerabilities like unauthorized access, phishing, and data breaches, and pitch your final security solution to a judging panel.'
+    description: 'A 24-hour cybersecurity sprint in which teams develop a functional security or threat-detection prototype from scratch. Address vulnerabilities like unauthorized access, phishing, and data breaches, and pitch your final security solution to a judging panel.',
+    registerUrl: 'https://unstop.com/hackathons/devlympics-shunya-2026-netaji-subhas-university-of-technology-nsut-delhi-1764596?lb=YnzLtiB5&utm_medium=Share&utm_source=gdscnsu34405&utm_campaign=Online_coding_challenge'
   }
 ];
