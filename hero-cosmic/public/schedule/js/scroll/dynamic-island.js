@@ -12,8 +12,8 @@
  */
 
 const DAYS_DATA = [
-  { day: 1, title: 'DAY 01', accent: '#FF003C', eventIndices: [0, 1, 2, 3] },
-  { day: 2, title: 'DAY 02', accent: '#0066FF', eventIndices: [4, 5, 6] },
+  { day: 1, title: 'DAY 01', accent: '#FF003C', eventIndices: [0] },
+  { day: 2, title: 'DAY 02', accent: '#0066FF', eventIndices: [1, 2, 3, 4, 5, 6] },
   { day: 3, title: 'DAY 03', accent: '#00FFaa', eventIndices: [7] }
 ];
 
