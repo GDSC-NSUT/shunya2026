@@ -94,7 +94,6 @@ export default function LiquidGlassCarouselSection() {
           style={{ fontFamily: 'var(--font-corpta), sans-serif' }}
         >
           Past Shunya
-          <sup className="font-sans text-[14px] md:text-lg align-super ml-2 text-white/50">(07)</sup>
         </h1>
       </div>
 

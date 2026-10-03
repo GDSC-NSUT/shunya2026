@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic';
 import HeroBackground from '@/components/hero/HeroBackground';
 import HeroBorder from '@/components/hero/HeroBorder';
 import AboutSection from '@/components/about/AboutSection';
-import SponsorsMarquee from '@/components/sponsors/SponsorsMarquee';
+import SponsorsSection from '@/components/sponsors/SponsorsSection';
 import CreativeFooter from '@/components/footer/CreativeFooter';
 import { usePointerTracker } from '@/hooks/usePointerTracker';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
@@ -119,7 +119,7 @@ export default function Home() {
         <LiquidGlassCarouselSection />
 
         {/* ── Sponsorship Marquee ── */}
-        <SponsorsMarquee />
+        <SponsorsSection />
 
         {/* ── Creative Sci-Fi Footer ── */}
         <CreativeFooter />
