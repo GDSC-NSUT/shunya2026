@@ -37,13 +37,7 @@
 
 /* ─── Global Reset ───────────────────────────────────────────────────────── */
 
-*,
-*::before,
-*::after {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+/* Global reset removed to prevent Next.js route bleed */
 
 .timeline-root,
 .timeline-root {
