@@ -23,15 +23,7 @@ export default function StaticFallback() {
           }}
         >
           Event Timeline
-          <sup
-            style={{
-              fontSize: "16px",
-              color: "rgba(255,255,255,0.4)",
-              verticalAlign: "super",
-            }}
-          >
-            (06)
-          </sup>
+          
         </h1>
         <p
           style={{

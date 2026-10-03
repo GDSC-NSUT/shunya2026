@@ -12,7 +12,7 @@ export default function EventTimeline() {
         Event
         <br />
         Timeline
-        <sup className="timeline-count">(06)</sup>
+        
       </h1>
       <p className="timeline-subtitle">
         Shunya · GDG On Campus
