@@ -46,15 +46,30 @@ function EarthSphere({ isMobile }: { isMobile: boolean }) {
   );
 }
 
-export default function HeroEarth() {
+export default function HeroEarth({ scene = 'hero' }: { scene?: 'hero' | 'about' }) {
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 1024;
   // Use ref-based frameloop control to avoid React re-render (which forces R3F canvas reconcile)
   const [frameloop, setFrameloop] = React.useState<'always' | 'demand'>('always');
   const frameloopRef = React.useRef<'always' | 'demand'>('always');
 
   React.useEffect(() => {
-    const handleScroll = () => {
-      const shouldRun = window.scrollY < window.innerHeight * 2.0;
+    const update = (scrollY: number) => {
+      const about = document.getElementById('about');
+      const aboutTop = about
+        ? about.getBoundingClientRect().top + window.scrollY
+        : window.innerHeight * 1.5;
+      const aboutBottom = aboutTop + (about?.offsetHeight ?? window.innerHeight);
+      const isMobileViewport = window.innerWidth < 768;
+      const earthSize = isMobileViewport
+        ? window.innerWidth * 0.82
+        : Math.max(280, Math.min(window.innerWidth * 0.42, 760));
+      const earthTop = isMobileViewport
+        ? aboutTop + window.innerHeight * 0.25 - earthSize / 2
+        : aboutTop + ((about?.offsetHeight ?? window.innerHeight) - earthSize) / 2;
+      const handoffStart = earthTop - window.innerHeight;
+      const shouldRun = scene === 'hero'
+        ? scrollY < handoffStart
+        : scrollY >= handoffStart && scrollY < aboutBottom;
       const next: 'always' | 'demand' = shouldRun ? 'always' : 'demand';
       // Only setState if changed — prevents redundant re-renders
       if (frameloopRef.current !== next) {
@@ -62,9 +77,34 @@ export default function HeroEarth() {
         setFrameloop(next);
       }
     };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+
+    const handleNativeScroll = () => update(window.scrollY);
+    const handleLenisScroll = (event: { scroll: number }) => update(event.scroll);
+    let subscribedLenis: typeof window.__lenis;
+    let lenisCheck: ReturnType<typeof setInterval> | undefined;
+
+    window.addEventListener('scroll', handleNativeScroll, { passive: true });
+    update(window.__lenis?.scroll ?? window.scrollY);
+
+    const connectLenis = () => {
+      const lenis = window.__lenis;
+      if (!lenis || subscribedLenis) return;
+      subscribedLenis = lenis;
+      window.removeEventListener('scroll', handleNativeScroll);
+      lenis.on('scroll', handleLenisScroll);
+      update(lenis.scroll);
+      if (lenisCheck) clearInterval(lenisCheck);
+    };
+
+    connectLenis();
+    if (!subscribedLenis) lenisCheck = setInterval(connectLenis, 100);
+
+    return () => {
+      if (lenisCheck) clearInterval(lenisCheck);
+      if (subscribedLenis) subscribedLenis.off('scroll', handleLenisScroll);
+      window.removeEventListener('scroll', handleNativeScroll);
+    };
+  }, [scene]);
 
   return (
     <Canvas

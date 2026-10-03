@@ -1,26 +1,23 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React, { RefObject, useSyncExternalStore } from 'react';
+import dynamic from 'next/dynamic';
 
 import HeroBorder from '../hero/HeroBorder';
 import ScrambledText from './ScrambledText';
 
+const HeroEarth = dynamic(() => import('../hero/HeroEarth'), { ssr: false });
+
 export function useIsMobile() {
-  // CRITICAL: initialise with false so server and first client render match.
-  // The real value is resolved after mount in useEffect.
-  // Reading window.innerWidth during render causes SSR/client mismatch (hydration error).
-  const [isMobile, setIsMobile] = React.useState(false);
-
-  React.useEffect(() => {
-    const mq = window.matchMedia('(max-width: 767px)');
-    // Set accurate value immediately after mount (no visual flash — paint hasn't happened yet)
-    setIsMobile(mq.matches);
-    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
-    mq.addEventListener('change', handler);
-    return () => mq.removeEventListener('change', handler);
-  }, []);
-
-  return isMobile;
+  return useSyncExternalStore(
+    (callback) => {
+      const query = window.matchMedia('(max-width: 767px)');
+      query.addEventListener('change', callback);
+      return () => query.removeEventListener('change', callback);
+    },
+    () => window.matchMedia('(max-width: 767px)').matches,
+    () => false,
+  );
 }
 
 const BODY_TEXT =
@@ -29,8 +26,13 @@ const BODY_TEXT =
 const FONT        = 'var(--font-corpta), sans-serif';
 
 // ── Main About Section ──
-export default function AboutSection() {
-  const sectionRef = useRef<HTMLElement>(null);
+export default function AboutSection({
+  sectionRef,
+  earthRef,
+}: {
+  sectionRef: RefObject<HTMLElement | null>;
+  earthRef: RefObject<HTMLDivElement | null>;
+}) {
   const isMobile = useIsMobile();
 
   return (
@@ -57,6 +59,26 @@ export default function AboutSection() {
         backgroundPosition: 'center',
         opacity: 0.25,   // increased to make stars more evident
       }} />
+
+      {/* A second, section-bound Earth receives the handoff from the hero. */}
+      <div
+        ref={earthRef}
+        aria-hidden
+        style={{
+          position: 'absolute',
+          left: isMobile ? '50%' : '22%',
+          top: isMobile ? '25vh' : '50%',
+          width: isMobile ? '82vw' : 'clamp(280px, 42vw, 760px)',
+          height: isMobile ? '82vw' : 'clamp(280px, 42vw, 760px)',
+          transform: 'translate(-50%, -50%)',
+          zIndex: 1,
+          pointerEvents: 'none',
+          opacity: 0,
+          visibility: 'hidden',
+        }}
+      >
+        <HeroEarth scene="about" />
+      </div>
 
       {/* Star layer 2 — nearer stars */}
       <div aria-hidden style={{
@@ -176,7 +198,7 @@ export default function AboutSection() {
             style={{
               position: 'relative', zIndex: 10,
               display: 'flex', flexDirection: 'column', justifyContent: 'center',
-              width: '62vw', paddingTop: '6vh', paddingBottom: '6vh',
+              width: '56%', paddingTop: '6vh', paddingBottom: '6vh',
               marginLeft: 'auto'
             }}
             className="pl-[clamp(20px,2.5vw,40px)] pr-[clamp(24px,3.5vw,60px)]"

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useCallback, useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useSyncExternalStore } from 'react';
 import dynamic from 'next/dynamic';
 import HeroBackground from '@/components/hero/HeroBackground';
 import HeroBorder from '@/components/hero/HeroBorder';
@@ -25,18 +25,23 @@ const LiquidGlassCarouselSection = dynamic(
   { ssr: false }
 );
 
+function subscribeToViewport(callback: () => void) {
+  window.addEventListener('resize', callback, { passive: true });
+  return () => window.removeEventListener('resize', callback);
+}
+
+const getDesktopSnapshot = () => window.innerWidth >= 1024;
+const getDesktopServerSnapshot = () => false;
+
 export default function Home() {
   const reducedMotion = useReducedMotion();
-  const [isDesktop, setIsDesktop] = useState(false); // false on SSR, resolved after mount
+  const isDesktop = useSyncExternalStore(
+    subscribeToViewport,
+    getDesktopSnapshot,
+    getDesktopServerSnapshot,
+  );
   const bgRef = useRef<HTMLDivElement>(null);
-  const { earthRef, hudRef } = useScrollEarth(bgRef);
-
-  useEffect(() => {
-    setIsDesktop(window.innerWidth >= 1024);
-    const handleResize = () => setIsDesktop(window.innerWidth >= 1024);
-    window.addEventListener('resize', handleResize, { passive: true });
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  const { earthRef, aboutEarthRef, aboutSectionRef, hudRef } = useScrollEarth(bgRef);
 
   const { containerRef, onPointerMove, onPointerEnter, onPointerLeave, onPointerDown } =
     usePointerTracker({
@@ -84,7 +89,7 @@ export default function Home() {
             }}
           />
           <div className="relative w-full h-full z-10">
-            <HeroEarth />
+            <HeroEarth scene="hero" />
           </div>
         </div>
       </div>
@@ -111,7 +116,11 @@ export default function Home() {
       </div>
 
       {/* ── About Shunya section (100vh, seamless continuation) ── */}
-      <AboutSection key="about-section-fixed" />
+      <AboutSection
+        key="about-section-fixed"
+        sectionRef={aboutSectionRef}
+        earthRef={aboutEarthRef}
+      />
 
       {/* ── PART 2: The grounded reality (Fades in after Part 1) ── */}
       <PartTwoWrapper>
