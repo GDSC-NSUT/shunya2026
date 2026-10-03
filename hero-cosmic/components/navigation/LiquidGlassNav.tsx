@@ -54,7 +54,7 @@ const pillBase: React.CSSProperties = {
   overflow: 'hidden',
   whiteSpace: 'nowrap',
   width: 'max-content',
-  maxWidth: 'min(92vw, 540px)', // Cap on mobile (92vw≈359px at 390px); invisible on desktop (expanded pill ~480px < 540px)
+  maxWidth: 'min(92vw, 800px)', // Cap on mobile (92vw≈359px at 390px); accommodates full expanded text on desktop
   contain: 'layout paint', // Isolates layout recalculations from the rest of the DOM
   willChange: 'width, transform',
 
@@ -179,11 +179,13 @@ export default function LiquidGlassNav() {
     if (pathname === '/timeline') {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setActiveSection('timeline');
+      setInAbout(false);
       return;
     }
     if (pathname === '/schedule') {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setActiveSection('schedule');
+      setInAbout(false);
       return;
     }
     if (pathname === '/') {
@@ -328,7 +330,7 @@ export default function LiquidGlassNav() {
     >
       {/* ── Compact State ── */}
       <div style={dynamicCompactInner}>
-        {activeSection === 'home' || inAbout ? (
+        {activeSection === 'home' ? (
           <span style={{ ...dynamicActiveLabelStyle, display: 'flex', alignItems: 'center', willChange: 'width' }}>
             <span
               style={{
