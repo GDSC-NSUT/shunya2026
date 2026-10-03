@@ -13,7 +13,8 @@
 
 const DAYS_DATA = [
   { day: 1, title: 'DAY 01', accent: '#FF003C', eventIndices: [0, 1, 2, 3] },
-  { day: 2, title: 'DAY 02', accent: '#0066FF', eventIndices: [4, 5, 6, 7] }
+  { day: 2, title: 'DAY 02', accent: '#0066FF', eventIndices: [4, 5, 6] },
+  { day: 3, title: 'DAY 03', accent: '#00FFaa', eventIndices: [7] }
 ];
 
 export function init() {
@@ -305,9 +306,15 @@ export function init() {
   });
 
   // ── SCROLL EVENT ────────────────────────────────────────────────────────────
-  window.addEventListener('shunya:event-change', e => {
+    window.addEventListener('shunya:event-change', e => {
     if (!e.detail || typeof e.detail.index !== 'number') return;
-    const newDay = Math.floor(e.detail.index / 4) + 1;
+    let newDay = 1;
+    for (const d of DAYS_DATA) {
+      if (d.eventIndices.includes(e.detail.index)) {
+        newDay = d.day;
+        break;
+      }
+    }
     setActiveDay(newDay);
   });
 
