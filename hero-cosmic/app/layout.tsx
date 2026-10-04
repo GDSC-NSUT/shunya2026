@@ -10,13 +10,7 @@ const corpta = localFont({
   preload: true,
 });
 
-const baseUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ||
-  (process.env.VERCEL_PROJECT_PRODUCTION_URL
-    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-    : process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : "https://shunyahero.vercel.app");
+const baseUrl = "https://shunya.gdgnsut.com";
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
