@@ -71,7 +71,9 @@ export function useScrollEarth(bgRef?: RefObject<HTMLDivElement | null>) {
 
     const configureDesktop = () => {
       heroEarth.style.transition = `opacity ${DESKTOP_FADE_MS}ms ease`;
-      heroEarth.style.transform = `translate(-50%, -50%) translate3d(0, ${(viewportHeight * 0.6).toFixed(2)}px, 0)`;
+      const heroEarthSize = Math.min(window.innerWidth * 0.9, viewportHeight, 1000);
+      const heroEarthOffset = heroEarthSize / 2 - viewportHeight * 0.01;
+      heroEarth.style.transform = `translate(-50%, -50%) translate3d(0, ${heroEarthOffset.toFixed(2)}px, 0)`;
       if (inner) inner.style.transform = 'translate(-50%, -50%) translate3d(0,0,0) scale(1)';
       const aboutEarth = aboutEarthRef.current;
       if (aboutEarth) aboutEarth.style.transition = `opacity ${DESKTOP_FADE_MS}ms ease`;

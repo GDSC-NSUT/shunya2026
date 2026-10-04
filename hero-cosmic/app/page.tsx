@@ -65,12 +65,16 @@ export default function Home() {
       {/*
         ── Fixed Earth ──
         We use a single wrapper.
-        Mobile: 311x311, Desktop: 820x820.
-        Both use standard Tailwind left-1/2 -translate-x-1/2 for bulletproof horizontal centering.
+        Mobile stays viewport-scaled. Desktop scales with available viewport height,
+        so the globe cannot overwhelm the wordmark on short laptop screens.
       */}
       <div
         className="fixed z-[5] lg:z-30 pointer-events-none will-change-transform w-[clamp(280px,90vw,820px)] h-[clamp(280px,90vw,820px)] left-1/2 top-1/2 visible"
         ref={earthRef}
+        style={isDesktop ? {
+          width: 'min(90vw, 100vh, 1000px)',
+          height: 'min(90vw, 100vh, 1000px)',
+        } : undefined}
       >
         {/* Inner canvas that handles scaling */}
         <div
