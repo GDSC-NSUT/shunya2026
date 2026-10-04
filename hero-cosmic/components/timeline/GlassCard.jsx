@@ -4,13 +4,6 @@ const GlassCard = React.forwardRef(function GlassCard(
   { event, nodeIndex, onClick, onMouseEnter, onMouseLeave, onMouseMove },
   ref
 ) {
-  const handleRegisterClick = (e) => {
-    e.stopPropagation();
-    if (event.registerUrl) {
-      window.open(event.registerUrl, "_blank", "noopener,noreferrer");
-    }
-  };
-
   return (
     <div
       ref={ref}
@@ -40,20 +33,45 @@ const GlassCard = React.forwardRef(function GlassCard(
 
         {/* Register Button */}
         <div className="card-action-wrap">
-          <button
-            type="button"
-            className={`card-register-btn ${event.registerUrl ? "active" : "empty"}`}
-            onClick={handleRegisterClick}
-            onPointerDown={(e) => e.stopPropagation()}
-            aria-label={
-              event.registerUrl
-                ? `Register for ${event.title}`
-                : `Registration for ${event.title} opening soon`
-            }
-          >
-            <span>REGISTER</span>
-            {event.registerUrl && <span className="card-register-arrow">&rarr;</span>}
-          </button>
+          {event.registerUrl ? (
+            <a
+              href={event.registerUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="card-register-btn active"
+              data-url={event.registerUrl}
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+              onPointerDown={(e) => {
+                e.stopPropagation();
+              }}
+              onTouchStart={(e) => {
+                e.stopPropagation();
+              }}
+              aria-label={`Register for ${event.title}`}
+            >
+              <span>REGISTER</span>
+              <span className="card-register-arrow">&rarr;</span>
+            </a>
+          ) : (
+            <button
+              type="button"
+              className="card-register-btn empty"
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+              onPointerDown={(e) => {
+                e.stopPropagation();
+              }}
+              onTouchStart={(e) => {
+                e.stopPropagation();
+              }}
+              aria-label={`Registration for ${event.title} opening soon`}
+            >
+              <span>REGISTER</span>
+            </button>
+          )}
         </div>
       </div>
     </div>

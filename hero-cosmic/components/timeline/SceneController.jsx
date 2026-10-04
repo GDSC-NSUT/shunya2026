@@ -415,9 +415,17 @@ export default function SceneController() {
           wheelSpeed: -1,
           tolerance: 10,
           preventDefault: true,
+          ignoreCheck: (e) => !!(e.target && e.target.closest && e.target.closest('.card-register-btn')),
           onClick: (self) => {
             const ev = self.event;
-            if (ev.target.closest('.card-register-btn')) return;
+            const regBtn = ev.target.closest('.card-register-btn');
+            if (regBtn) {
+              const url = regBtn.getAttribute('href') || regBtn.getAttribute('data-url');
+              if (url) {
+                window.open(url, '_blank', 'noopener,noreferrer');
+              }
+              return;
+            }
             const cardEl = ev.target.closest('.glass-card');
             if (cardEl && clickCallbackRef.current) {
               const nodeIndex = parseInt(cardEl.dataset.nodeIndex, 10);
