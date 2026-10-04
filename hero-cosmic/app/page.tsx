@@ -41,7 +41,7 @@ export default function Home() {
     getDesktopServerSnapshot,
   );
   const bgRef = useRef<HTMLDivElement>(null);
-  const { earthRef, aboutEarthRef, aboutSectionRef, hudRef } = useScrollEarth(bgRef);
+  const { earthRef, aboutEarthRef, aboutSectionRef, hudRef, logoRef } = useScrollEarth(bgRef);
 
   const { containerRef, onPointerMove, onPointerEnter, onPointerLeave, onPointerDown } =
     usePointerTracker({
@@ -59,7 +59,7 @@ export default function Home() {
     <main className="relative w-full overflow-x-hidden bg-black">
       {/* ── Fixed cosmic background (stars, nebula, HUD) ── */}
       <div ref={bgRef} style={{ display: 'block' }}>
-        <HeroBackground hudRef={hudRef} />
+        <HeroBackground hudRef={hudRef} logoRef={logoRef} />
       </div>
 
       {/*

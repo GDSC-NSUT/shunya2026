@@ -7,6 +7,7 @@ import ScrambledText from '../about/ScrambledText';
 
 interface HeroBackgroundProps {
   hudRef?: React.RefObject<HTMLDivElement | null>;
+  logoRef?: React.RefObject<HTMLDivElement | null>;
 }
 
 /**
@@ -19,7 +20,7 @@ interface HeroBackgroundProps {
  * - All layers: will-change:transform only on elements that actually transform
  * - HUD text container: contain:layout paint style per subtree so text paints don't trigger parent recomposite
  */
-export default function HeroBackground({ hudRef }: HeroBackgroundProps) {
+export default function HeroBackground({ hudRef, logoRef }: HeroBackgroundProps) {
   const containerRef = React.useRef<HTMLDivElement>(null);
   useParallax(containerRef);
 
@@ -187,32 +188,6 @@ export default function HeroBackground({ hudRef }: HeroBackgroundProps) {
           </p>
         </div>
 
-        {/* SHUNYA Logo */}
-        <div className="absolute w-full left-1/2 -translate-x-1/2 top-[9vh] lg:top-[5vh] z-[20] pointer-events-none flex justify-center">
-          {/* Static filter wrapper — GPU composites this once, not per animation frame */}
-          <div
-            style={{
-              filter: 'brightness(0) invert(1) drop-shadow(0 0 22px rgba(120,180,255,0.8)) drop-shadow(0 0 60px rgba(59,130,246,0.45))',
-            }}
-          >
-            <div
-              className="relative w-[95vw] lg:w-[80vw] max-w-[1400px] h-[150px] lg:h-[clamp(200px,35vw,550px)] origin-center animate-logo-pulse"
-              style={{
-                clipPath: 'polygon(0 0, 100% 0, 100% 88%, 0 88%)',
-              }}
-            >
-              <Image
-                src="/cosmic/shunya-logo.png"
-                alt="SHUNYA"
-                fill
-                className="object-contain object-center"
-                sizes="(max-width: 1024px) 95vw, 80vw"
-                priority
-              />
-            </div>
-          </div>
-        </div>
-
         {/* Bottom Left */}
         <div className="hidden lg:flex absolute bottom-[8vh] left-[5vw] flex-col pointer-events-none z-[15]" style={{ contain: 'layout paint style' }}>
           <p className="max-w-[280px] pl-4 border-l border-blue-400/40"
@@ -318,6 +293,35 @@ export default function HeroBackground({ hudRef }: HeroBackgroundProps) {
 
         {/* Mobile Bottom Status Bar Removed to prevent overlap with Earth */}
 
+      </div>
+
+      {/* The wordmark gets its own scroll timing so it can linger past the Earth handoff. */}
+      <div
+        ref={logoRef}
+        className="absolute inset-x-0 w-full top-[9vh] lg:top-[5vh] z-[40] pointer-events-none flex justify-center"
+        style={{
+          transform: 'translate3d(calc(var(--mouse-x, 0) * -30px), calc(var(--mouse-y, 0) * -30px), 0)',
+        }}
+      >
+        <div
+          style={{
+            filter: 'brightness(0) invert(1) drop-shadow(0 0 22px rgba(120,180,255,0.8)) drop-shadow(0 0 60px rgba(59,130,246,0.45))',
+          }}
+        >
+          <div
+            className="relative w-[95vw] lg:w-[80vw] max-w-[1400px] h-[150px] lg:h-[clamp(200px,35vw,550px)] origin-center animate-logo-pulse"
+            style={{ clipPath: 'polygon(0 0, 100% 0, 100% 88%, 0 88%)' }}
+          >
+            <Image
+              src="/cosmic/shunya-logo.png"
+              alt="SHUNYA"
+              fill
+              className="object-contain object-center"
+              sizes="(max-width: 1024px) 95vw, 80vw"
+              priority
+            />
+          </div>
+        </div>
       </div>
 
       {/* ── Vignette (z-11) ── */}

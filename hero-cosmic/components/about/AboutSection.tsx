@@ -20,6 +20,18 @@ export function useIsMobile() {
   );
 }
 
+function useIsLaptop() {
+  return useSyncExternalStore(
+    (callback) => {
+      const query = window.matchMedia('(min-width: 1024px)');
+      query.addEventListener('change', callback);
+      return () => query.removeEventListener('change', callback);
+    },
+    () => window.matchMedia('(min-width: 1024px)').matches,
+    () => false,
+  );
+}
+
 const BODY_TEXT =
   `Shunya 2026 is GDG NSUT’s flagship technology festival built around a bold vision — a future where technology and nature evolve together. The festival explores how Artificial Intelligence, Robotics, IoT, Biotechnology, Renewable Energy, Space Technology, and Sustainable Engineering can work alongside natural ecosystems to solve humanity’s greatest challenges. More than a celebration of technology, Shunya 2026 is a platform for responsible innovation — where creativity meets sustainability and ideas become solutions for a better tomorrow.`;
 
@@ -34,6 +46,7 @@ export default function AboutSection({
   earthRef: RefObject<HTMLDivElement | null>;
 }) {
   const isMobile = useIsMobile();
+  const isLaptop = useIsLaptop();
 
   return (
     <section
@@ -66,10 +79,10 @@ export default function AboutSection({
         aria-hidden
         style={{
           position: 'absolute',
-          left: isMobile ? '50%' : '22%',
-          top: isMobile ? '25vh' : '50%',
-          width: isMobile ? '82vw' : 'clamp(280px, 42vw, 760px)',
-          height: isMobile ? '82vw' : 'clamp(280px, 42vw, 760px)',
+          left: '22%',
+          top: '50%',
+          width: 'clamp(280px, 36vw, 650px)',
+          height: 'clamp(280px, 36vw, 650px)',
           transform: 'translate(-50%, -50%)',
           zIndex: 1,
           pointerEvents: 'none',
@@ -77,7 +90,7 @@ export default function AboutSection({
           visibility: 'hidden',
         }}
       >
-        <HeroEarth scene="about" />
+        {isLaptop && <HeroEarth scene="about" />}
       </div>
 
       {/* Star layer 2 — nearer stars */}

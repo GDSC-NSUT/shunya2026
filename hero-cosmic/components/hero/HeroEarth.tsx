@@ -59,17 +59,17 @@ export default function HeroEarth({ scene = 'hero' }: { scene?: 'hero' | 'about'
         ? about.getBoundingClientRect().top + window.scrollY
         : window.innerHeight * 1.5;
       const aboutBottom = aboutTop + (about?.offsetHeight ?? window.innerHeight);
-      const isMobileViewport = window.innerWidth < 768;
+      const isMobileViewport = window.innerWidth < 1024;
       const earthSize = isMobileViewport
         ? window.innerWidth * 0.82
-        : Math.max(280, Math.min(window.innerWidth * 0.42, 760));
+        : Math.max(280, Math.min(window.innerWidth * 0.36, 650));
       const earthTop = isMobileViewport
         ? aboutTop + window.innerHeight * 0.25 - earthSize / 2
         : aboutTop + ((about?.offsetHeight ?? window.innerHeight) - earthSize) / 2;
       const handoffStart = earthTop - window.innerHeight;
       const shouldRun = scene === 'hero'
-        ? scrollY < handoffStart
-        : scrollY >= handoffStart && scrollY < aboutBottom;
+        ? (isMobileViewport ? scrollY < window.innerHeight * 2 : scrollY < handoffStart)
+        : (!isMobileViewport && scrollY >= handoffStart && scrollY < aboutBottom);
       const next: 'always' | 'demand' = shouldRun ? 'always' : 'demand';
       // Only setState if changed — prevents redundant re-renders
       if (frameloopRef.current !== next) {
