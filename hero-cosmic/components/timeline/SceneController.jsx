@@ -197,6 +197,7 @@ export default function SceneController() {
               cardEl.classList.remove('detail-expanded');
               cardEl.style.position = '';
               cardEl.style.zIndex = '';
+              cardEl.style.pointerEvents = '';
               cardEl.style.borderRadius = '';
               cardEl.style.padding = '';
               cardEl.style.width = '';
@@ -234,6 +235,7 @@ export default function SceneController() {
           cardEl.classList.remove('detail-expanded');
           cardEl.style.position = '';
           cardEl.style.zIndex = '';
+          cardEl.style.pointerEvents = '';
           cardEl.style.borderRadius = '';
           cardEl.style.padding = '';
           cardEl.style.width = '';
@@ -311,7 +313,8 @@ export default function SceneController() {
       // ── Step 3: Apply final geometry (layout properties) ──
       cardEl.classList.add('detail-expanded');
       cardEl.style.position = 'fixed';
-      cardEl.style.zIndex = '9999';
+      cardEl.style.zIndex = '10000';
+      cardEl.style.pointerEvents = 'auto';
       
       if (isMobile) {
         cardEl.style.borderRadius = '24px';
@@ -415,10 +418,14 @@ export default function SceneController() {
           wheelSpeed: -1,
           tolerance: 10,
           preventDefault: true,
-          ignoreCheck: (e) => !!(e.target && e.target.closest && e.target.closest('.card-register-btn')),
+          ignoreCheck: (e) => {
+            const target = e?.target?.nodeType === 3 ? e.target.parentElement : e?.target;
+            return Boolean(target?.closest?.('.card-register-btn'));
+          },
           onClick: (self) => {
             const ev = self.event;
-            const regBtn = ev.target.closest('.card-register-btn');
+            const target = ev?.target?.nodeType === 3 ? ev.target.parentElement : ev?.target;
+            const regBtn = target?.closest?.('.card-register-btn');
             if (regBtn) {
               const url = regBtn.getAttribute('href') || regBtn.getAttribute('data-url');
               if (url) {
@@ -426,7 +433,7 @@ export default function SceneController() {
               }
               return;
             }
-            const cardEl = ev.target.closest('.glass-card');
+            const cardEl = target?.closest?.('.glass-card');
             if (cardEl && clickCallbackRef.current) {
               const nodeIndex = parseInt(cardEl.dataset.nodeIndex, 10);
               if (!isNaN(nodeIndex)) {
@@ -670,7 +677,7 @@ export default function SceneController() {
 
       <main
         ref={containerRef}
-        className="scene-root"
+        className={`scene-root ${activeDetail ? "has-expanded" : ""}`}
         style={{
           position: "relative",
           width: "100vw",
@@ -787,7 +794,18 @@ export default function SceneController() {
 
         <ScrollHint hidden={!!activeDetail || isExpanding} />
 
-        <div ref={parallaxLayerRef} style={{ width: "100%", height: "100%", position: "absolute", top: 0, left: 0 }}>
+        <div
+          ref={parallaxLayerRef}
+          style={{
+            width: "100%",
+            height: "100%",
+            position: "absolute",
+            top: 0,
+            left: 0,
+            zIndex: activeDetail ? 9999 : 5,
+            pointerEvents: activeDetail ? "none" : "auto",
+          }}
+        >
           {TRIPLED_EVENTS.map((event, i) => (
             <GlassCard
               key={`node-${i}`}

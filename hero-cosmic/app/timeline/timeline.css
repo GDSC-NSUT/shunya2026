@@ -294,10 +294,14 @@
   outline: none;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   user-select: none;
-  pointer-events: auto;
+  pointer-events: auto !important;
   text-decoration: none;
   position: relative;
   z-index: 50;
+}
+
+.card-register-btn > * {
+  pointer-events: none;
 }
 
 /* Active register button (with link) */
@@ -355,6 +359,13 @@
     color-mix(in srgb, var(--card-accent) 8%, rgba(0, 0, 0, 0.5))
   ) !important;
   backdrop-filter: blur(24px);
+  pointer-events: auto !important;
+  z-index: 10000 !important;
+}
+
+/* In expanded view, ensure background cards do not capture clicks meant for dismiss overlay */
+.scene-root.has-expanded .glass-card:not(.detail-expanded) {
+  pointer-events: none !important;
 }
 
 .glass-card.detail-expanded .card-title {

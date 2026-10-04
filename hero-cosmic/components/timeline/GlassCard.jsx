@@ -42,12 +42,15 @@ const GlassCard = React.forwardRef(function GlassCard(
               data-url={event.registerUrl}
               onClick={(e) => {
                 e.stopPropagation();
+                if (e.nativeEvent) e.nativeEvent.stopImmediatePropagation();
               }}
               onPointerDown={(e) => {
                 e.stopPropagation();
+                if (e.nativeEvent) e.nativeEvent.stopImmediatePropagation();
               }}
               onTouchStart={(e) => {
                 e.stopPropagation();
+                if (e.nativeEvent) e.nativeEvent.stopImmediatePropagation();
               }}
               aria-label={`Register for ${event.title}`}
             >
@@ -60,12 +63,15 @@ const GlassCard = React.forwardRef(function GlassCard(
               className="card-register-btn empty"
               onClick={(e) => {
                 e.stopPropagation();
+                if (e.nativeEvent) e.nativeEvent.stopImmediatePropagation();
               }}
               onPointerDown={(e) => {
                 e.stopPropagation();
+                if (e.nativeEvent) e.nativeEvent.stopImmediatePropagation();
               }}
               onTouchStart={(e) => {
                 e.stopPropagation();
+                if (e.nativeEvent) e.nativeEvent.stopImmediatePropagation();
               }}
               aria-label={`Registration for ${event.title} opening soon`}
             >
