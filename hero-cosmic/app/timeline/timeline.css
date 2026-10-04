@@ -270,6 +270,77 @@
   margin-top: 10px;
 }
 
+/* ── Card Register Button ────────────────────────────────────────────── */
+
+.card-action-wrap {
+  margin-top: 16px;
+  position: relative;
+  z-index: 30;
+}
+
+.card-register-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 9px 20px;
+  border-radius: 999px;
+  font-family: var(--font-mono), "JetBrains Mono", monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+  pointer-events: auto;
+}
+
+/* Active register button (with link) */
+.card-register-btn.active {
+  background: color-mix(in srgb, var(--card-accent) 20%, rgba(255, 255, 255, 0.05));
+  color: #ffffff;
+  border: 1px solid color-mix(in srgb, var(--card-accent) 70%, transparent);
+  box-shadow: 0 0 16px color-mix(in srgb, var(--card-accent) 30%, transparent),
+              inset 0 0 10px color-mix(in srgb, var(--card-accent) 15%, transparent);
+  text-shadow: 0 0 8px color-mix(in srgb, var(--card-accent) 80%, transparent);
+}
+
+.card-register-btn.active:hover {
+  background: var(--card-accent);
+  color: #000000;
+  border-color: var(--card-accent);
+  box-shadow: 0 0 25px var(--card-accent),
+              0 0 40px color-mix(in srgb, var(--card-accent) 60%, transparent);
+  transform: translateY(-2px) scale(1.03);
+  text-shadow: none;
+}
+
+/* Empty button (no link available / TBA) */
+.card-register-btn.empty {
+  background: rgba(255, 255, 255, 0.03);
+  color: rgba(255, 255, 255, 0.35);
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+  cursor: default;
+}
+
+.card-register-btn.empty:hover {
+  border-color: rgba(255, 255, 255, 0.35);
+  color: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.card-register-arrow {
+  font-size: 13px;
+  line-height: 1;
+  transition: transform 0.2s ease;
+}
+
+.card-register-btn.active:hover .card-register-arrow {
+  transform: translateX(3px);
+}
+
 /* ── Expanded State Overrides (When Card is Clicked) ──────────────────── */
 
 .glass-card.detail-expanded {
@@ -303,6 +374,15 @@
   margin-top: 32px;
   padding-top: 20px;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.glass-card.detail-expanded .card-action-wrap {
+  margin-top: 24px;
+}
+
+.glass-card.detail-expanded .card-register-btn {
+  padding: 12px 28px;
+  font-size: 12px;
 }
 
 /* ── Accent Color Bar (top edge of card) ────────────────────────────── */
@@ -625,6 +705,16 @@ nextjs-portal {
 
   .card-tag {
     font-size: 10px;
+  }
+
+  .card-action-wrap {
+    margin-top: 10px;
+  }
+
+  .card-register-btn {
+    padding: 6px 14px;
+    font-size: 9px;
+    letter-spacing: 0.1em;
   }
 
   .card-index {

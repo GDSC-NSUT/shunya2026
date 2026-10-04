@@ -91,6 +91,24 @@ export default function StaticFallback() {
             >
               {event.date}
             </p>
+            <div className="card-action-wrap" style={{ marginTop: "16px" }}>
+              {event.registerUrl ? (
+                <a
+                  href={event.registerUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="card-register-btn active"
+                  style={{ textDecoration: "none" }}
+                >
+                  <span>REGISTER</span>
+                  <span className="card-register-arrow">&rarr;</span>
+                </a>
+              ) : (
+                <button type="button" className="card-register-btn empty">
+                  <span>REGISTER</span>
+                </button>
+              )}
+            </div>
           </div>
         ))}
       </div>

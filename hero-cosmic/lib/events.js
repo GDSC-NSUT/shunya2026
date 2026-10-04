@@ -1,6 +1,6 @@
 /**
- * Shunya Competition Events — The 6 core data objects.
- * Each event is rendered 3× (18 DOM nodes) for seamless infinite looping.
+ * Shunya Competition Events — The 8 core data objects.
+ * Each event is rendered 3× (24 DOM nodes) for seamless infinite looping.
  * Content is accessed via: events[nodeIndex % EVENTS.length]
  */
 
@@ -14,6 +14,7 @@ export const EVENTS = [
     accent: "#FF003C", // Crimson Red
     date: "16th September",
     venue: "APJ",
+    registerUrl: "https://unstop.com/hackathons/zero-day-apocalypse-shunya-2026-netaji-subhas-university-of-technology-nsut-delhi-1764669?lb=YnzLtiB5&utm_medium=Share&utm_source=gdscnsu34405&utm_campaign=Online_coding_challenge",
   },
   {
     id: 1,
@@ -23,6 +24,7 @@ export const EVENTS = [
     accent: "#8A2BE2", // Deep Violet
     date: "17th - 18th September",
     venue: "Smart Block",
+    registerUrl: "https://unstop.com/competitions/flow-in-flux-shunya-2026-netaji-subhas-university-of-technology-nsut-delhi-1764670?lb=YnzLtiB5&utm_medium=Share&utm_source=gdscnsu34405&utm_campaign=Events",
   },
   {
     id: 2,
@@ -32,6 +34,7 @@ export const EVENTS = [
     accent: "#39FF14", // Toxic Lime
     date: "Date : TBA",
     venue: "Mini Audi",
+    registerUrl: "",
   },
   {
     id: 3,
@@ -41,6 +44,7 @@ export const EVENTS = [
     accent: "#FF00FF", // Hot Magenta
     date: "Date : TBA",
     venue: "Mini Audi",
+    registerUrl: "",
   },
   
   // DAY 2 - 12th September
@@ -52,6 +56,7 @@ export const EVENTS = [
     accent: "#0066FF", // Electric Blue
     date: "17th September",
     venue: "APJ",
+    registerUrl: "https://unstop.com/hackathons/autopilot-shunya-2026-netaji-subhas-university-of-technology-nsut-delhi-1764668?lb=YnzLtiB5&utm_medium=Share&utm_source=gdscnsu34405&utm_campaign=Online_coding_challenge",
   },
   {
     id: 5,
@@ -61,6 +66,7 @@ export const EVENTS = [
     accent: "#FF6600", // Neon Orange
     date: "Date : TBA",
     venue: "Mini Audi",
+    registerUrl: "",
   },
   {
     id: 6,
@@ -70,6 +76,7 @@ export const EVENTS = [
     accent: "#00FFFF", // Pure Cyan
     date: "Date : TBA",
     venue: "Mini Audi",
+    registerUrl: "",
   },
   {
     id: 7,
@@ -79,5 +86,6 @@ export const EVENTS = [
     accent: "#FFE600", // Cyber Yellow
     date: "17th - 18th September",
     venue: "Smart Block",
+    registerUrl: "https://unstop.com/hackathons/devlympics-shunya-2026-netaji-subhas-university-of-technology-nsut-delhi-1764596?lb=YnzLtiB5&utm_medium=Share&utm_source=gdscnsu34405&utm_campaign=Online_coding_challenge",
   }
 ];

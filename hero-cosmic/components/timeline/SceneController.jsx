@@ -417,6 +417,7 @@ export default function SceneController() {
           preventDefault: true,
           onClick: (self) => {
             const ev = self.event;
+            if (ev.target.closest('.card-register-btn')) return;
             const cardEl = ev.target.closest('.glass-card');
             if (cardEl && clickCallbackRef.current) {
               const nodeIndex = parseInt(cardEl.dataset.nodeIndex, 10);
