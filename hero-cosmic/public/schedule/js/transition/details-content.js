@@ -76,10 +76,15 @@ export function renderDetails(event) {
 
         <div class="details-view__footer">
           <span class="details-view__footer-note">SECURITY TOKEN: SHUNYA-${(event.id || 'VOID').toUpperCase()}-2026</span>
-          <button class="details-view__register-btn" type="button" style="--btn-accent: ${headlineColor};" ${event.registerUrl ? `onclick="window.open('${event.registerUrl}', '_blank')"` : ""}>
-            <span>REGISTER FOR BATTLE</span>
-            <span>&rarr;</span>
-          </button>
+          <div class="details-view__action-wrap" style="--btn-accent: ${headlineColor};">
+            <button class="details-view__register-btn ${event.registerUrl ? '' : 'details-view__register-btn--empty'}" type="button" ${event.registerUrl ? `onclick="window.open('${event.registerUrl}', '_blank')"` : ""}>
+              <span>${event.registerUrl ? 'REGISTER FOR BATTLE' : 'REGISTER'}</span>
+              ${event.registerUrl ? '<span>&rarr;</span>' : ''}
+            </button>
+            <p class="details-view__deadline">
+              Registration Deadline : <span class="details-view__deadline-val">${event.registrationDeadline || 'TBA'}</span>
+            </p>
+          </div>
         </div>
       </div>
     </article>

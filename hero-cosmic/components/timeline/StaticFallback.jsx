@@ -108,6 +108,9 @@ export default function StaticFallback() {
                   <span>REGISTER</span>
                 </button>
               )}
+              <p className="card-deadline">
+                Registration Deadline : <span className="card-deadline-val">{event.registrationDeadline || "TBA"}</span>
+              </p>
             </div>
           </div>
         ))}

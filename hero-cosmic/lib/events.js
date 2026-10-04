@@ -15,6 +15,7 @@ export const EVENTS = [
     date: "16th September",
     venue: "APJ",
     registerUrl: "https://unstop.com/hackathons/zero-day-apocalypse-shunya-2026-netaji-subhas-university-of-technology-nsut-delhi-1764669?lb=YnzLtiB5&utm_medium=Share&utm_source=gdscnsu34405&utm_campaign=Online_coding_challenge",
+    registrationDeadline: "16 Oct",
   },
   {
     id: 1,
@@ -25,6 +26,7 @@ export const EVENTS = [
     date: "17th - 18th September",
     venue: "Smart Block",
     registerUrl: "https://unstop.com/competitions/flow-in-flux-shunya-2026-netaji-subhas-university-of-technology-nsut-delhi-1764670?lb=YnzLtiB5&utm_medium=Share&utm_source=gdscnsu34405&utm_campaign=Events",
+    registrationDeadline: "14 Oct",
   },
   {
     id: 2,
@@ -35,6 +37,7 @@ export const EVENTS = [
     date: "Date : TBA",
     venue: "Mini Audi",
     registerUrl: "",
+    registrationDeadline: "TBA",
   },
   {
     id: 3,
@@ -45,6 +48,7 @@ export const EVENTS = [
     date: "Date : TBA",
     venue: "Mini Audi",
     registerUrl: "",
+    registrationDeadline: "TBA",
   },
   
   // DAY 2 - 12th September
@@ -57,6 +61,7 @@ export const EVENTS = [
     date: "17th September",
     venue: "APJ",
     registerUrl: "https://unstop.com/hackathons/autopilot-shunya-2026-netaji-subhas-university-of-technology-nsut-delhi-1764668?lb=YnzLtiB5&utm_medium=Share&utm_source=gdscnsu34405&utm_campaign=Online_coding_challenge",
+    registrationDeadline: "16 Oct",
   },
   {
     id: 5,
@@ -67,6 +72,7 @@ export const EVENTS = [
     date: "Date : TBA",
     venue: "Mini Audi",
     registerUrl: "",
+    registrationDeadline: "TBA",
   },
   {
     id: 6,
@@ -77,6 +83,7 @@ export const EVENTS = [
     date: "Date : TBA",
     venue: "Mini Audi",
     registerUrl: "",
+    registrationDeadline: "TBA",
   },
   {
     id: 7,
@@ -87,5 +94,6 @@ export const EVENTS = [
     date: "17th - 18th September",
     venue: "Smart Block",
     registerUrl: "https://unstop.com/hackathons/devlympics-shunya-2026-netaji-subhas-university-of-technology-nsut-delhi-1764596?lb=YnzLtiB5&utm_medium=Share&utm_source=gdscnsu34405&utm_campaign=Online_coding_challenge",
+    registrationDeadline: "15 Oct",
   }
 ];

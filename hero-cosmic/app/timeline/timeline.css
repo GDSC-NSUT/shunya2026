@@ -276,6 +276,26 @@
   margin-top: 16px;
   position: relative;
   z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.card-deadline {
+  margin: 0;
+  font-family: var(--font-mono), "JetBrains Mono", monospace;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: rgba(255, 255, 255, 0.45);
+  line-height: 1.3;
+  pointer-events: none;
+}
+
+.card-deadline-val {
+  color: var(--card-accent, #ffffff);
+  font-weight: 700;
 }
 
 .card-register-btn {
@@ -397,6 +417,11 @@
 .glass-card.detail-expanded .card-register-btn {
   padding: 12px 28px;
   font-size: 12px;
+}
+
+.glass-card.detail-expanded .card-deadline {
+  font-size: 12px;
+  letter-spacing: 0.08em;
 }
 
 /* ── Accent Color Bar (top edge of card) ────────────────────────────── */

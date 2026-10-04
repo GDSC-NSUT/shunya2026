@@ -1482,6 +1482,28 @@
   color: var(--star-dim);
 }
 
+.details-view__action-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.details-view__deadline {
+  margin: 0;
+  font-family: var(--font-mono, "JetBrains Mono", monospace);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--star-dim, rgba(255, 255, 255, 0.45));
+  line-height: 1.2;
+}
+
+.details-view__deadline-val {
+  color: var(--btn-accent, var(--star-white, #ffffff));
+  font-weight: 700;
+}
+
 .details-view__register-btn {
   display: inline-flex;
   align-items: center;
@@ -1503,6 +1525,21 @@
 .details-view__register-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 0 30px var(--btn-accent, rgba(255, 255, 255, 0.6));
+}
+
+.details-view__register-btn--empty {
+  background: rgba(255, 255, 255, 0.05) !important;
+  color: rgba(255, 255, 255, 0.35) !important;
+  border: 1px dashed rgba(255, 255, 255, 0.2) !important;
+  box-shadow: none !important;
+  cursor: default !important;
+}
+
+.details-view__register-btn--empty:hover {
+  transform: none !important;
+  box-shadow: none !important;
+  color: rgba(255, 255, 255, 0.45) !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
 }
 
 @media (max-width: 900px) {
@@ -1595,6 +1632,11 @@
     gap: 16px;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     margin-top: auto;
+  }
+  .details-view__action-wrap {
+    width: 100%;
+    align-items: center;
+    gap: 10px;
   }
   .details-view__register-btn {
     width: 100%;
