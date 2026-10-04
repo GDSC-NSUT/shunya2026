@@ -110,7 +110,7 @@ export default function CreativeFooter() {
               </li>
             </ul>
             <ul className="flex flex-col gap-4">
-              <li className="text-white mb-2 font-bold tracking-widest">GDSC</li>
+              <li className="text-white mb-2 font-bold tracking-widest">GDG NSUT</li>
               <li>
                 <a href="https://www.gdgnsut.com/" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-white transition-colors duration-300 relative group flex items-center gap-2">
                   <span className="w-2 h-[1px] bg-blue-500/50 group-hover:bg-blue-400 group-hover:w-4 transition-all" />
