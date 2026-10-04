@@ -25,6 +25,7 @@
 | **Mobile Performance Kill-Switches** | Disabled `backdrop-filter: blur`, SVG noise, and full-screen radial-gradient star layers on mobile (`<= 768px`) to prevent GPU fill-rate throttling. Maintains solid 60fps. | Oct 2026 |
 | **Aggressive Mobile Scroll Feel** | The timeline kinetic wave uses a high velocity multiplier (`15.0x`) and velocity cap (`150`) for mobile touch events to create a fast, loose "throw" feel. | Oct 2026 |
 | **Fixed GSAP `fromTo` Inheritance** | Mobile card expansion explicitly forces `x: 0, z: 0, rotateX: 0, rotateY: 0` in `gsap.fromTo()` so the card centers perfectly, overriding the kinetic wave's raw inline transform state. | Oct 2026 |
+| **Comprehensive OpenGraph & Twitter Metadata** | Configured `metadataBase` to `shunya.gdgnsut.com`, injected `title`, full festival `description`, `opengraph-image.jpg`, and `twitter-image.jpg` with `summary_large_image` support. | Oct 2026 |
 
 ## Current Functionality (Stable)
 - [x] Cosmic HUD Hero Section (Cursor localized reveal, parallax stars).
@@ -33,6 +34,7 @@
 - [x] Timeline Desktop interaction (GSAP Flip morphs cards to the right panel).
 - [x] Creative Footer with GDG & Social links.
 - [x] Liquid Glass Navigation and Carousels.
+- [x] Full SEO & OpenGraph / Twitter metadata with social share cards.
 
 ## Known Issues / Watch-outs
 - **State vs GSAP:** Be very careful mixing React State and GSAP. `SceneController.jsx` operates almost entirely outside the React render cycle using refs to maintain 60fps. If you add React state updates into the GSAP ticker or scroll callbacks, you will destroy performance.
