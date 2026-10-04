@@ -23,10 +23,12 @@ export const metadata: Metadata = {
     siteName: "Shunya 2026",
     images: [
       {
-        url: "/og-image.jpg",
+        url: "https://shunya.gdgnsut.com/og-image.png",
+        secureUrl: "https://shunya.gdgnsut.com/og-image.png",
         width: 1024,
         height: 584,
         alt: "Shunya 2026 - GDG NSUT",
+        type: "image/png",
       },
     ],
     locale: "en_US",
@@ -37,7 +39,7 @@ export const metadata: Metadata = {
     title: "Shunya 2026",
     description:
       "Shunya 2026 is GDG NSUT’s flagship technology festival built around a bold vision — a future where technology and nature evolve together.",
-    images: ["/og-image.jpg"],
+    images: ["https://shunya.gdgnsut.com/og-image.png"],
   },
   icons: {
     icon: "/favicon.ico",
