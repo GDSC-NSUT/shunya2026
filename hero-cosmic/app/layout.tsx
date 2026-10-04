@@ -11,8 +11,37 @@ const corpta = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Cosmic HUD Hero",
-  description: "A premium cosmic hero with cursor-localized HUD scanner interaction",
+  metadataBase: new URL("https://shunya.gdgnsut.com"),
+  title: "Shunya 2026",
+  description:
+    "Shunya 2026 is GDG NSUT’s flagship technology festival built around a bold vision — a future where technology and nature evolve together. Exploring how emerging technologies coexist with natural ecosystems to solve humanity’s greatest challenges.",
+  openGraph: {
+    title: "Shunya 2026",
+    description:
+      "Shunya 2026 is GDG NSUT’s flagship technology festival built around a bold vision — a future where technology and nature evolve together.",
+    url: "https://shunya.gdgnsut.com",
+    siteName: "Shunya 2026",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1024,
+        height: 584,
+        alt: "Shunya 2026 - GDG NSUT",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Shunya 2026",
+    description:
+      "Shunya 2026 is GDG NSUT’s flagship technology festival built around a bold vision — a future where technology and nature evolve together.",
+    images: ["/og-image.jpg"],
+  },
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

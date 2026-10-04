@@ -4,20 +4,12 @@ Shunya 2026 is GDG NSUT’s flagship technology festival built around a bold vis
 
 More than a celebration of technology, Shunya 2026 is a platform for responsible innovation — where creativity meets sustainability and ideas become solutions for a better tomorrow.
 
-## Tech Stack & Setup
+## Live Website
 
-- **Framework**: Next.js (App Router)
-- **Styling**: Tailwind CSS
-- **Graphics & Animation**: Three.js / React Three Fiber, GSAP (ScrollTrigger, Flip, Observer), Lenis
+[shunya.gdgnsut.com](https://shunya.gdgnsut.com)
 
-### Development
+## Project Structure
 
-```bash
-npm run dev
-```
-
-### Production Build
-
-```bash
-npm run build
-```
+- `hero-cosmic/`: Main Next.js web application (Cosmic HUD Hero, About Section, Interactive Schedule & Cyber-Fluid Timeline).
+- `hero-cosmic/public/schedule/`: Standalone GSAP-powered event briefing & schedule explorer.
+- `hero-cosmic/components/timeline/`: 3D conveyor belt timeline interface.
