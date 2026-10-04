@@ -10,8 +10,16 @@ const corpta = localFont({
   preload: true,
 });
 
+const baseUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : "https://shunyahero.vercel.app");
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://shunya.gdgnsut.com"),
+  metadataBase: new URL(baseUrl),
   title: "Shunya 2026",
   description:
     "Shunya 2026 is GDG NSUT’s flagship technology festival built around a bold vision — a future where technology and nature evolve together. Exploring how emerging technologies coexist with natural ecosystems to solve humanity’s greatest challenges.",
@@ -19,16 +27,24 @@ export const metadata: Metadata = {
     title: "Shunya 2026",
     description:
       "Shunya 2026 is GDG NSUT’s flagship technology festival built around a bold vision — a future where technology and nature evolve together.",
-    url: "https://shunya.gdgnsut.com",
+    url: baseUrl,
     siteName: "Shunya 2026",
     images: [
       {
-        url: "https://shunya.gdgnsut.com/og-image.png",
-        secureUrl: "https://shunya.gdgnsut.com/og-image.png",
+        url: `${baseUrl}/og-image.png`,
+        secureUrl: `${baseUrl}/og-image.png`,
         width: 1024,
         height: 584,
         alt: "Shunya 2026 - GDG NSUT",
         type: "image/png",
+      },
+      {
+        url: `${baseUrl}/og-image.jpg`,
+        secureUrl: `${baseUrl}/og-image.jpg`,
+        width: 1024,
+        height: 584,
+        alt: "Shunya 2026 - GDG NSUT",
+        type: "image/jpeg",
       },
     ],
     locale: "en_US",
@@ -39,7 +55,7 @@ export const metadata: Metadata = {
     title: "Shunya 2026",
     description:
       "Shunya 2026 is GDG NSUT’s flagship technology festival built around a bold vision — a future where technology and nature evolve together.",
-    images: ["https://shunya.gdgnsut.com/og-image.png"],
+    images: [`${baseUrl}/og-image.png`],
   },
   icons: {
     icon: "/favicon.ico",
