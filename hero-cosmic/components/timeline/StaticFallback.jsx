@@ -80,17 +80,28 @@ export default function StaticFallback() {
             >
               {event.description}
             </p>
-            <p
-              style={{
-                fontFamily: "var(--font-mono), monospace",
-                fontSize: "11px",
-                letterSpacing: "0.04em",
-                color: "rgba(255,255,255,0.25)",
-                marginTop: "16px",
-              }}
-            >
-              {event.date}
-            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: "6px", marginTop: "16px" }}>
+              <p
+                style={{
+                  fontFamily: "var(--font-mono), monospace",
+                  fontSize: "11px",
+                  letterSpacing: "0.04em",
+                  color: "rgba(255,255,255,0.7)",
+                }}
+              >
+                <span style={{ opacity: 0.5 }}>DATE //</span> {event.date}
+              </p>
+              <p
+                style={{
+                  fontFamily: "var(--font-mono), monospace",
+                  fontSize: "11px",
+                  letterSpacing: "0.04em",
+                  color: "rgba(255,255,255,0.7)",
+                }}
+              >
+                <span style={{ opacity: 0.5 }}>VENUE //</span> {event.venue}
+              </p>
+            </div>
             <div className="card-action-wrap" style={{ marginTop: "16px" }}>
               {event.registerUrl ? (
                 <a
