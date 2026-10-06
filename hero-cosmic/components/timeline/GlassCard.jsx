@@ -30,7 +30,7 @@ const GlassCard = React.forwardRef(function GlassCard(
         </p>
         <h3 className="card-title">{event.title}</h3>
         
-        <div className="card-meta-split" style={{ display: "flex", flexDirection: "column", gap: "6px", marginTop: "12px", marginBottom: "16px" }}>
+        <div className="card-meta-split" style={{ flexDirection: "column", gap: "6px", marginTop: "12px", marginBottom: "16px" }}>
           <p className="card-date" style={{ margin: 0, color: "rgba(255,255,255,0.7)" }}>
             <span style={{ opacity: 0.5 }}>DATE //</span> {event.date}
           </p>
