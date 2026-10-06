@@ -2,6 +2,12 @@
 @source "../components";
 @source "../app";
 
+@theme {
+  --font-sans: var(--font-corpta), sans-serif;
+  --font-mono: var(--font-corpta), monospace;
+  --font-serif: var(--font-corpta), serif;
+}
+
 /* ─── CSS Custom Properties ─────────────────────────────────────── */
 :root {
   --mx: 50%;
@@ -154,3 +160,24 @@ body {
   100% { transform: translateX(-50%); }
 }
 
+/* ─── Hero Background Animations ────────────────────────────────── */
+@keyframes nebula-drift {
+  0%   { transform: scale(1.08) translate3d(0, 0, 0); }
+  50%  { transform: scale(1.1) translate3d(6px, -6px, 0); }
+  100% { transform: scale(1.08) translate3d(0, 0, 0); }
+}
+/* Mobile: disable animation entirely */
+.nebula-drift { animation: none; transform: scale(1.08); }
+@media (min-width: 1024px) {
+  .nebula-drift { animation: nebula-drift 50s ease-in-out infinite; will-change: transform; }
+}
+
+@keyframes logo-pulse {
+  0%, 100% { opacity: 0.88; transform: scale(1); }
+  50%       { opacity: 1;    transform: scale(1.03); }
+}
+/* Mobile: fixed size, no pulse. Desktop: animate. */
+.animate-logo-pulse { transform: scale(1.45); opacity: 1; }
+@media (min-width: 1024px) {
+  .animate-logo-pulse { animation: logo-pulse 6s ease-in-out infinite; will-change: transform; transform: scale(1); }
+}

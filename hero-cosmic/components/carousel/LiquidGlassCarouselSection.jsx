@@ -67,7 +67,7 @@ export default function LiquidGlassCarouselSection() {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setIsMobile(mq.matches);
       // eslint-disable-next-line react-hooks/set-state-in-effect
-      setPixelRatio(mq.matches ? 1 : Math.min(window.devicePixelRatio || 2, 2.5));
+      setPixelRatio(mq.matches ? 1 : Math.min(window.devicePixelRatio || 2, 2));
     };
     update();
     mq.addEventListener("change", update);

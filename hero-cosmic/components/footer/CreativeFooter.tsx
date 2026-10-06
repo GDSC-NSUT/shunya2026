@@ -7,38 +7,64 @@ import ScrambledText from '../about/ScrambledText';
 export default function CreativeFooter() {
   const containerRef = useRef<HTMLElement>(null);
   const glowRef = useRef<HTMLDivElement>(null);
+  const bgTextRef = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
-    // A subtle radar sweep / pulse effect for the glow
-    if (glowRef.current) {
-      gsap.to(glowRef.current, {
-        opacity: 0.8,
-        scale: 1.1,
-        duration: 4,
-        yoyo: true,
-        repeat: -1,
-        ease: 'sine.inOut',
-      });
-    }
+    const glow = glowRef.current;
+    const container = containerRef.current;
+    const bgText = bgTextRef.current;
+    if (!glow || !container) return;
 
-        // Parallax effect on the huge background text (desktop only for performance)
-    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
-    
+    const isMobile = window.innerWidth < 768;
+    let glowTween: gsap.core.Tween | null = null;
+
     const handleScroll = () => {
-      if (!containerRef.current || isMobile) return;
-      const rect = containerRef.current.getBoundingClientRect();
+      if (!bgText || isMobile) return;
+      const rect = container.getBoundingClientRect();
       if (rect.top < window.innerHeight && rect.bottom > 0) {
         const progress = 1 - rect.top / window.innerHeight;
-        gsap.to('.footer-bg-text', {
+        gsap.to(bgText, {
           y: progress * -100,
-          ease: 'power2.out',
+          ease: 'none',
           overwrite: 'auto',
+          duration: 0,
         });
       }
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    // Gate all animations to only run when footer is visible
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const isVisible = entries[0].isIntersecting;
+        if (isVisible) {
+          glowTween = gsap.to(glow, {
+            opacity: 0.8,
+            scale: 1.1,
+            duration: 4,
+            yoyo: true,
+            repeat: -1,
+            ease: 'sine.inOut',
+          });
+          if (!isMobile) {
+            window.addEventListener('scroll', handleScroll, { passive: true });
+            handleScroll();
+          }
+        } else {
+          glowTween?.kill();
+          glowTween = null;
+          gsap.set(glow, { opacity: 0.5, scale: 1 });
+          window.removeEventListener('scroll', handleScroll);
+        }
+      },
+      { threshold: 0.01 }
+    );
+    observer.observe(container);
+
+    return () => {
+      observer.disconnect();
+      glowTween?.kill();
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
   return (
@@ -68,6 +94,7 @@ export default function CreativeFooter() {
       {/* ── Giant Parallax Background Text ── */}
       <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none overflow-hidden select-none">
         <h1
+          ref={bgTextRef}
           className="footer-bg-text text-[50vw] md:text-[30vw] text-transparent leading-none opacity-10"
           style={{
             fontFamily: 'var(--font-corpta), sans-serif',

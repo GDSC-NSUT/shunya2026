@@ -29,35 +29,6 @@ export default function HeroBackground({ hudRef, logoRef }: HeroBackgroundProps)
       ref={containerRef}
       className="fixed inset-0 bg-black overflow-hidden pointer-events-none"
     >
-      <style>{`
-        @keyframes nebula-drift {
-          0%   { transform: scale(1.08) translate3d(0, 0, 0); }
-          50%  { transform: scale(1.1) translate3d(6px, -6px, 0); }
-          100% { transform: scale(1.08) translate3d(0, 0, 0); }
-        }
-        /* Mobile: disable animation entirely — CSS animation on a full-screen image
-           forces the GPU to re-composite a ~900KB texture every frame. */
-        .nebula-drift { animation: none; transform: scale(1.08); }
-        @media (min-width: 1024px) {
-          .nebula-drift { animation: nebula-drift 50s ease-in-out infinite; will-change: transform; }
-        }
-
-        @keyframes logo-pulse {
-          0%, 100% { 
-            opacity: 0.88;
-            transform: scale(1);
-          }
-          50% { 
-            opacity: 1;
-            transform: scale(1.03);
-          }
-        }
-        /* Mobile: fixed large size, no pulse. Desktop: animate pulse */
-        .animate-logo-pulse { transform: scale(1.45); opacity: 1; }
-        @media (min-width: 1024px) {
-          .animate-logo-pulse { animation: logo-pulse 6s ease-in-out infinite; will-change: transform; transform: scale(1); }
-        }
-      `}</style>
 
       {/* ── 1. Star field (z-2) ── Dual Parallax Layers ── */}
       {/*
@@ -147,7 +118,6 @@ export default function HeroBackground({ hudRef, logoRef }: HeroBackgroundProps)
         className="absolute inset-0 z-[40] pointer-events-none"
         style={{
           transform: `translate3d(calc(var(--mouse-x, 0) * -30px), calc(var(--mouse-y, 0) * -30px), 0)`,
-          willChange: 'transform',
         }}
       >
         {/* ──── HUD DATA PANELS (4 Corners) ──── */}

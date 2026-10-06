@@ -69,13 +69,13 @@ export function usePointerTracker(options: PointerTrackerOptions = {}) {
     }
   }, []);
 
-  // Update rect on scroll or resize to keep it accurate
+  // Update rect on resize only — scroll doesn't shift a fixed-position container
   useEffect(() => {
+    // Initialize immediately
+    updateRect();
     window.addEventListener('resize', updateRect, { passive: true });
-    window.addEventListener('scroll', updateRect, { passive: true });
     return () => {
       window.removeEventListener('resize', updateRect);
-      window.removeEventListener('scroll', updateRect);
     };
   }, [updateRect]);
 

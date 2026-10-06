@@ -56,7 +56,6 @@ const pillBase: React.CSSProperties = {
   width: 'max-content',
   maxWidth: 'min(92vw, 800px)', // Cap on mobile (92vw≈359px at 390px); accommodates full expanded text on desktop
   contain: 'layout paint', // Isolates layout recalculations from the rest of the DOM
-  willChange: 'width, transform',
 
   /* ── Motion: all transitions via CSS only (no new dep) ── */
   transition: [

@@ -35,7 +35,48 @@ function useIsLaptop() {
 const BODY_TEXT =
   `Shunya 2026 is GDG NSUT’s flagship technology festival built around a bold vision — a future where technology and nature evolve together. The festival explores how Artificial Intelligence, Robotics, IoT, Biotechnology, Renewable Energy, Space Technology, and Sustainable Engineering can work alongside natural ecosystems to solve humanity’s greatest challenges. More than a celebration of technology, Shunya 2026 is a platform for responsible innovation — where creativity meets sustainability and ideas become solutions for a better tomorrow.`;
 
-const FONT        = 'var(--font-corpta), sans-serif';
+const FONT = 'var(--font-corpta), sans-serif';
+
+const starLayer1DesktopStyle: React.CSSProperties = {
+  position: 'absolute', inset: '-10%', zIndex: 0,
+  transform: 'translate3d(calc(var(--mouse-x, 0) * -18px), calc(var(--mouse-y, 0) * -18px), 0)',
+  willChange: 'transform',
+  pointerEvents: 'none',
+  backgroundImage: 'url(/cosmic/stars_deep.png)',
+  backgroundSize: 'cover', backgroundRepeat: 'no-repeat',
+  backgroundPosition: 'center',
+  opacity: 0.25,
+  contain: 'layout paint' as const,
+};
+const starLayer1MobileStyle: React.CSSProperties = {
+  position: 'absolute', inset: '-10%', zIndex: 0,
+  pointerEvents: 'none',
+  backgroundImage: 'url(/cosmic/stars_deep.png)',
+  backgroundSize: 'cover', backgroundRepeat: 'no-repeat',
+  backgroundPosition: 'center',
+  opacity: 0.25,
+  contain: 'layout paint' as const,
+};
+const starLayer2DesktopStyle: React.CSSProperties = {
+  position: 'absolute', inset: '-8%', zIndex: 0,
+  transform: 'translate3d(calc(var(--mouse-x, 0) * -32px), calc(var(--mouse-y, 0) * -32px), 0)',
+  willChange: 'transform',
+  pointerEvents: 'none',
+  backgroundImage: 'url(/cosmic/stars_cinematic.png)',
+  backgroundSize: 'cover', backgroundRepeat: 'no-repeat',
+  backgroundPosition: 'center',
+  opacity: 0.15,
+  contain: 'layout paint' as const,
+};
+const starLayer2MobileStyle: React.CSSProperties = {
+  position: 'absolute', inset: '-8%', zIndex: 0,
+  pointerEvents: 'none',
+  backgroundImage: 'url(/cosmic/stars_cinematic.png)',
+  backgroundSize: 'cover', backgroundRepeat: 'no-repeat',
+  backgroundPosition: 'center',
+  opacity: 0.15,
+  contain: 'layout paint' as const,
+};
 
 // ── Main About Section ──
 export default function AboutSection({
@@ -62,16 +103,7 @@ export default function AboutSection({
       <HeroBorder />
 
       {/* Star layer 1 — deep stars */}
-      <div aria-hidden style={{
-        position: 'absolute', inset: '-10%', zIndex: 0,
-        transform: isMobile ? 'none' : `translate3d(calc(var(--mouse-x, 0) * -18px), calc(var(--mouse-y, 0) * -18px), 0)`,
-        willChange: isMobile ? 'auto' : 'transform',
-        pointerEvents: 'none',
-        backgroundImage: 'url(/cosmic/stars_deep.png)',
-        backgroundSize: 'cover', backgroundRepeat: 'no-repeat',
-        backgroundPosition: 'center',
-        opacity: 0.25,   // increased to make stars more evident
-      }} />
+      <div aria-hidden style={isMobile ? starLayer1MobileStyle : starLayer1DesktopStyle} />
 
       {/* A second, section-bound Earth receives the handoff from the hero. */}
       <div
@@ -94,16 +126,7 @@ export default function AboutSection({
       </div>
 
       {/* Star layer 2 — nearer stars */}
-      <div aria-hidden style={{
-        position: 'absolute', inset: '-8%', zIndex: 0,
-        transform: isMobile ? 'none' : `translate3d(calc(var(--mouse-x, 0) * -32px), calc(var(--mouse-y, 0) * -32px), 0)`,
-        willChange: isMobile ? 'auto' : 'transform',
-        pointerEvents: 'none',
-        backgroundImage: 'url(/cosmic/stars_cinematic.png)',
-        backgroundSize: 'cover', backgroundRepeat: 'no-repeat',
-        backgroundPosition: 'center',
-        opacity: 0.15,   // increased to make stars more evident
-      }} />
+      <div aria-hidden style={isMobile ? starLayer2MobileStyle : starLayer2DesktopStyle} />
 
       {/* Top crossfade to blend with Hero */}
       <div aria-hidden style={{

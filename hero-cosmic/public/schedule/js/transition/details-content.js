@@ -47,8 +47,12 @@ export function renderDetails(event) {
 
         <div class="details-view__meta-grid">
           <div class="details-view__meta-card">
-            <span class="details-view__meta-label">DATE & VENUE</span>
-            <span class="details-view__meta-value">${date} &bull; ${venue}</span>
+            <span class="details-view__meta-label">DATE</span>
+            <span class="details-view__meta-value">${date}</span>
+          </div>
+          <div class="details-view__meta-card">
+            <span class="details-view__meta-label">VENUE</span>
+            <span class="details-view__meta-value">${venue}</span>
           </div>
           <div class="details-view__meta-card">
             <span class="details-view__meta-label">FORMAT</span>
