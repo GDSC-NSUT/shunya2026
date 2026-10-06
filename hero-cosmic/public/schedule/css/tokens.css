@@ -10,8 +10,8 @@
 :root {
   /* ── Typography Tokens ───────────────────────────────────────────────────── */
   --font-display: 'Corpta', 'Helvetica Neue', 'Inter', 'Arial Black', sans-serif;
-  --font-ui: 'Corpta', 'Helvetica Neue', 'Inter', system-ui, sans-serif;
-  --font-body: 'Corpta', 'Helvetica Neue', 'Inter', system-ui, sans-serif;
+  --font-ui: 'JetBrains Mono', 'Space Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
 
   /* ── Deep Forest & Organic Foundations ─────────────────────────────── */
   --void-black: #050807; /* Deep organic darkness instead of space black */

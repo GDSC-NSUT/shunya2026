@@ -4,7 +4,7 @@
 
 @theme {
   --font-sans: var(--font-corpta), sans-serif;
-  --font-mono: var(--font-corpta), monospace;
+  --font-mono: 'JetBrains Mono', 'Space Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   --font-serif: var(--font-corpta), serif;
 }
 
