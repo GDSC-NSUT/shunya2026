@@ -55,8 +55,8 @@ export const events = [
       coexistence: 'FLUID ARCHITECTURE'
     },
     format: 'Overnight 2-day competition',
-    date: 'Round 1 | 10:00 AM',
-    venue: 'APJ',
+    date: '17th - 18th October | 10:00 AM',
+    venue: 'Round 1, APJ',
     description: 'A 2-day overnight design competition focused on solving real-world design challenges across Branding, UI/UX, Product Design, Game Design, and AI-Assisted Design. From sprint to presentation, projects are evaluated on creativity, feasibility, and quality.',
     registerUrl: 'https://unstop.com/competitions/flow-in-flux-shunya-2026-netaji-subhas-university-of-technology-nsut-delhi-1764670?lb=YnzLtiB5&utm_medium=Share&utm_source=gdscnsu34405&utm_campaign=Events',
     registrationDeadline: '14 Oct'
