@@ -236,6 +236,24 @@
   display: none;
 }
 
+.card-meta-split {
+  flex-direction: column;
+  gap: 8px;
+}
+
+.card-date {
+  margin: 0;
+  font-family: var(--font-mono), "JetBrains Mono", monospace;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.card-date span {
+  opacity: 0.5;
+}
+
 .card-tag::before {
   content: "SYS.TRK // ";
   color: color-mix(in srgb, var(--card-accent) 60%, transparent);
@@ -409,6 +427,9 @@
 
 .glass-card.detail-expanded .card-meta-split {
   display: flex;
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 
@@ -416,11 +437,7 @@
   display: block;
 }
 
-.glass-card.detail-expanded .card-date {
-  margin-top: 32px;
-  padding-top: 20px;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-}
+
 
 .glass-card.detail-expanded .card-action-wrap {
   display: flex;
@@ -738,11 +755,18 @@ nextjs-portal {
   }
 
   .glass-card.detail-expanded {
-    width: 260px; /* Give it a bit more breathing room on mobile when open */
-    height: 360px;
+    width: 85vw; /* Much better responsive width */
+    max-width: 340px;
+    height: auto;
+    min-height: 420px;
     z-index: 50;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
+  }
+
+  .glass-card.detail-expanded .card-meta-split {
+    margin-top: 16px;
+    padding-top: 16px;
   }
 
   .star-field-layer {
