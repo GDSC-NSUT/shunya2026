@@ -112,7 +112,7 @@ export default function LiquidGlassCarouselSection() {
           glide={0.075}
           wheelSensitivity={1}
           snap={true}
-          autoScrollSpeed={-1.5}
+          autoScrollSpeed={-4.0}
           snapDistance={60}
           dispersion={0}
           zoom={0}

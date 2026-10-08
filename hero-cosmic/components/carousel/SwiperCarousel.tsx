@@ -75,11 +75,12 @@ const Carousel_003 = ({
           autoplay={
             autoplay
               ? {
-                  delay: 2500,
+                  delay: 1500,
                   disableOnInteraction: true,
                 }
               : false
           }
+          speed={600}
           effect="coverflow"
           grabCursor={true}
           slidesPerView="auto"
