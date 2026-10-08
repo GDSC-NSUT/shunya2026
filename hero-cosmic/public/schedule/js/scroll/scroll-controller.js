@@ -32,14 +32,14 @@ export function init() {
   let cardData = events;
   if (!cardData || cardData.length === 0) {
     cardData = [
-      { id: 'zero-day',           name: 'Zero Day Apocalypse', tags: ['Prompt Engineering', 'Logic Battle'], headlineColor: '#7E9DFF', leftAccent: '#FF2E4D', rightAccent: '#00E5FF', accent: '#FF2E4D' },
-      { id: 'autopilot',          name: 'Autopilot',           tags: ['Autonomous Agents', 'Reasoning'],    headlineColor: '#FF7A66', leftAccent: '#00E5FF', rightAccent: '#FFB347', accent: '#00E5FF' },
-      { id: 'devlympics',         name: '24-Hour Devlympics',  tags: ['Hackathon', 'Innovation'],           headlineColor: '#4EFFF3', leftAccent: '#FF8800', rightAccent: '#C084FC', accent: '#FF8800' },
-      { id: 'flow-in-flux',       name: 'Flow in Flux 2026',   tags: ['UI/UX', 'Product Design'],          headlineColor: '#FFF3A3', leftAccent: '#D946EF', rightAccent: '#CCFF00', accent: '#D946EF' },
-      { id: 'hallucination-hunt', name: 'Hallucination Hunt',  tags: ['Debugging', 'Collaboration'],        headlineColor: '#FFE600', leftAccent: '#00E676', rightAccent: '#FF2A6D', accent: '#00E676' },
-      { id: 'case-a-thon',        name: 'AI Case-a-thon',      tags: ['Business Strategy', 'AI Analytics'],headlineColor: '#F472B6', leftAccent: '#3B82F6', rightAccent: '#F59E0B', accent: '#3B82F6' },
-      { id: 'glitch-race',        name: 'The Glitch Race',     tags: ['Design', 'Problem Solving'],         headlineColor: '#FF4400', leftAccent: '#FF4400', rightAccent: '#00FFFF', accent: '#FF4400' },
-      { id: 'biome-orbit',        name: 'Biome Orbit',         tags: ['Puzzle', 'Immersive'],               headlineColor: '#00FFAA', leftAccent: '#00FFAA', rightAccent: '#0088FF', accent: '#00FFAA' }
+      { id: 'zero-day',          name: 'Zero Day Apocalypse',       tags: ['Prompt Engineering', 'Logic Battle'],        headlineColor: '#7E9DFF', leftAccent: '#FF2E4D', rightAccent: '#00E5FF', accent: '#FF2E4D' },
+      { id: 'autopilot',         name: 'Autopilot',                  tags: ['Autonomous Agents', 'Reasoning'],            headlineColor: '#FF7A66', leftAccent: '#00E5FF', rightAccent: '#FFB347', accent: '#00E5FF' },
+      { id: 'devlympics',        name: '24-Hour Devlympics',         tags: ['Hackathon', 'Innovation'],                  headlineColor: '#4EFFF3', leftAccent: '#FF8800', rightAccent: '#C084FC', accent: '#FF8800' },
+      { id: 'flow-in-flux',      name: 'Flow in Flux 2026',          tags: ['UI/UX', 'Product Design'],                  headlineColor: '#FFF3A3', leftAccent: '#D946EF', rightAccent: '#CCFF00', accent: '#D946EF' },
+      { id: 'hallucination-hunt',name: 'The Hallucination Hunt',     tags: ['Debugging', 'Collaboration'],               headlineColor: '#00FF66', leftAccent: '#00FF66', rightAccent: '#00CCFF', accent: '#00FF66' },
+      { id: 'tech-mafia',        name: 'Tech Mafia',                 tags: ['Social Deduction', 'Debugging'],            headlineColor: '#FF0080', leftAccent: '#FF0080', rightAccent: '#7B00FF', accent: '#FF0080' },
+      { id: 'ares-shunya',       name: 'REDLINE',                tags: ['Autonomous AI', 'ML Strategy'],             headlineColor: '#00FFFF', leftAccent: '#00FFFF', rightAccent: '#0066FF', accent: '#00FFFF' },
+      { id: 'space-ideathon',    name: 'Space & Beyond Ideathon',    tags: ['Space Tech', 'Innovation'],                 headlineColor: '#FF6B35', leftAccent: '#FF6B35', rightAccent: '#FFD700', accent: '#FF6B35' }
     ];
   }
 

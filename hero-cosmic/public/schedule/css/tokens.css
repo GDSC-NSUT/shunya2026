@@ -22,14 +22,14 @@
   --star-muted: rgba(165, 214, 167, 0.45);
 
   /* ── Curated Luxury High-Contrast Headline Colors ──────────────────────── */
-  --headline-zero-day: #FF003C;       /* Crimson Red */
-  --headline-autopilot: #0066FF;      /* Electric Blue */
-  --headline-devlympics: #FFE600;     /* Cyber Yellow */
-  --headline-flow-flux: #8A2BE2;      /* Deep Violet */
-  --headline-hallucination: #39FF14;  /* Toxic Lime */
-  --headline-caseathon: #FF6600;      /* Neon Orange */
-  --headline-glitch-race: #FF00FF;    /* Hot Magenta */
-  --headline-biome-orbit: #00FFFF;    /* Pure Cyan */
+  --headline-zero-day: #FF003C;        /* Crimson Red */
+  --headline-autopilot: #0066FF;       /* Electric Blue */
+  --headline-devlympics: #FFE600;      /* Cyber Yellow */
+  --headline-flow-flux: #8A2BE2;       /* Deep Violet */
+  --headline-hallucination: #00FF66;   /* Neon Green */
+  --headline-tech-mafia: #FF0080;      /* Neon Crimson-Pink */
+  --headline-ares-shunya: #00FFFF;     /* Pure Cyan */
+  --headline-space-ideathon: #FF6B35;  /* Cosmic Orange */
 
   /* ── Dual-Hemisphere Chromatic Pairings (Left Celestial vs Right HUD) ───── */
   /* 01. Zero Day */
@@ -49,28 +49,30 @@
   --accent-flow-flux-right: #FF00FF;
 
   /* 05. Hallucination Hunt */
-  --accent-hallucination-left: #39FF14;
-  --accent-hallucination-right: #00FFAA;
+  --accent-hallucination-left: #00FF66;
+  --accent-hallucination-right: #00CCFF;
 
-  /* 06. Case-a-thon */
-  --accent-caseathon-left: #FF6600;
-  --accent-caseathon-right: #FFE600;
+  /* 06. Tech Mafia */
+  --accent-tech-mafia-left: #FF0080;
+  --accent-tech-mafia-right: #7B00FF;
 
-  /* 07. The Glitch Race */
-  --accent-glitch-race-left: #FF00FF;
-  --accent-glitch-race-right: #8A2BE2;
+  /* 07. REDLINE */
+  --accent-ares-shunya-left: #00FFFF;
+  --accent-ares-shunya-right: #0066FF;
 
-  /* 08. Biome Orbit */
-  --accent-biome-orbit-left: #00FFFF;
-  --accent-biome-orbit-right: #0066FF;
+  /* 08. Space & Beyond Ideathon */
+  --accent-space-ideathon-left: #FF6B35;
+  --accent-space-ideathon-right: #FFD700;
 
   /* Legacy Fallback Accents */
   --accent-zero-day: #FF0055;
   --accent-autopilot: #FFB800;
   --accent-devlympics: #00FF9D;
   --accent-flow-flux: #FF00FF;
-  --accent-hallucination: #D4FF00;
-  --accent-caseathon: #FFFFFF;
+  --accent-hallucination: #00FF66;
+  --accent-tech-mafia: #FF0080;
+  --accent-ares-shunya: #00FFFF;
+  --accent-space-ideathon: #FF6B35;
 
   /* ── Cellular Membrane & Glass Tokens ─────────────────────────────── */
   --glass-surface: rgba(7, 17, 14, 0.65); /* Organic tint */

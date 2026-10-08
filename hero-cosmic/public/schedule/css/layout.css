@@ -367,12 +367,28 @@
   background: radial-gradient(ellipse at 35% 50%, rgba(75, 0, 38, 0.8) 0%, rgba(32, 0, 16, 0.45) 50%, rgba(3, 4, 7, 0) 90%);
 }
 
-/* 06. Case-a-thon: Deep Royal Sapphire vs Molten Topaz Gold */
-.event-card__hemisphere--left[data-challenge-id="case-a-thon"] {
-  background: radial-gradient(ellipse at 60% 50%, rgba(16, 48, 120, 0.8) 0%, rgba(6, 20, 52, 0.45) 50%, rgba(3, 4, 7, 0) 90%);
+/* 06. Tech Mafia: Neon Crimson-Pink vs Deep Violet */
+.event-card__hemisphere--left[data-challenge-id="tech-mafia"] {
+  background: radial-gradient(ellipse at 60% 50%, rgba(120, 0, 64, 0.8) 0%, rgba(52, 0, 28, 0.45) 50%, rgba(3, 4, 7, 0) 90%);
 }
-.event-card__hemisphere--right[data-challenge-id="case-a-thon"] {
-  background: radial-gradient(ellipse at 35% 50%, rgba(64, 42, 0, 0.8) 0%, rgba(30, 18, 0, 0.45) 50%, rgba(3, 4, 7, 0) 90%);
+.event-card__hemisphere--right[data-challenge-id="tech-mafia"] {
+  background: radial-gradient(ellipse at 35% 50%, rgba(48, 0, 100, 0.8) 0%, rgba(22, 0, 46, 0.45) 50%, rgba(3, 4, 7, 0) 90%);
+}
+
+/* 07. REDLINE: Electric Teal vs Cosmic Blue */
+.event-card__hemisphere--left[data-challenge-id="ares-shunya"] {
+  background: radial-gradient(ellipse at 60% 50%, rgba(0, 95, 80, 0.8) 0%, rgba(0, 42, 36, 0.45) 50%, rgba(3, 4, 7, 0) 90%);
+}
+.event-card__hemisphere--right[data-challenge-id="ares-shunya"] {
+  background: radial-gradient(ellipse at 35% 50%, rgba(0, 36, 90, 0.8) 0%, rgba(0, 16, 42, 0.45) 50%, rgba(3, 4, 7, 0) 90%);
+}
+
+/* 08. Space & Beyond Ideathon: Cosmic Orange vs Solar Gold */
+.event-card__hemisphere--left[data-challenge-id="space-ideathon"] {
+  background: radial-gradient(ellipse at 60% 50%, rgba(110, 48, 0, 0.8) 0%, rgba(50, 20, 0, 0.45) 50%, rgba(3, 4, 7, 0) 90%);
+}
+.event-card__hemisphere--right[data-challenge-id="space-ideathon"] {
+  background: radial-gradient(ellipse at 35% 50%, rgba(95, 80, 0, 0.8) 0%, rgba(42, 36, 0, 0.45) 50%, rgba(3, 4, 7, 0) 90%);
 }
 
 /* ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ Celestial & CAD Schematic Scenes ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ */

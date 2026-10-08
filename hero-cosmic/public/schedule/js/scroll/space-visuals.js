@@ -82,12 +82,29 @@ function getTelemetryData(id, paddedIndex) {
         sectorCoord: `COHERENCE: 42.1% &bull; EMERALD_SHARDS &bull; DUAL_WAVE`,
         statusBadge: 'TRUTH_SCANNER: ENGAGED // FILTER_V4'
       };
-    case 'case-a-thon':
+    case 'tech-mafia':
+      return {
+        sectorBadge: 'SECTOR // 06 — ADVERSARIAL NODE',
+        sectorCoord: `TRUST_INDEX: 0% &bull; SABOTAGE_ACTIVE &bull; ROLE_HIDDEN`,
+        statusBadge: 'INFILTRATION: LIVE // DECEPTION_MODE'
+      };
+    case 'ares-shunya':
+      return {
+        sectorBadge: 'SECTOR // 07 — AUTONOMOUS COMBAT ARENA',
+        sectorCoord: `POLICY_NETWORK: ACTIVE &bull; TURN_DEPTH: 6 &bull; AI_VS_AI`,
+        statusBadge: 'BATTLE_ENGINE: LIVE // RL_AGENT_READY'
+      };
+    case 'space-ideathon':
+      return {
+        sectorBadge: 'SECTOR // 08 — ORBITAL LAUNCH PLATFORM',
+        sectorCoord: `APOGEE: 400KM &bull; MISSION_PHASE: IDEATION &bull; T-0`,
+        statusBadge: 'LAUNCH_PROTOCOL: READY // KALPANA_MISSION'
+      };
     default:
       return {
-        sectorBadge: 'SECTOR // 06 — SAPPHIRE BINARY HUB',
-        sectorCoord: `DUAL_CORE &bull; STARDUST_ACCRETION &bull; +340% ROI`,
-        statusBadge: 'MACRO_STRATEGY: ACTIVE // EXECUTIVE'
+        sectorBadge: 'SECTOR // ?? — CLASSIFIED ZONE',
+        sectorCoord: `COORDINATES: REDACTED &bull; CLEARANCE: LEVEL_5`,
+        statusBadge: 'STATUS: CLASSIFIED // ACCESS_DENIED'
       };
   }
 }
