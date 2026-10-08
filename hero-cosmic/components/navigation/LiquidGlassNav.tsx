@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
+import { AnimatePresence, motion } from 'framer-motion';
 
 /* ── Section registry ── */
 const SECTIONS = [
@@ -141,12 +142,65 @@ const navLinkHover: React.CSSProperties = {
   background: 'rgba(255,255,255,0.08)',
 };
 
+/* ── Ultra-Premium Word Morph Component ── */
+const PremiumWordMorph = ({ text }: { text: string }) => {
+  const words = text.match(/[^ ]+| /g) || [];
+  
+  const wordCounts: Record<string, number> = {};
+  const items = words.map((word) => {
+    if (!wordCounts[word]) wordCounts[word] = 0;
+    const id = `${word}-${wordCounts[word]}`;
+    wordCounts[word]++;
+    return { word, id };
+  });
+
+  return (
+    <motion.div
+      layout
+      transition={{ type: 'spring', stiffness: 100, damping: 14, mass: 0.8 }}
+      style={{ 
+        display: 'flex', 
+        alignItems: 'center', 
+        overflow: 'hidden',
+        padding: '4px 0',
+      }}
+    >
+      <AnimatePresence mode="popLayout" initial={false}>
+        {items.map(({ word, id }, i) => (
+          <motion.span
+            layout
+            key={id}
+            initial={{ opacity: 0, y: 35, filter: 'blur(8px)', rotateX: 60, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, filter: 'blur(0px)', rotateX: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -35, filter: 'blur(8px)', rotateX: -60, scale: 0.9 }}
+            transition={{ 
+              type: 'spring', 
+              stiffness: 100, 
+              damping: 14, 
+              mass: 0.8,
+              delay: i * 0.04 
+            }}
+            style={{ 
+              display: 'inline-block', 
+              whiteSpace: 'pre',
+              transformOrigin: 'bottom center',
+              transformStyle: 'preserve-3d'
+            }}
+          >
+            {word}
+          </motion.span>
+        ))}
+      </AnimatePresence>
+    </motion.div>
+  );
+};
+
 /* ── Component ── */
 export default function LiquidGlassNav() {
   const router = useRouter();
   const pathname = usePathname();
   const [activeSection, setActiveSection] = useState<SectionId>('home');
-  const [inAbout, setInAbout] = useState(false);
+  const [homeState, setHomeState] = useState('SHUNYA');
   const [expanded, setExpanded] = useState(false);
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
   const [isCardSelected, setIsCardSelected] = useState(false);
@@ -199,26 +253,38 @@ export default function LiquidGlassNav() {
     if (pathname === '/timeline') {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setActiveSection('timeline');
-      setInAbout(false);
+      setHomeState('SHUNYA');
       return;
     }
     if (pathname === '/schedule') {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setActiveSection('schedule');
-      setInAbout(false);
+      setHomeState('SHUNYA');
       return;
     }
     if (pathname === '/') {
       const handleScroll = () => {
-        const aboutEl = document.getElementById('about');
-        if (aboutEl) {
-          const rect = aboutEl.getBoundingClientRect();
-          if (rect.top <= window.innerHeight / 2) {
-            setInAbout(true);
-            return;
-          }
+        const half = window.innerHeight / 2;
+        
+        const sponsorsEl = document.getElementById('sponsors');
+        if (sponsorsEl && sponsorsEl.getBoundingClientRect().top <= half) {
+          setHomeState('PAST SPONSORS');
+          return;
         }
-        setInAbout(false);
+
+        const pastShunyaEl = document.getElementById('past-shunya');
+        if (pastShunyaEl && pastShunyaEl.getBoundingClientRect().top <= half) {
+          setHomeState('PAST SHUNYA');
+          return;
+        }
+
+        const aboutEl = document.getElementById('about');
+        if (aboutEl && aboutEl.getBoundingClientRect().top <= half) {
+          setHomeState('ABOUT SHUNYA');
+          return;
+        }
+
+        setHomeState('SHUNYA');
       };
       window.addEventListener('scroll', handleScroll, { passive: true });
       handleScroll();
@@ -365,27 +431,8 @@ export default function LiquidGlassNav() {
       {/* ── Compact State ── */}
       <div style={dynamicCompactInner}>
         {activeSection === 'home' ? (
-          <span style={{ ...dynamicActiveLabelStyle, display: 'flex', alignItems: 'center', willChange: 'width' }}>
-            <span
-              style={{
-                display: 'inline-flex',
-                maxWidth: inAbout ? '115px' : '0px',
-                transition: 'max-width 400ms cubic-bezier(0.4, 0, 0.2, 1)',
-                willChange: 'max-width',
-              }}
-            >
-              <span
-                style={{
-                  overflow: 'hidden',
-                  opacity: inAbout ? 1 : 0,
-                  transition: 'opacity 400ms ease',
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                ABOUT&nbsp;
-              </span>
-            </span>
-            <span>SHUNYA</span>
+          <span style={{ ...dynamicActiveLabelStyle, display: 'flex', alignItems: 'center' }}>
+            <PremiumWordMorph text={homeState} />
             {isMobile && !expanded && (
                <svg style={{ marginLeft: '8px' }} width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7"></path></svg>
             )}
@@ -414,27 +461,8 @@ export default function LiquidGlassNav() {
           tabIndex={0}
           onKeyDown={(e) => e.key === 'Enter' && handleNav('home')}
         >
-          <span style={{ ...dynamicLogoText, display: 'flex', alignItems: 'center', willChange: 'width' }}>
-            <span
-              style={{
-                display: 'inline-flex',
-                maxWidth: inAbout ? '115px' : '0px',
-                transition: 'max-width 400ms cubic-bezier(0.4, 0, 0.2, 1)',
-                willChange: 'max-width',
-              }}
-            >
-              <span
-                style={{
-                  overflow: 'hidden',
-                  opacity: inAbout ? 1 : 0,
-                  transition: 'opacity 400ms ease',
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                ABOUT&nbsp;
-              </span>
-            </span>
-            <span>SHUNYA</span>
+          <span style={{ ...dynamicLogoText, display: 'flex', alignItems: 'center' }}>
+            <PremiumWordMorph text={homeState} />
           </span>
         </div>
 

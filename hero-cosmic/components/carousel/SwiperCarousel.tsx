@@ -75,12 +75,12 @@ const Carousel_003 = ({
           autoplay={
             autoplay
               ? {
-                  delay: 1500,
+                  delay: 500,
                   disableOnInteraction: true,
                 }
               : false
           }
-          speed={600}
+          speed={400}
           effect="coverflow"
           grabCursor={true}
           slidesPerView="auto"
@@ -148,6 +148,16 @@ export interface CarouselProject {
 }
 
 export default function SwiperCarousel({ projects }: { projects: CarouselProject[] }) {
+  const [isMobile, setIsMobile] = React.useState(false);
+
+  React.useEffect(() => {
+    const mqMobile = window.matchMedia('(max-width: 1024px)');
+    setIsMobile(mqMobile.matches);
+    const onMobileChange = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mqMobile.addEventListener('change', onMobileChange);
+    return () => mqMobile.removeEventListener('change', onMobileChange);
+  }, []);
+
   const images = projects.map((p) => ({
     src: p.image.src,
     alt: p.brand,
@@ -160,7 +170,7 @@ export default function SwiperCarousel({ projects }: { projects: CarouselProject
         showPagination={true}
         showNavigation={false}
         loop={true}
-        autoplay={true}
+        autoplay={!isMobile}
       />
     </div>
   );

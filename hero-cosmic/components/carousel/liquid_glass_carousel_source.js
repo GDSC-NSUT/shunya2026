@@ -629,10 +629,10 @@ function createCarousel(mount, options) {
     });
   }
   const moveX = cursorElement
-    ? gsap.quickTo(cursorElement, "x", { duration: 0.5, ease: "power3.out" })
+    ? gsap.quickTo(cursorElement, "x", { duration: 0.1, ease: "power3.out" })
     : null;
   const moveY = cursorElement
-    ? gsap.quickTo(cursorElement, "y", { duration: 0.5, ease: "power3.out" })
+    ? gsap.quickTo(cursorElement, "y", { duration: 0.1, ease: "power3.out" })
     : null;
   let overPanel = false;
   function setView(visible) {
@@ -997,7 +997,7 @@ function createCarousel(mount, options) {
     lensUniforms.uShape.value = values.lensShape === "square" ? 1 : 0;
     lensUniforms.uRotation.value = (values.lensRotation * Math.PI) / 180;
     lensUniforms.uAspect.value = W / H;
-    lensUniforms.uTime.value = performance.now() * 0.001;
+    lensUniforms.uTime.value = performance.now() * 0.005;
     lensUniforms.uBlur.value = values.blur;
     lensUniforms.uGlow.value = values.glow;
     lensUniforms.uShimmer.value = values.shimmer ? 1 : 0;
@@ -1013,7 +1013,8 @@ function createCarousel(mount, options) {
     renderer.setRenderTarget(null);
     renderer.render(lensScene, lensCamera);
   }
-  let isVisible = true;
+  let isVisible = false;
+  let hasPlayedEntry = false;
   function tick() {
     if (!isVisible) return;
     renderFrame();
@@ -1024,17 +1025,22 @@ function createCarousel(mount, options) {
     isVisible = entries[0].isIntersecting;
     if (isVisible && !wasVisible && !staticMode) {
       lastWheelAt = performance.now();
+      if (!hasPlayedEntry) {
+        hasPlayedEntry = true;
+        playEntry();
+      }
       raf = requestAnimationFrame(tick);
     }
-  });
+  }, { threshold: 0.1 });
   visibilityObserver.observe(mount);
   
   if (staticMode) {
     renderFrame();
-  } else {
-    raf = requestAnimationFrame(tick);
+    if (!hasPlayedEntry) {
+      hasPlayedEntry = true;
+      playEntry();
+    }
   }
-  playEntry();
   function onResize() {
     W = Math.max(1, mount.clientWidth);
     H = Math.max(1, mount.clientHeight);

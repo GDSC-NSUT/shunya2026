@@ -62,7 +62,7 @@ export default function LiquidGlassCarouselSection() {
   const [pixelRatio, setPixelRatio] = useState(2);
 
   useEffect(() => {
-    const mq = window.matchMedia("(max-width: 767px)");
+    const mq = window.matchMedia("(max-width: 1024px)");
     const update = () => {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setIsMobile(mq.matches);
@@ -76,6 +76,7 @@ export default function LiquidGlassCarouselSection() {
 
   return (
     <section
+      id="past-shunya"
       style={{
         width: "100%",
         height: "100svh",
@@ -112,7 +113,7 @@ export default function LiquidGlassCarouselSection() {
           glide={0.075}
           wheelSensitivity={1}
           snap={true}
-          autoScrollSpeed={-4.0}
+          autoScrollSpeed={-8.0}
           snapDistance={60}
           dispersion={0}
           zoom={0}

@@ -27,7 +27,7 @@ let asteroids = [];
 // ── Build data ─────────────────────────────────────────────────────────────
 function buildStars() {
   stars = [];
-  const isMobile = window.innerWidth < 768;
+  const isMobile = window.innerWidth < 1024;
   const countMultiplier = isMobile ? 0.35 : 1.0; // Huge reduction for mobile
 
   LAYERS.forEach((cfg, li) => {
@@ -49,7 +49,7 @@ function buildStars() {
 
 function buildAsteroids() {
   asteroids = [];
-  const isMobile = window.innerWidth < 768;
+  const isMobile = window.innerWidth < 1024;
   if (isMobile) return; // Skip complex polygon paths on mobile GPU
   for (let i = 0; i < 20; i++) {
     asteroids.push(makeAsteroid());
@@ -82,7 +82,7 @@ function makeAsteroid(yStart) {
 function resize() {
   width  = window.innerWidth;
   height = window.innerHeight;
-  const isMobile = width < 768;
+  const isMobile = width < 1024;
   const dpr = isMobile ? 1 : Math.min(window.devicePixelRatio || 1, 2);
   canvas.width  = width  * dpr;
   canvas.height = height * dpr;

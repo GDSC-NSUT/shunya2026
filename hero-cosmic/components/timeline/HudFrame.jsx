@@ -14,7 +14,7 @@ export default function HudFrame() {
   if (dims.w === 0) return null;
 
   // Responsive inset
-  const isMobile = dims.w < 768;
+  const isMobile = dims.w < 1024;
   const inset = isMobile ? 12 : 24;
   
   const cw = isMobile ? 12 : 24; // chamfer width

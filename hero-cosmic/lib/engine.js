@@ -86,7 +86,7 @@ export function getScale(delta) {
 }
 
 export function getX(delta, W, xOrigin) {
-  const isMobile = W < 768;
+  const isMobile = W < 1024;
   const S = getScale(delta);
   // Slight angle adjustment for mobile, not too extreme
   const Vx = W * (isMobile ? 1.25 : VANISHING_POINT_X_PCT);
@@ -95,7 +95,7 @@ export function getX(delta, W, xOrigin) {
 }
 
 export function getYBase(delta, H, yOrigin, W) {
-  const isMobile = W < 768;
+  const isMobile = W < 1024;
   const S = getScale(delta);
   const Vy = H * (isMobile ? -1.40 : VANISHING_POINT_Y_PCT);
   // Tuned to exactly 0.85 so approximately 5 cards fit on screen at once
@@ -122,7 +122,7 @@ export function isFocal(delta) {
  * The wave is baked in: moving the card towards top-left (-X, -Y)
  */
 export function getSpatialState(delta, W, H, xOrigin, yOrigin, amplitude, progress) {
-  const isMobile = W < 768;
+  const isMobile = W < 1024;
   // Restore a deep visual limit; the new massive spacing ensures they naturally go off-screen
   // before hitting this limit, preventing artificial clipping/disappearing.
   const maxVisibleDelta = isMobile ? 10 : 16; 

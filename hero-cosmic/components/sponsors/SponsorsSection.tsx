@@ -11,7 +11,7 @@ const MARQUEE_ITEMS = [...PAST_SPONSORS, ...PAST_SPONSORS, ...PAST_SPONSORS, ...
 
 export default function SponsorsSection() {
   return (
-    <section className="relative w-full bg-black py-16 md:py-24">
+    <section id="sponsors" className="relative w-full bg-black py-16 md:py-24">
       {/* ── PAST SPONSORS ── */}
       <div className="flex flex-col items-center w-full mb-12 relative z-30">
         <h1 
