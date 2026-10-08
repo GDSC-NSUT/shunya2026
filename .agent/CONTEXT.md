@@ -21,11 +21,13 @@
 | Decision | Reason | Date |
 |---|---|---|
 | **GSAP over Framer Motion** | Required for raw DOM-node manipulation (physics ticker, Flip geometry morphing, hardware-accelerated transforms) without React render loop overhead. | Sept 2026 |
-| **Strict JS/CSS Media Query Sync** | `window.innerWidth` was causing mismatch bugs between JS animation logic and CSS on mobile devices. All breakpoints in JS must now explicitly use `window.matchMedia('(max-width: 768px)').matches`. | Oct 2026 |
+| **Strict JS/CSS Media Query Sync (1024px Desktop threshold)** | Standardized all `isMobile` checks across Swiper, LiquidGlassNav, and SceneController to `window.matchMedia('(max-width: 1024px)').matches` to ensure iPads and portrait tablets receive the mobile layout instead of squishing the 3D desktop views. | Oct 2026 |
 | **Mobile Performance Kill-Switches** | Disabled `backdrop-filter: blur`, SVG noise, and full-screen radial-gradient star layers on mobile (`<= 768px`) to prevent GPU fill-rate throttling. Maintains solid 60fps. | Oct 2026 |
 | **Aggressive Mobile Scroll Feel** | The timeline kinetic wave uses a high velocity multiplier (`15.0x`) and velocity cap (`150`) for mobile touch events to create a fast, loose "throw" feel. | Oct 2026 |
 | **Fixed GSAP `fromTo` Inheritance** | Mobile card expansion explicitly forces `x: 0, z: 0, rotateX: 0, rotateY: 0` in `gsap.fromTo()` so the card centers perfectly, overriding the kinetic wave's raw inline transform state. | Oct 2026 |
 | **Comprehensive OpenGraph & Twitter Metadata** | Configured `metadataBase` to `shunya.gdgnsut.com`, injected `title`, full festival `description`, `opengraph-image.jpg`, and `twitter-image.jpg` with `summary_large_image` support. | Oct 2026 |
+| **Premium Framer Motion Word Morph** | Created dynamic word tracking using `motion.span layout` in the `LiquidGlassNav`. Re-uses identical words (like "SHUNYA") during scroll and elegantly slides them instead of blinking or fading, creating an ultra-premium Apple-tier layout morph. | Oct 2026 |
+| **Mobile Carousel Autoplay Disabled** | Disabled autoplay specifically on mobile viewports for the `SwiperCarousel` to prevent unsolicited motion and improve UX. | Oct 2026 |
 
 ## Current Functionality (Stable)
 - [x] Cosmic HUD Hero Section (Cursor localized reveal, parallax stars).
